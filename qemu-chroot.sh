@@ -1,10 +1,10 @@
 #!/bin/bash
 
 TARGET=aarch64-unknown-linux-gnu
-TARGET_PATH=/home/belka/Projekte/switch-gentoo/root
-PACKAGES=/home/belka/Projekte/switch-gentoo/packages
+TARGET_PATH=./root
+PACKAGES=./packages
 
-../system-chroot/chroot-mount.sh root/
+../system-chroot/chroot-mount.sh "$TARGET_PATH"
 
 mount --bind "$PACKAGES" ${TARGET_PATH}/usr/portage/packages
 
