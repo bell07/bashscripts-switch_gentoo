@@ -1,9 +1,13 @@
 # Install build environment
-1. Follow https://wiki.gentoo.org/wiki/Embedded_Handbook/General/Compiling_with_qemu_user_chroot using QEMU_USER_TARGETS="aarch64"
+- Download and install this package with submodules
 
-2. unpack stage from http://distfiles.gentoo.org/experimental/arm64 to `./root/`
-3. create `./packages/` dir (your own binhost)
+- Build qemu toolchain following https://wiki.gentoo.org/wiki/Embedded_Handbook/General/Compiling_with_qemu_user_chroot and using QEMU_USER_TARGETS="aarch64"
 
-3. Install https://github.com/bell07/bashscripts-system_chroot beside this repo into `../system-chroot/`
+- Build cross toolchain using `crossdev -S -t aarch64-unknown-linux-gnu`
 
-3. call `qemu-chroot.sh` to enter the build chroot
+- unpack stage from http://distfiles.gentoo.org/experimental/arm64 (or the switch one from bell07) to `./root/`
+- Copy switch specific configuration `cp -av target/* root/`
+- create `./packages/` dir (your own binhost)
+
+# Use the toolchain
+call `qemu-chroot.sh` to enter the qemu build chroot

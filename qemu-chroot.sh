@@ -4,7 +4,9 @@ TARGET=aarch64-unknown-linux-gnu
 TARGET_PATH=./root
 PACKAGES=./packages
 
-../system-chroot/chroot-mount.sh "$TARGET_PATH"
+/etc/init.d/qemu-binfmt start
+
+tools/system_chroot/chroot-mount.sh "$TARGET_PATH"
 
 mount --bind "$PACKAGES" ${TARGET_PATH}/usr/portage/packages
 
@@ -14,4 +16,4 @@ chroot ${TARGET_PATH} /bin/bash --login
 rm ${TARGET_PATH}/usr/bin/qemu-aarch64
 echo "Left chroot"
 
-../system-chroot/chroot-umount.sh root/
+tools/system_chroot/chroot-umount.sh root/
