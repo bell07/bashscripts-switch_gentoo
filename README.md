@@ -11,13 +11,13 @@
 
 # Use the toolchain
 ## Cross compiling
-call `./qemu-chroot.sh` to enter the qemu build chroot
-`env-update && source /etc/profile` for the first time
-`emerge --usepkg sys-devel/distcc` for faster future compiling (pre-configured)
-emerge things you need
-Copy the `./packages` folder to your web server for binhost
+- call `./qemu-chroot.sh` to enter the qemu build chroot
+- `env-update && source /etc/profile` for the first time
+- `emerge --usepkg sys-devel/distcc` for faster future compiling (pre-configured, may you need disable the feature in make.conf temporary)
+- emerge things you need
+- Copy the `./packages` folder to your web server for binhost
 
 ## build the system stage3
-Be sure you have all system packages in binhost. Of not, recompile them using cross-compiling above
-call the `./target-cfg/02_build_stage.sh`
-You find an `switch-gentoo-stage3.tar.gz` file and extracted the `stage3` in `./out/` directory
+- Be sure you have all system packages in binhost. Of not, recompile them using cross-compiling above
+- call the `./target-cfg/02_build_stage.sh`
+- You find an `switch-gentoo-stage3.tar.gz` file and extracted the `stage3` in `./out/` directory
