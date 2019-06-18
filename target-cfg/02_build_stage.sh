@@ -39,7 +39,7 @@ echo "Patch make.conf to use bell's binhost"
 cat >> "$TARGET_DIR"/etc/portage/make.conf <<EOL
 
 PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/"
-FEATURES="$FEATURES getbinpkg"
+FEATURES="\$FEATURES getbinpkg"
 EOL
 
 echo "----- Step 5 create stage package --"

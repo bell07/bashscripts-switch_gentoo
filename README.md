@@ -2,7 +2,7 @@
 
 - Build qemu toolchain following https://wiki.gentoo.org/wiki/Embedded_Handbook/General/Compiling_with_qemu_user_chroot and using QEMU_USER_TARGETS="aarch64"
 - Build cross toolchain using `crossdev -S -t aarch64-unknown-linux-gnu`
-- Build distcc host following https://wiki.gentoo.org/wiki/Distcc
+- Build distcc host following https://wiki.gentoo.org/wiki/Distcc; set --allow 127.0.0.1 for communication to qemu toolchain
 - Download and install this package with submodules
 
 ## Prepare the emulated compiling environment
@@ -11,9 +11,9 @@
 
 # Use the toolchain
 ## Cross compiling
-call `qemu-chroot.sh` to enter the qemu build chroot
+call `./qemu-chroot.sh` to enter the qemu build chroot
 `env-update && source /etc/profile` for the first time
-`emerge sys-devel/distcc` for faster future compiling (pre-configured)
+`emerge --usepkg sys-devel/distcc` for faster future compiling (pre-configured)
 emerge things you need
 Copy the `./packages` folder to your web server for binhost
 

@@ -15,6 +15,7 @@ fi
 PACKAGES=packages
 
 /etc/init.d/qemu-binfmt start
+/etc/init.d/distccd start
 
 tools/system_chroot/chroot-mount.sh "$TARGET_DIR"
 
