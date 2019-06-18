@@ -17,7 +17,7 @@ call `qemu-chroot.sh` to enter the qemu build chroot
 emerge things you need
 Copy the `./packages` folder to your web server for binhost
 
-## build the system stage
+## build the system stage3
 Be sure you have all system packages in binhost. Of not, recompile them using cross-compiling above
 call the `./target-cfg/02_build_stage.sh`
-You find an `switch-gentoo-stage4.tar.gz` file and extracted the `stage4` in `./out/` directory
+You find an `switch-gentoo-stage3.tar.gz` file and extracted the `stage3` in `./out/` directory

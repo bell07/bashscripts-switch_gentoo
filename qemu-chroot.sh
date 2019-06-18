@@ -1,8 +1,18 @@
 #!/bin/bash
 
-TARGET=aarch64-unknown-linux-gnu
-TARGET_DIR=./root
-PACKAGES=./packages
+if [ -n "$1" ]; then
+	TARGET_DIR="$1"
+	shift
+	if [ -n "$1" ]; then
+		CMD="${*}"
+	else
+		CMD="/bin/bash --login"
+	fi
+else
+	TARGET_DIR=root
+fi
+
+PACKAGES=packages
 
 /etc/init.d/qemu-binfmt start
 
@@ -12,9 +22,9 @@ mount -v --bind "$PACKAGES" "$TARGET_DIR"/usr/portage/packages
 
 echo "Entering chroot ..."
 cp /usr/bin/qemu-aarch64 "$TARGET_DIR"/usr/bin/
-chroot "$TARGET_DIR" /bin/bash --login
+chroot "$TARGET_DIR" $CMD
 rm "$TARGET_DIR"/usr/bin/qemu-aarch64
 echo "Left chroot"
 
-tools/system_chroot/chroot-umount.sh root/
+tools/system_chroot/chroot-umount.sh "$TARGET_DIR"
 # umount -v "$TARGET_PATH"/usr/portage/packages recursive umounted by chroot-umount.sh
