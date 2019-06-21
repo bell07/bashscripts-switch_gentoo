@@ -14,5 +14,6 @@ cat >> "$TARGET_DIR"/etc/portage/make.conf <<EOL
 FEATURES="\$FEATURES buildpkg"         # Create packages for binhost
 FEATURES="\$FEATURES -pid-sandbox"     # emerge fails on my system if set
 FEATURES="\$FEATURES distcc"           # Move compiling to crossdev outsite emulation
-MAKEOPTS="-j6 -l2"                    # Maybe useful for distcc
+
+MAKEOPTS="-j10"                       # Useful for local distcc (I think so)
 EOL
