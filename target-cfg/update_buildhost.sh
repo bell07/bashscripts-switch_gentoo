@@ -2,8 +2,9 @@
 
 TARGET_DIR=root
 
-cp -av target-cfg/00_base/* "$TARGET_DIR"
-cp -av target-cfg/01_buildhost/* "$TARGET_DIR"
+cp -av target-cfg/base/* "$TARGET_DIR"
+cp -av target-cfg/release/* "$TARGET_DIR"
+cp -av target-cfg/buildhost/* "$TARGET_DIR"
 
 mkdir -p "$TARGET_DIR"/usr/portage/packages
 

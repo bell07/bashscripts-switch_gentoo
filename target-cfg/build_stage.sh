@@ -3,15 +3,14 @@ TARGET_DIR=out/stage3
 mkdir -p "$TARGET_DIR"
 
 echo " ----- Step 1. Build base files"
-cp -av target-cfg/00_base/* "$TARGET_DIR"
-cp -av target-cfg/02_stage/* "$TARGET_DIR"
+cp -av target-cfg/base/* "$TARGET_DIR"
 
 mkdir -p "$TARGET_DIR"/usr/portage
 mount -v --bind /usr/portage "$TARGET_DIR"/usr/portage
 ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" USE=build emerge -v1q --buildpkg=n --usepkg=n baselayout
 
 echo " ----- Step 2. Install system"
-ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" PKGDIR="packages" emerge --usepkgonly -evDN --jobs=2 @system
+ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" PKGDIR="packages" emerge -evDN --usepkgonly --jobs=4 @system
 
 echo " ----- Step 3. Install build dependencies"
 mkdir -p "$TARGET_DIR"/var/cache/binpkgs
