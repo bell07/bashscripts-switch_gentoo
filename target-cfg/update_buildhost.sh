@@ -1,10 +1,12 @@
 #!/bin/sh
 
-TARGET_DIR=root
+CFG_DIR="$(dirname $0)"
 
-cp -av target-cfg/base/* "$TARGET_DIR"
-cp -av target-cfg/release/* "$TARGET_DIR"
-cp -av target-cfg/buildhost/* "$TARGET_DIR"
+TARGET_DIR="$(dirname "$CFG_DIR")"/root
+
+cp -av "$CFG_DIR"/base/* "$TARGET_DIR"
+cp -av "$CFG_DIR"/release/* "$TARGET_DIR"
+cp -av "$CFG_DIR"/buildhost/* "$TARGET_DIR"
 
 mkdir -p "$TARGET_DIR"/usr/portage/packages
 

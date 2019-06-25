@@ -1,26 +1,33 @@
 #!/bin/sh
-TARGET_DIR=out/stage3
+CFG_DIR="$(dirname $0)"
+PROJ_DIR="$(dirname "$CFG_DIR")"
+
+TARGET_DIR="$PROJ_DIR"/out/stage3
+
 mkdir -p "$TARGET_DIR"
 
 echo " ----- Step 1. Build base files"
-cp -av target-cfg/base/* "$TARGET_DIR"
+cp -av "$CFG_DIR"/base/* "$TARGET_DIR"
 
 mkdir -p "$TARGET_DIR"/usr/portage
 mount -v --bind /usr/portage "$TARGET_DIR"/usr/portage
+echo "Hint: warning about missed overlay is ok at this place. It is a PORTAGE_CONFIGROOT issue"
 ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" USE=build emerge -v1q --buildpkg=n --usepkg=n baselayout
 
 echo " ----- Step 2. Install system"
-ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" PKGDIR="packages" emerge -evDN --usepkgonly --jobs=4 @system
+ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" PKGDIR="packages" emerge -evDN --usepkgonly --with-bdeps=n --jobs=4 @system
 
 echo " ----- Step 3. Install build dependencies"
 mkdir -p "$TARGET_DIR"/var/cache/binpkgs
-mount -v --bind packages "$TARGET_DIR"/var/cache/binpkgs
+mount -v --bind "$PROJ_DIR"/packages "$TARGET_DIR"/var/cache/binpkgs
 
-./qemu-chroot.sh "$TARGET_DIR"  << EOF
+"$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
 env-update
 source /etc/profile
 FEATURES="-pid-sandbox buildpkg" emerge --usepkg --with-bdeps=y -uvDN --jobs=2 @system
 EOF
+
+"$PROJ_DIR"/tools/system_chroot/chroot-umount.sh "$TARGET_DIR" # Be sure all is unmounted in case of errors
 
 umount -v "$TARGET_DIR"/var/cache/binpkgs
 
