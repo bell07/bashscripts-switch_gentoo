@@ -1,8 +1,6 @@
 # Overlay packages are all testing
 */*::switch
 
-# Avoid python_targets_python2_7
-=dev-vcs/git-2.21.0-r1
-
 # Available only in testing
 app-portage/cpuid2cpuflags
+dev-embedded/u-boot-tools
