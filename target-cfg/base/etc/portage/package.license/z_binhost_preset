@@ -1,2 +1,3 @@
 # Required Nvidia firmware to builtin into kernel
 sys-kernel/linux-firmware linux-fw-redistributable no-source-code
+sys-kernel/l4t-kernel linux-firmware
