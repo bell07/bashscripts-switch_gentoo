@@ -37,7 +37,6 @@ rm "$TARGET_DIR"/var/log/emerge.log
 rm "$TARGET_DIR"/var/log/emerge-fetch.log
 rm "$TARGET_DIR"/var/log/portage/elog/summary.log
 rm -Rf "$TARGET_DIR"/var/cache/edb/binhost
-rm -Rf "$TARGET_DIR"/var/cache/binpkgs
 rm "$TARGET_DIR"/etc/resolv.conf
 
 
