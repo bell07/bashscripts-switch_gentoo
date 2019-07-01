@@ -1,6 +1,0 @@
-# Overlay packages are all testing
-*/*::switch
-
-# Available only in testing
-app-portage/cpuid2cpuflags
-dev-embedded/u-boot-tools

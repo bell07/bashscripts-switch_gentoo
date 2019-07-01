@@ -20,8 +20,10 @@ PACKAGES="$PROJ_DIR"/packages
 
 "$PROJ_DIR"/tools/system_chroot/chroot-mount.sh "$TARGET_DIR"
 
+mkdir -p "$TARGET_DIR"/usr/portage/packages
 mount -v --bind "$PACKAGES" "$TARGET_DIR"/usr/portage/packages
 mount -v --bind "$PROJ_DIR"/tools/switch_overlay "$TARGET_DIR"/var/db/repos/switch_overlay
+mount -v --bind "$PROJ_DIR"/packages "$TARGET_DIR"/var/cache/binpkgs
 
 echo "Entering chroot ..."
 cp /usr/bin/qemu-aarch64 "$TARGET_DIR"/usr/bin/
@@ -33,3 +35,4 @@ echo "Left chroot"
 # umount -v "$TARGET_PATH"/usr/portage/packages recursive umounted by chroot-umount.sh
 
 umount -v "$TARGET_DIR"/var/db/repos/switch_overlay
+umount -v "$TARGET_DIR"/var/cache/binpkgs

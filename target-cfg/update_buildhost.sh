@@ -1,23 +1,23 @@
 #!/bin/sh
 
-CFG_DIR="$(dirname $0)"
+CFG_DIR="$(realpath "$(dirname $0)")"
+TARGET_DIR="$(dirname "$CFG_DIR")"/root
 
-TARGET_DIR="$(dirname "$CFG_DIR")"/../root
-
-cp -av "$CFG_DIR"/base/* "$TARGET_DIR"
-cp -av "$CFG_DIR"/release/* "$TARGET_DIR"
-cp -av "$CFG_DIR"/buildhost/* "$TARGET_DIR"
-
-echo "Add packages to world"
-cat >> "$TARGET_DIR"/var/lib/portage/world <<EOL
-app-portage/cpuid2cpuflags
-app-portage/gentoolkit
-app-portage/eix
-sys-devel/distcc
+echo "-- 'Step 1: Update buildhost root configuration"
+# Update distcc
+cat >> "$TARGET_DIR"/etc/distcc/hosts<<EOL
+# Use TCP connection to crossdev compiler
+127.0.0.1:3632
 EOL
-mkdir -p "$TARGET_DIR"/usr/portage/packages
 
-echo "Configure make.conf for buildpkg and distcc"
+BUILDHOST_PACKAGES="app-portage/gentoolkit sys-devel/distcc"
+
+echo "-- 'Step 2: Install/Update additional packages"
+"$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
+FEATURES="-pid-sandbox buildpkg" emerge --usepkg --with-bdeps=n --no-replace -v --jobs=5 $BUILDHOST_PACKAGES
+EOF
+
+echo "-- 'Step 2: Configure make.conf for buildpkg and distcc"
 cat >> "$TARGET_DIR"/etc/portage/make.conf <<EOL
 
 ## Buldhost related
