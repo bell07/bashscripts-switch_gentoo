@@ -19,10 +19,13 @@ sed -i 's|root:\*:|root:$6$NME85/IY7$tCY/YFXMOSyP.h6H/634bqI3aeNZZLCVpC7EsN32rA5
 echo "----- Step 3. Install world"
 "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
 FEATURES="-pid-sandbox buildpkg" emerge --usepkg --with-bdeps=n -uvDN --jobs=5 $RELEASE_PACKAGES @system @world
+
+# Enable networking
 rc-update add dhcpcd default
 rc-update add sshd default
 ln -s net.lo /etc/init.d/net.wlp1s0
 rc-update add net.wlp1s0 default
+rc-update add wpa_supplicant default
 EOF
 
 "$PROJ_DIR"/tools/system_chroot/chroot-umount.sh "$TARGET_DIR" # Be sure all is unmounted in case of errors
