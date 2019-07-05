@@ -1,5 +1,5 @@
 #!/bin/sh
-CFG_DIR="$(dirname $0)"
+CFG_DIR="$(realpath "$(dirname $0)")"
 PROJ_DIR="$(dirname "$CFG_DIR")"
 
 TARGET_DIR="$PROJ_DIR"/out/stage3
@@ -7,14 +7,14 @@ TARGET_DIR="$PROJ_DIR"/out/stage3
 echo " ----- Step 1. Build base files"
 mkdir -p "$TARGET_DIR"/usr/portage
 mount -v --bind /usr/portage "$TARGET_DIR"/usr/portage
-ROOT="$TARGET_DIR" PORTDIR_OVERLAY="tools/switch_overlay" ACCEPT_KEYWORDS='**' \
-		USE=build emerge -vq --buildpkg=n --usepkg=n nsw_portage_cfg
-ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" PORTDIR_OVERLAY="tools/switch_overlay" \
+ROOT="$TARGET_DIR" PORTDIR_OVERLAY="$PROJ_DIR"/tools/switch_overlay ACCEPT_KEYWORDS='**' \
+		USE=build emerge -vq --buildpkg=n --usepkg=n sys-devel/nintendo-switch-portage-cfg
+ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" PORTDIR_OVERLAY="$PROJ_DIR"/tools/switch_overlay \
 		USE=build emerge -v1q --buildpkg=n --usepkg=n baselayout
 
 echo " ----- Step 2. Install system for working portage"
 echo "... warinig about missed overlay is ok at this point"
-ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" PKGDIR="packages"\
+ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" PKGDIR="$PROJ_DIR"/packages \
 		emerge -1v --usepkgonly --with-bdeps=n --jobs=5 $(cat /usr/portage/profiles/base/packages | grep '^*' | sed 's/^*//g')
 
 echo " ----- Step 3. Re-Install system in chroot"
