@@ -6,7 +6,7 @@
   `git clone --recurse-submodules https://github.com/bell07/bashscripts-switch_gentoo`
 
 ## Prepare the emulated compiling environment
-- unpack stage from https://bell.7u.org/pub/gentoo-switch/switch-gentoo-stage3.tar.gz to `./root/`
+- unpack stage from https://bell.7u.org/pub/gentoo-switch/switch-gentoo-release.tar.gz to `./root/`
 - Call the `./target-cfg/update_buildhost.sh`
 
 # Use the toolchain / compile own binhost
