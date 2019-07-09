@@ -25,6 +25,12 @@
 - call the `./target-cfg/build_release.sh`
 - You find an `switch-gentoo-release.tar.gz` file and extracted the `release` in `./out/` directory
 
+## build the coreboot.rom
+- build sys-boot/nintendo-switch-u-boot in buildhost or place u-boot.elf to coreboot-build/u-boot.elf
+- call `./target-cfg/build-coreboot.sh`
+- Get caffee and wait
+- You find coreboot.rom in `./out/` directory
+
 # First boot
 ## Prepare
 - Format SD card with 2 partitions, fat32 and ext4

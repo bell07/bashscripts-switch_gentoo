@@ -23,10 +23,12 @@ PACKAGES="$PROJ_DIR"/packages
 mkdir -p "$TARGET_DIR"/usr/portage/packages
 mount -v --bind "$PACKAGES" "$TARGET_DIR"/usr/portage/packages
 mount -v --bind "$PROJ_DIR"/tools/switch_overlay "$TARGET_DIR"/var/db/repos/switch_overlay
-mount -v --bind "$PROJ_DIR"/packages "$TARGET_DIR"/var/cache/binpkgs
+mkdir -p "$PACKAGES"
+mount -v --bind "$PACKAGES" "$TARGET_DIR"/var/cache/binpkgs
 
 echo "Entering chroot ..."
 cp /usr/bin/qemu-aarch64 "$TARGET_DIR"/usr/bin/
+echo chroot "$TARGET_DIR" $CMD
 chroot "$TARGET_DIR" $CMD
 rm "$TARGET_DIR"/usr/bin/qemu-aarch64
 echo "Left chroot"
