@@ -58,6 +58,7 @@ if [ -f "$BUILD_DIR"/tegra_mtc.bin ]; then
 	echo "-------- Use existing $BUILD_DIR/tegra_mtc.bin"
 else
 	echo "-------- build cbfstool to get tegra_mtc.bin extracted"
+	make nintendo_switch_defconfig
 	make util CPUS=${nproc}
 
 	cd "$BUILD_DIR"/coreboot/util/cbfstool
@@ -91,9 +92,9 @@ fi
 echo "-------- Set default config and prepare"
 cp configs/nintendo_switch_defconfig .config
 cat >> .config << EOF
-CONFIG_MTC_FILE=\"../tegra_mtc.bin\"
-CONFIG_MTC_TABLES_DIRECTORY=\"../shofel2/mtc_tables\"
-CONFIG_PAYLOAD_FILE=\"../u-boot.elf\"
+CONFIG_MTC_FILE="../tegra_mtc.bin"
+CONFIG_MTC_TABLES_DIRECTORY="../shofel2/mtc_tables"
+CONFIG_PAYLOAD_FILE="../u-boot.elf"
 EOF
 make olddefconfig 2>/dev/null
 
