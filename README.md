@@ -53,7 +53,7 @@ network={
 }
 ```
 - Boot the switch trough hekate
-- ssh root@nintendo_switch
+- ssh root@nintendo-switch
 
 ## Trobleshooting if connection fails
 - Wait longer maybe your router is slow

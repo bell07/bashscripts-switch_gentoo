@@ -4,8 +4,7 @@ PROJ_DIR="$(dirname "$CFG_DIR")"
 
 TARGET_DIR="$PROJ_DIR"/out/release
 
-RELEASE_PACKAGES="dev-vcs/git"                                   # To sync overlay
-RELEASE_PACKAGES+=" app-editors/nano"                            # should not be replaced by VI
+RELEASE_PACKAGES="app-editors/nano"                            # should not be replaced by VI
 RELEASE_PACKAGES+=" net-misc/dhcpcd net-wireless/wpa_supplicant" # Wifi
 RELEASE_PACKAGES+=" sys-kernel/nintendo-switch-l4t-kernel"       # Working kernel
 RELEASE_PACKAGES+=" nintendo-switch-coreboot-bin"                # Coreboot image and boot chain updaters
@@ -19,8 +18,8 @@ echo "----- Step 2. Configre system"
 echo "  set Password to 'switch'"
 sed -i 's|root:\*:|root:$6$NME85/IY7$tCY/YFXMOSyP.h6H/634bqI3aeNZZLCVpC7EsN32rA5xoiziCm6trzHzD7AfzdiGLK6nEHzSlWnzLB94IJKwK0:|g' "$TARGET_DIR"/etc/shadow
 
-echo "  set hostname to 'nintendo_switch'"
-echo "hostname=\"nintendo_switch\"" > "$TARGET_DIR"/etc/conf.d/hostname
+echo "  set hostname to 'nintendo-switch'"
+echo "hostname=\"nintendo-switch\"" > "$TARGET_DIR"/etc/conf.d/hostname
 
 echo "----- Step 3. Install world"
 "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
@@ -30,7 +29,6 @@ FEATURES="-pid-sandbox buildpkg" emerge --usepkg --with-bdeps=n -uvDN --jobs=5 $
 rc-update add dhcpcd default
 rc-update add sshd default
 ln -s net.lo /etc/init.d/net.wlp1s0
-rc-update add net.wlp1s0 default
 rc-update add wpa_supplicant default
 update-boot.scr.sh
 EOF
