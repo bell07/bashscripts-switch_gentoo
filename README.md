@@ -7,7 +7,7 @@
 
 ## Prepare the emulated compiling environment
 - unpack stage from https://bell.7u.org/pub/gentoo-switch/switch-gentoo-release.tar.gz to `./root/`
-- Call the `./target-cfg/update_buildhost.sh`
+- Call the `./buildscripts/update_buildhost.sh`
 
 # Use the toolchain / compile own binhost
 ## Cross compiling
@@ -17,17 +17,17 @@
 
 ## build the system stage3
 - Be sure you have all system packages in binhost. If not, recompile them using cross-compiling above
-- call the `./target-cfg/build_stage.sh`
+- call the `./buildscripts/build_stage.sh`
 - You find an `switch-gentoo-stage3.tar.gz` file and extracted the `stage3` in `./out/` directory
 
 ## build the Release stage
 - build stage3 if does not exists.
-- call the `./target-cfg/build_release.sh`
+- call the `./buildscripts/build_release.sh`
 - You find an `switch-gentoo-release.tar.gz` file and extracted the `release` in `./out/` directory
 
 ## build the coreboot.rom
 - build sys-boot/nintendo-switch-u-boot in buildhost or place u-boot.elf to coreboot-build/u-boot.elf
-- call `./target-cfg/build-coreboot.sh`
+- call `./buildscripts/build_coreboot.sh`
 - Get caffee and wait
 - You find coreboot.rom in `./out/` directory
 
