@@ -1,3 +1,6 @@
+# About
+This is my script collection for cross-complle Gentoo Linux for Nintendo Switch. I build my own binhost packages, stage and release tarballs, using this scripts. You can compile your own stages and releases and binhost ;-)
+
 # Install build environment
 - Build qemu toolchain following https://wiki.gentoo.org/wiki/Embedded_Handbook/General/Compiling_with_qemu_user_chroot and using QEMU_USER_TARGETS="aarch64"
 - Build cross toolchain using `crossdev -S -t aarch64-unknown-linux-gnu`
@@ -32,17 +35,26 @@
 - You find coreboot.rom in `./out/` directory
 
 # First boot
-## Prepare
-- Format SD card with 2 partitions, fat32 and ext4
+## Install
+- Format SD card with 2 partitions, (mmcblk0p1) fat32 and (mmcblk0p2) ext4
 - Extract the switch-gentoo-release.tar.gz into ext4 partition
 - Extract the switch-gentoo-boot.zip into fat32 partition
+
+### Install to other partition
+- Adjust /etc/fstab
+- Adjust /etc/nintendo-switch-boot.txt
+- Update boot.scr
+  - If you are able to chroot from other linux on switch, do it and update the boot.scr using installed update-boot.scr.sh script.
+  - You can adjust the /etc/nintendo-switch-boot.txt and use update-boot.scr.sh on your qemu-chroot.
+  - Just ask me...
+- Copy the updated boot.scr for the fat32 partition /gentoo folder.
 
 ## Configure
 - Mount the etx4 partition
 - Set `PermitRootLogin yes`in /etc/ssh/sshd_config
   Note: password is "switch" and should be changed after first login.
   Disable the settings after you created new user
-- Create /etc/wpa_supplicant/wpa_supplicant.conf
+- For wifi connection, just create /etc/wpa_supplicant/wpa_supplicant.conf
 ```
 ctrl_interface=DIR=/var/run/wpa_supplicant
 ap_scan=1
