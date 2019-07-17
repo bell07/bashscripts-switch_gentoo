@@ -19,7 +19,15 @@ echo "  set Password to 'switch'"
 sed -i 's|root:\*:|root:$6$NME85/IY7$tCY/YFXMOSyP.h6H/634bqI3aeNZZLCVpC7EsN32rA5xoiziCm6trzHzD7AfzdiGLK6nEHzSlWnzLB94IJKwK0:|g' "$TARGET_DIR"/etc/shadow
 
 echo "  set hostname to 'nintendo-switch'"
-echo "hostname=\"nintendo-switch\"" > "$TARGET_DIR"/etc/conf.d/hostname
+echo 'hostname="nintendo-switch"' > "$TARGET_DIR"/etc/conf.d/hostname
+
+echo "  Write /dev/mmcblk0p2 as root to fstab"
+echo '/dev/mmcblk0p2		/		ext4		noatime		0 1' >> "$TARGET_DIR"/etc/fstab
+
+echo "  Enable USB networking trough g_ncm usng IP 192.168.76.2/24"
+echo 'modules="g_ncm"' >> "$TARGET_DIR"/etc/conf.d/modules
+
+echo 'config_usb0="192.168.76.1/24"' >> "$TARGET_DIR"/etc/conf.d/net
 
 echo "----- Step 3. Install world"
 "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
@@ -30,6 +38,8 @@ rc-update add dhcpcd default
 rc-update add sshd default
 ln -s net.lo /etc/init.d/net.wlp1s0
 rc-update add wpa_supplicant default
+ln -s net.lo /etc/init.d/net.usb0
+rc-update add net.usb0 default
 update-boot.scr.sh
 EOF
 

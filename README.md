@@ -52,8 +52,17 @@ network={
  psk="Your_WPA_Password"
 }
 ```
-- Boot the switch trough hekate
-- ssh root@nintendo-switch
+Boot the switch trough hekate
+- If the wpa_supplicant is set up, you can just connect over wifi
+  - ssh root@nintendo-switch
+- Second way is to connect trough USB
+```
+modprobe cdc_ncm
+### Check you got new interface in `ifconfig`
+ifconfig enp0s20f0u up
+ifconfig enp0s20f0u2 192.168.76.7/24 up
+ssh root@192.168.76.1
+```
 
 ## Trobleshooting if connection fails
 - Wait longer maybe your router is slow
