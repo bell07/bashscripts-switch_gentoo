@@ -3,8 +3,8 @@ This is my script collection for cross-complle Gentoo Linux for Nintendo Switch.
 
 # Install build environment
 - Build qemu toolchain following https://wiki.gentoo.org/wiki/Embedded_Handbook/General/Compiling_with_qemu_user_chroot and using QEMU_USER_TARGETS="aarch64"
-- Build cross toolchain using `crossdev -S -t aarch64-unknown-linux-gnu`
-- Build distcc host following https://wiki.gentoo.org/wiki/Distcc; set --allow 127.0.0.1 for communication to qemu toolchain
+- Build cross toolchain using `crossdev -S --gcc 7.3.0-r6 -t aarch64-unknown-linux-gnu`
+- Build distcc host following https://wiki.gentoo.org/wiki/Distcc; set --allow 127.0.0.1 to allow qemu-chroot to use the crossdev compiler
 - Download and install this package with all submodules
   `git clone --recurse-submodules https://github.com/bell07/bashscripts-switch_gentoo`
 

@@ -17,6 +17,7 @@ PACKAGES="$PROJ_DIR"/packages
 
 /etc/init.d/qemu-binfmt start
 /etc/init.d/distccd start
+gcc-config aarch64-unknown-linux-gnu-7.3.0
 
 "$PROJ_DIR"/tools/system_chroot/chroot-mount.sh "$TARGET_DIR"
 
