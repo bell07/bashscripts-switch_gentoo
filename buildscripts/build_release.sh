@@ -4,12 +4,6 @@ PROJ_DIR="$(dirname "$CFG_DIR")"
 
 TARGET_DIR="$PROJ_DIR"/out/release
 
-RELEASE_PACKAGES="app-editors/nano"                            # should not be replaced by VI
-RELEASE_PACKAGES+=" net-misc/dhcpcd net-wireless/wpa_supplicant" # Wifi
-RELEASE_PACKAGES+=" sys-kernel/nintendo-switch-l4t-kernel"       # Working kernel
-RELEASE_PACKAGES+=" nintendo-switch-coreboot-bin"                # Coreboot image and boot chain updaters
-RELEASE_PACKAGES+=" dev-embedded/u-boot-tools"                   # mkimage to update bootloader
-
 echo "----- Step 1. Copy stage to release dir"
 rm -Rf "$TARGET_DIR"
 cp -a "$PROJ_DIR"/out/stage3 "$TARGET_DIR"
@@ -31,7 +25,7 @@ echo 'config_usb0="192.168.76.1/24"' >> "$TARGET_DIR"/etc/conf.d/net
 
 echo "----- Step 3. Install world"
 "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
-FEATURES="-pid-sandbox buildpkg" emerge --usepkg --with-bdeps=n -uvDN --jobs=5 $RELEASE_PACKAGES @system @world
+FEATURES="-pid-sandbox buildpkg" emerge --usepkg --with-bdeps=n -uvDN --jobs=5 app-portage/nintendo-switch-release-meta @system @world
 
 # Enable networking
 rc-update add dhcpcd default

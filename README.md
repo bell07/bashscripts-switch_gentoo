@@ -16,6 +16,8 @@ This is my script collection for cross-complle Gentoo Linux for Nintendo Switch.
 ## Cross compiling
 - call `./qemu-chroot.sh` to enter the qemu build chroot
 - emerge things you need
+- (optional) all packages covered by bell07's binhost can be installed by app-portage/nintendo-switch-buildhost-meta package
+- rebuild packages by FEATURES="-getbinpkg" emerge ....
 - Copy the `./packages` folder to your web server for binhost
 
 ## build the system stage3
