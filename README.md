@@ -9,7 +9,7 @@ This is my script collection for cross-complle Gentoo Linux for Nintendo Switch.
   `git clone --recurse-submodules https://github.com/bell07/bashscripts-switch_gentoo`
 
 ## Prepare the emulated compiling environment
-- unpack stage from https://bell.7u.org/pub/gentoo-switch/switch-gentoo-release.tar.gz to `./root/`
+- unpack stage from [switch-gentoo-release.tar.gz](https://bell.7u.org/pub/gentoo-switch/switch-gentoo-release.tar.gz) to `./root/`
 - Call the `./buildscripts/update_buildhost.sh`
 
 # Use the toolchain / compile own binhost
@@ -43,8 +43,8 @@ WARNING: This Build script is incomplete, so created coreboot.rom does have less
 # First boot
 ## Install
 - Format SD card with 2 partitions, (mmcblk0p1) fat32 and (mmcblk0p2) ext4
-- Extract the switch-gentoo-release.tar.gz into ext4 partition
-- Extract the switch-gentoo-boot.zip into fat32 partition
+- Extract the [switch-gentoo-release.tar.gz](https://bell.7u.org/pub/gentoo-switch/switch-gentoo-release.tar.gz) into ext4 partition
+- Extract the [switch-gentoo-boot.zip](https://bell.7u.org/pub/gentoo-switch/switch-gentoo-boot.zip) into fat32 partition
 
 ### Install to other partition
 - Adjust /etc/fstab
