@@ -1,4 +1,4 @@
-# My bash scripts for gentoo on switch
+# My bash scripts for gentoo on Nintendo switch
 This is my script collection for cross-complle Gentoo Linux for Nintendo Switch. I build my own binhost packages, stage and release tarballs, using this scripts. You can compile your own stages and releases and binhost ;-)
 
 # Install build environment
@@ -17,7 +17,7 @@ This is my script collection for cross-complle Gentoo Linux for Nintendo Switch.
 - call `./qemu-chroot.sh` to enter the qemu build chroot
 - emerge things you need
 - (optional) all packages covered by bell07's binhost can be installed by app-portage/nintendo-switch-buildhost-meta package
-- rebuild packages by FEATURES="-getbinpkg" emerge ....
+- (optional) you can rebuild packages by FEATURES="-getbinpkg" emerge ....
 - Copy the `./packages` folder to your web server for binhost
 
 ## build the system stage3
@@ -31,6 +31,10 @@ This is my script collection for cross-complle Gentoo Linux for Nintendo Switch.
 - You find an `switch-gentoo-release.tar.gz` file and extracted the `release` in `./out/` directory
 
 ## build the coreboot.rom
+HINT: Just use the precompiled coreboot.rom from sys-boot/nintendo-switch-coreboot-bin package.
+INFO: Self-compiling works on PC only and requires a lot of non-gentoo dependencies.
+WARNING: This Build script is incomplete, so created coreboot.rom does have less features.
+
 - build sys-boot/nintendo-switch-u-boot in buildhost or place u-boot.elf to coreboot-build/u-boot.elf
 - call `./buildscripts/build_coreboot.sh`
 - Get caffee and wait
