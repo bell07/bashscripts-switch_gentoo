@@ -56,6 +56,6 @@ tar -czf ../switch-gentoo-release.tar.gz *
 echo "----- Step 6 Build SDCARD --"
 mkdir -p "$PROJ_DIR"/out/release_SD/gentoo
 cd "$TARGET_DIR"/boot/
-cp -a boot.scr coreboot.rom tegra210-nintendo-switch.dtb vmlinuz* "$PROJ_DIR"/out/release_SD/gentoo
+cp -a boot.scr coreboot.rom tegra210*.dtb vmlinuz* "$PROJ_DIR"/out/release_SD/gentoo
 cd "$PROJ_DIR"/out/release_SD
 zip -r ../switch-gentoo-boot.zip *

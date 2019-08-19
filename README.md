@@ -62,7 +62,7 @@ WARNING: This Build script is incomplete, so created coreboot.rom does have less
   Disable the settings after you created new user
 - For wifi connection, just create /etc/wpa_supplicant/wpa_supplicant.conf
 ```
-ctrl_interface=DIR=/var/run/wpa_supplicant
+ctrl_interface=/var/run/wpa_supplicant
 ap_scan=1
 
 network={
