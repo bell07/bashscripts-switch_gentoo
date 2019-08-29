@@ -32,5 +32,8 @@ FEATURES="\$FEATURES buildpkg"         # Create packages for binhost
 FEATURES="\$FEATURES -pid-sandbox"     # emerge fails on my system if set
 FEATURES="\$FEATURES distcc"           # Move compiling to crossdev outsite emulation
 
-MAKEOPTS="-j10"                       # Useful for local distcc (I think so)
+MAKEOPTS="-j6"                         # Useful for local distcc (I think so)
 EOL
+
+echo "-- Step 4: copy version-junkie-update.sh to $TARGET_DIR"
+cp "$PROJ_DIR"/tools/version-junkie-update.sh "$TARGET_DIR"

@@ -4,3 +4,6 @@
 [submodule "overlays/switch_overlay"]
 	path = overlays/switch_overlay
 	url = https://gitlab.com/bell07/gentoo-switch_overlay/
+[submodule "overlays/switch_binhost_overlay"]
+	path = overlays/switch_binhost_overlay
+	url = https://gitlab.com/bell07/gentoo-switch_binhost_overlay
