@@ -2,46 +2,62 @@
 CFG_DIR="$(realpath "$(dirname $0)")"
 PROJ_DIR="$(dirname "$CFG_DIR")"
 
+BASE_STAGE=stage3-arm64-20190613.tar.bz2
+BASE_STAGE_URL=http://distfiles.gentoo.org/experimental/arm64/"${BASE_STAGE}"
+
 TARGET_DIR="$PROJ_DIR"/out/release
 
-echo "----- Step 1. Copy stage to release dir"
+if [ -n "$(mount | grep "$TARGET_DIR")" ]; then
+	echo Something mounted
+	exit 1
+fi
+
+echo '#####################################################'
+echo "----- Step 1 Delete and unpack new stage"
+echo '#####################################################'
+
 rm -Rf "$TARGET_DIR"
-cp -a "$PROJ_DIR"/out/stage3 "$TARGET_DIR"
+mkdir "$TARGET_DIR"  || exit 1
+cd "$TARGET_DIR"  || exit 1
 
-echo "----- Step 2. Configre system"
-echo "  set Password to 'switch'"
-sed -i 's|root:\*:|root:$6$NME85/IY7$tCY/YFXMOSyP.h6H/634bqI3aeNZZLCVpC7EsN32rA5xoiziCm6trzHzD7AfzdiGLK6nEHzSlWnzLB94IJKwK0:|g' "$TARGET_DIR"/etc/shadow
+if ! [ -f "$PROJ_DIR"/tmp/"$BASE_STAGE" ]; then
+	mkdir "$PROJ_DIR"/tmp
+	wget -O "$PROJ_DIR"/tmp/"$BASE_STAGE" "$BASE_STAGE_URL"
+fi
 
-echo "  set hostname to 'nintendo-switch'"
-echo 'hostname="nintendo-switch"' > "$TARGET_DIR"/etc/conf.d/hostname
+tar -jxf "$PROJ_DIR"/tmp/"$BASE_STAGE" || exit 1
 
-echo "  Write /dev/mmcblk0p2 as root to fstab"
-echo '/dev/mmcblk0p2		/		ext4		noatime		0 1' >> "$TARGET_DIR"/etc/fstab
+echo '#####################################################' 
+echo "----- Step 2. Install world"
+echo '#####################################################'
+mkdir -p "$TARGET_DIR"/usr/portage
+mount -v --bind /usr/portage "$TARGET_DIR"/usr/portage
+mkdir -p "$TARGET_DIR"/var/db/repos/switch_binhost_overlay
 
-echo "  Enable USB networking trough g_ncm usng IP 192.168.76.2/24"
-echo 'modules="g_ncm"' >> "$TARGET_DIR"/etc/conf.d/modules
 
-echo 'config_usb0="192.168.76.1/24"' >> "$TARGET_DIR"/etc/conf.d/net
+RELEASE_SETUP="$(cat "$CFG_DIR"/do_release_setup.sh)"
 
-echo "----- Step 3. Install world"
+
 "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
-FEATURES="-pid-sandbox buildpkg" emerge --usepkg --with-bdeps=n -uvDN --jobs=5 app-portage/nintendo-switch-release-meta @system @world
 
-# Enable networking
-rc-update add dhcpcd default
-rc-update add sshd default
-ln -s net.lo /etc/init.d/net.wlp1s0
-rc-update add wpa_supplicant default
-ln -s net.lo /etc/init.d/net.usb0
-rc-update add net.usb0 default
-update-boot.scr.sh
+PORTDIR_OVERLAY=/var/db/repos/switch_binhost_overlay FEATURES="-pid-sandbox" emerge -v app-portage/nintendo-switch-overlay
+eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop
+
+#FEATURES="-pid-sandbox buildpkg" emerge --usepkg --with-bdeps=n -evDN --jobs=5 app-portage/nintendo-switch-release-meta @system @world
+FEATURES="-pid-sandbox buildpkg" emerge --depclean
+
+echo '#####################################################'
+echo '----- Step 3. Configure'
+echo '#####################################################'
+$RELEASE_SETUP
 EOF
 
+echo '#####################################################'
+echo "----- Step 4 cleanup and finalize"
+echo '#####################################################'
 "$PROJ_DIR"/tools/system_chroot/chroot-umount.sh "$TARGET_DIR" # Be sure all is unmounted in case of errors
-
 umount -v "$TARGET_DIR"/var/cache/binpkgs
 
-echo "----- Step 4 cleanup and finalize"
 rm -Rf "$TARGET_DIR"/var/tmp/portage
 rm "$TARGET_DIR"/var/log/emerge.log
 rm "$TARGET_DIR"/var/log/emerge-fetch.log
@@ -49,13 +65,17 @@ rm "$TARGET_DIR"/var/log/portage/elog/summary.log
 rm -Rf "$TARGET_DIR"/var/cache/edb/binhost
 rm "$TARGET_DIR"/etc/resolv.conf
 
-echo "----- Step 5 create stage package --"
+echo "----- Step 5 create package --"
 cd "$TARGET_DIR"
-tar -czf ../switch-gentoo-release.tar.gz *
+tar -czf ../switch-gentoo-release-"$(date +"%Y-%m-%d")".tar.gz *
 
 echo "----- Step 6 Build SDCARD --"
+rm -Rf "$PROJ_DIR"/out/release_SD
 mkdir -p "$PROJ_DIR"/out/release_SD/gentoo
-cd "$TARGET_DIR"/boot/
-cp -a boot.scr coreboot.rom tegra210*.dtb vmlinuz* "$PROJ_DIR"/out/release_SD/gentoo
+cp -a "$TARGET_DIR"/boot/* "$PROJ_DIR"/out/release_SD/gentoo
+mkdir -p "$PROJ_DIR"/out/release_SD/bootloader/ini
+echo "[Gentoo $(date +"%Y-%m-%d") by bell07]" > "$PROJ_DIR"/out/release_SD/bootloader/ini/Gentoo.ini
+echo "payload=gentoo/coreboot.rom" >> "$PROJ_DIR"/out/release_SD/bootloader/ini/Gentoo.ini
+
 cd "$PROJ_DIR"/out/release_SD
-zip -r ../switch-gentoo-boot.zip *
+zip -r ../switch-gentoo-boot-"$(date +"%Y-%m-%d")".zip *
