@@ -12,6 +12,11 @@ This is my script collection for cross-complle Gentoo Linux for Nintendo Switch.
 - unpack stage from [switch-gentoo-release.tar.gz](https://bell.7u.org/pub/gentoo-switch/switch-gentoo-release.tar.gz) to `./root/`
 - Call the `./buildscripts/update_buildhost.sh`
 
+Second way is
+- Call `./buildscripts/build_release.sh`  to build own release build from binhost packages
+- Copy `./out/switch-gentoo-release/` dir to `./root/`
+- Call the `./buildscripts/update_buildhost.sh`
+
 # Use the toolchain / compile own binhost
 ## Cross compiling
 - call `./qemu-chroot.sh` to enter the qemu build chroot
@@ -20,15 +25,9 @@ This is my script collection for cross-complle Gentoo Linux for Nintendo Switch.
 - (optional) you can rebuild packages by FEATURES="-getbinpkg" emerge ....
 - Copy the `./packages` folder to your web server for binhost
 
-## build the system stage3
-- Be sure you have all system packages in binhost. If not, recompile them using cross-compiling above
-- call the `./buildscripts/build_stage.sh`
-- You find an `switch-gentoo-stage3.tar.gz` file and extracted the `stage3` in `./out/` directory
-
-## build the Release stage
-- build stage3 if does not exists.
+## build the Release
 - call the `./buildscripts/build_release.sh`
-- You find an `switch-gentoo-release.tar.gz` file and extracted the `release` in `./out/` directory
+- You find an `switch-gentoo-release-$date.tar.gz` file and extracted the `release` in `./out/` directory
 
 ## build the coreboot.rom
 HINT: Just use the precompiled coreboot.rom from sys-boot/nintendo-switch-coreboot-bin package.
