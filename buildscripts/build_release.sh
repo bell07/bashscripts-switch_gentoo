@@ -17,7 +17,7 @@ echo "----- Step 1 Delete and unpack new stage"
 echo '#####################################################'
 
 rm -Rf "$TARGET_DIR"
-mkdir "$TARGET_DIR"  || exit 1
+mkdir -p "$TARGET_DIR"  || exit 1
 cd "$TARGET_DIR"  || exit 1
 
 if ! [ -f "$PROJ_DIR"/tmp/"$BASE_STAGE" ]; then
@@ -40,11 +40,15 @@ RELEASE_SETUP="$(cat "$CFG_DIR"/do_release_setup.sh)"
 
 "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
 
-PORTDIR_OVERLAY=/var/db/repos/switch_binhost_overlay FEATURES="-pid-sandbox" emerge -v app-portage/nintendo-switch-overlay
+PORTDIR_OVERLAY="/var/db/repos/switch_binhost_overlay" \
+	FEATURES="-pid-sandbox getbinpkg" \
+	PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/" \
+	emerge -vj app-portage/nintendo-switch-overlay
+	
 eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop
 
-#FEATURES="-pid-sandbox buildpkg" emerge --usepkg --with-bdeps=n -evDN --jobs=5 app-portage/nintendo-switch-release-meta @system @world
-FEATURES="-pid-sandbox buildpkg" emerge --depclean
+FEATURES="-pid-sandbox" emerge --usepkg --with-bdeps=n -evDN --jobs=5 app-portage/nintendo-switch-release-meta @system @world
+FEATURES="-pid-sandbox" emerge --depclean
 
 echo '#####################################################'
 echo '----- Step 3. Configure'
