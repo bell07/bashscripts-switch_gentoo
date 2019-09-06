@@ -2,7 +2,10 @@
 ## This script is called from build release in qemu chroot
 update-boot.scr.sh
 
-echo 'enable services'
+echo '* Configure services with parallel start'
+
+sed -i 's/#rc_parallel="NO"/rc_parallel="YES"/g' etc/rc.conf
+
 rc-update add dhcpcd default
 rc-update add sshd default
 ln -s net.lo /etc/init.d/net.wlp1s0
@@ -16,21 +19,28 @@ rc-update add dbus default
 rc-update add xdm default
 sed -i 's/^DISPLAYMANAGER=.*/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
 
-echo 'Set root password to "switch"'
-echo -e "switch\nswitch\nswitch" | passwd root
-echo 'create new user "switch" with "switch"'
-useradd -m switch
-echo -e "switch\nswitch\nswitch" | passwd switch
-
-
-echo "  set hostname to 'nintendo-switch'"
+echo "Set hostname to 'nintendo-switch'"
 echo 'hostname="nintendo-switch"' > /etc/conf.d/hostname
 
 echo "  Write mmcblk0p1 as /mnt/sdcard1 to fstab"
 mkdir /mnt/sdcard1
 echo '/dev/mmcblk0p1		/mnt/sdcard1	fvat		noauto,noatime		0 1' >> /etc/fstab
+
 echo "  Write mmcblk0p2 as root to fstab"
 echo '/dev/mmcblk0p2		/		ext4		noatime		0 1' >> /etc/fstab
+
+
+echo '** Configure users'
+
+echo 'Set root password to "switch"'
+echo -e "switch\nswitch\nswitch" | passwd root
+echo 'create new user "switch" with "switch"'
+useradd -m switch -G wheel,video
+
+echo -e "switch\nswitch\nswitch" | passwd switch
+
+
+echo 'keyboard=onboard' >> /etc/lightdm/lightdm-gtk-greeter.conf
 
 echo "  Apply kernel modules configuration"
 cat >> /etc/conf.d/modules << EOL

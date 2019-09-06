@@ -44,9 +44,9 @@ PORTDIR_OVERLAY="/var/db/repos/switch_binhost_overlay" \
 	FEATURES="-pid-sandbox getbinpkg" \
 	PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/" \
 	emerge -vj app-portage/nintendo-switch-overlay
-	
-eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop
 
+eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop
+mv /etc/portage/make.conf /etc/portage/make.conf.orig
 FEATURES="-pid-sandbox" emerge --usepkg --with-bdeps=n -evDN --jobs=5 app-portage/nintendo-switch-release-meta @system @world
 FEATURES="-pid-sandbox" emerge --depclean
 
