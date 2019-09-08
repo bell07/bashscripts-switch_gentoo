@@ -3,7 +3,7 @@
 PROJ_DIR="$(dirname $0)"
 
 ## Version to sync
-KERNEL_VERSION=4.9.112.32.2-nintendo-switch-l4t
+KERNEL_VERSION=4.9.112.30.3-nintendo-switch-l4t
 
 ## Switch conneted trough USB-network
 #SWITCH=192.168.76.1
@@ -12,11 +12,11 @@ KERNEL_VERSION=4.9.112.32.2-nintendo-switch-l4t
 SWITCH=nintendo-switch
 
 ## Use Network above
-URI=root@"$SWITCH":
+#URI=root@"$SWITCH":
 
 ## SD-Card is mounted on PC
 ## Mounted by udev for user, gentoo root partition have "gentoo-switch" label
-#URI="$(realpath /run/media/*/gentoo-switch | head -n 1)"
+URI="$(realpath /run/media/*/gentoo-switch | head -n 1)"
 
 ## Sync all modules
 rsync -avz --delete "$PROJ_DIR"/root/lib/modules/"$KERNEL_VERSION" "$URI"/lib/modules/
