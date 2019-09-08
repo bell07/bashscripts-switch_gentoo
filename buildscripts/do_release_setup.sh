@@ -24,7 +24,7 @@ echo 'hostname="nintendo-switch"' > /etc/conf.d/hostname
 
 echo "  Write mmcblk0p1 as /mnt/sdcard1 to fstab"
 mkdir /mnt/sdcard1
-echo '/dev/mmcblk0p1		/mnt/sdcard1	fvat		noauto,noatime		0 1' >> /etc/fstab
+echo '/dev/mmcblk0p1		/mnt/sdcard1	vfat		noauto,noatime		0 1' >> /etc/fstab
 
 echo "  Write mmcblk0p2 as root to fstab"
 echo '/dev/mmcblk0p2		/		ext4		noatime		0 1' >> /etc/fstab
