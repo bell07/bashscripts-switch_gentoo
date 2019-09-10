@@ -3,7 +3,7 @@
 PROJ_DIR="$(dirname $0)"
 
 ## Version to sync
-KERNEL_VERSION=4.9.112.30.3-nintendo-switch-l4t
+KERNEL_VERSION=4.9.112.30.3
 
 ## Switch conneted trough USB-network
 #SWITCH=192.168.76.1
@@ -19,7 +19,7 @@ SWITCH=nintendo-switch
 URI="$(realpath /run/media/*/gentoo-switch | head -n 1)"
 
 ## Sync all modules
-rsync -avz --delete "$PROJ_DIR"/root/lib/modules/"$KERNEL_VERSION" "$URI"/lib/modules/
+rsync -avz --delete "$PROJ_DIR"/root/lib/modules/"$KERNEL_VERSION"-nintendo-switch-l4t "$URI"/lib/modules/
 
 ## Sync boot files
 rsync -avz "$PROJ_DIR"/root/boot/coreboot.rom "$PROJ_DIR"/root/boot/boot.scr "$PROJ_DIR"/root/boot/*$KERNEL_VERSION*  "$URI"/boot/
