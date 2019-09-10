@@ -27,6 +27,9 @@ mount -v --bind "$PROJ_DIR"/overlays "$TARGET_DIR"/var/db/repos
 mkdir -p "$PACKAGES"
 mount -v --bind "$PACKAGES" "$TARGET_DIR"/var/cache/binpkgs
 
+echo 'export FEATURES="-pid-sandbox"'
+export FEATURES="-pid-sandbox"
+
 echo "Entering chroot ..."
 cp /usr/bin/qemu-aarch64 "$TARGET_DIR"/usr/bin/
 echo chroot "$TARGET_DIR" $CMD

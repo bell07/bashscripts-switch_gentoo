@@ -16,7 +16,7 @@ BUILDHOST_PACKAGES="app-portage/gentoolkit sys-devel/distcc"
 
 echo "-- Step 2: Install/Update additional packages"
 "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
-FEATURES="-pid-sandbox buildpkg" emerge --usepkg --with-bdeps=n --noreplace -v --jobs=5 $BUILDHOST_PACKAGES
+FEATURES="buildpkg" emerge --usepkg --with-bdeps=n --noreplace -v --jobs=5 $BUILDHOST_PACKAGES
 EOF
 
 echo "-- Step 3: Configure make.conf for buildpkg and distcc"
@@ -28,11 +28,13 @@ cat > "$TARGET_DIR"/etc/portage/make.conf <<EOL
 $MAKECONF
 
 ## Buldhost related
-FEATURES="\$FEATURES buildpkg"         # Create packages for binhost
-FEATURES="\$FEATURES -pid-sandbox"     # emerge fails on my system if set
-FEATURES="\$FEATURES distcc"           # Move compiling to crossdev outsite emulation
+FEATURES="\$FEATURES buildpkg -getbinpkg"         # Build and rebuild packages for binhost
+FEATURES="\$FEATURES -pid-sandbox"                # Avoid qemu sandbox issues
+FEATURES="\$FEATURES distcc"                      # Move compiling to crossdev outsite emulation
 
 MAKEOPTS="-j6"                         # Useful for local distcc (I think so)
+
+EMERGE_DEFAULT_OPTS="--with-bdeps y"
 EOL
 
 echo "-- Step 4: copy version-junkie-update.sh to $TARGET_DIR"
