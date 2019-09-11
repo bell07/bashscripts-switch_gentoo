@@ -6,6 +6,8 @@ echo '* Configure services with parallel start'
 
 sed -i 's/#rc_parallel="NO"/rc_parallel="YES"/g' etc/rc.conf
 
+rc-update add reboot2hekate boot
+
 rc-update add dhcpcd default
 rc-update add sshd default
 ln -s net.lo /etc/init.d/net.wlp1s0
