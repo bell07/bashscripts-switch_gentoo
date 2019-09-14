@@ -41,14 +41,12 @@ RELEASE_SETUP="$(cat "$CFG_DIR"/do_release_setup.sh)"
 "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
 
 PORTDIR_OVERLAY="/var/db/repos/switch_binhost_overlay" \
-	FEATURES="-pid-sandbox getbinpkg" \
-	PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/" \
-	emerge -vj app-portage/nintendo-switch-overlay
+	FEATURES="getbinpkg" PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/" emerge -vj app-portage/nintendo-switch-overlay
 
 eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop
 mv /etc/portage/make.conf /etc/portage/make.conf.orig
-FEATURES="-pid-sandbox" emerge --usepkg --with-bdeps=n -evDN --jobs=5 app-portage/nintendo-switch-release-meta @system @world
-FEATURES="-pid-sandbox" emerge --depclean
+emerge --usepkg --with-bdeps=n -evDN --jobs=5 app-portage/nintendo-switch-release-meta @system @world
+emerge --depclean
 
 echo '#####################################################'
 echo '----- Step 3. Configure'
@@ -56,27 +54,4 @@ echo '#####################################################'
 $RELEASE_SETUP
 EOF
 
-echo '#####################################################'
-echo "----- Step 4 cleanup and finalize"
-echo '#####################################################'
-"$PROJ_DIR"/tools/system_chroot/chroot-umount.sh "$TARGET_DIR" # Be sure all is unmounted in case of errors
-umount -v "$TARGET_DIR"/var/cache/binpkgs
-
-rm -Rf "$TARGET_DIR"/var/tmp/portage
-rm "$TARGET_DIR"/var/log/emerge.log
-rm "$TARGET_DIR"/var/log/emerge-fetch.log
-rm "$TARGET_DIR"/var/log/portage/elog/summary.log
-rm -Rf "$TARGET_DIR"/var/cache/edb/binhost
-rm "$TARGET_DIR"/etc/resolv.conf
-
-echo "----- Step 5 create package --"
-cd "$TARGET_DIR"
-tar -czf ../switch-gentoo-release-"$(date +"%Y-%m-%d")".tar.gz *
-
-echo "----- Step 6 Build SDCARD --"
-rm -Rf "$PROJ_DIR"/out/release_SD
-cp -av "$TARGET_DIR"/usr/share/sdcard1 "$PROJ_DIR"/out/release_SD/
-cp -av "$TARGET_DIR"/boot "$PROJ_DIR"/out/release_SD/gentoo
-
-cd "$PROJ_DIR"/out/release_SD
-zip -r ../switch-gentoo-boot-"$(date +"%Y-%m-%d")".zip *
+"$CFG_DIR"/update_release.sh noupdate

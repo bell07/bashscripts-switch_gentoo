@@ -37,7 +37,7 @@ echo '** Configure users'
 echo 'Set root password to "switch"'
 echo -e "switch\nswitch\nswitch" | passwd root
 echo 'create new user "switch" with "switch"'
-useradd -m switch -G wheel,video
+useradd -m switch -G audio,plugdev,video,wheel
 
 echo -e "switch\nswitch\nswitch" | passwd switch
 
