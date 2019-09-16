@@ -10,11 +10,8 @@ rc-update add reboot2hekate boot
 
 rc-update add dhcpcd default
 rc-update add sshd default
-ln -s net.lo /etc/init.d/net.wlp1s0
-rc-update add wpa_supplicant default
-ln -s net.lo /etc/init.d/net.usb0
-rc-update add net.usb0 default
 
+rc-update add wicd default
 rc-update add bluetooth default
 
 rc-update add dbus default
@@ -53,8 +50,5 @@ cat >> /etc/conf.d/modules << EOL
 # By default the nintendo open serial terminal on USB
 modules="g_serial"
 EOL
-
-echo "set USB-IP to 192.168.76.1/24"
-echo 'config_usb0="192.168.76.1/24"' >> /etc/conf.d/net
 
 echo 'f0:12345:respawn:/sbin/agetty 115200 ttyGS0 vt100' >> /etc/inittab

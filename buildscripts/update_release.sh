@@ -22,6 +22,7 @@ rm "$TARGET_DIR"/var/log/emerge*
 rm "$TARGET_DIR"/var/log/portage/elog/summary.log
 rm -Rf "$TARGET_DIR"/var/cache/edb/binhost
 rm "$TARGET_DIR"/etc/resolv.conf
+rm "$TARGET_DIR"/root/.bash_history
 
 echo "----- Step 5 create package --"
 cd "$TARGET_DIR"
