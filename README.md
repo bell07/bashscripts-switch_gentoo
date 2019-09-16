@@ -3,29 +3,6 @@ This is my script collection for cross-complle Gentoo Linux for Nintendo Switch.
 
 More informations in the [Switch Gentoo Wiki](https://github.com/bell07/bashscripts-switch_gentoo/wiki)
 
-# Install build environment
-- Build qemu toolchain following https://wiki.gentoo.org/wiki/Embedded_Handbook/General/Compiling_with_qemu_user_chroot and using QEMU_USER_TARGETS="aarch64"
-- Build cross toolchain using `crossdev -S --gcc 7.3.0-r6 -t aarch64-unknown-linux-gnu`
-- Build distcc host following https://wiki.gentoo.org/wiki/Distcc; set --allow 127.0.0.1 to allow qemu-chroot to use the crossdev compiler
-- Download and install this package with all submodules
-  `git clone --recurse-submodules https://github.com/bell07/bashscripts-switch_gentoo`
-
-## Prepare the emulated compiling environment
-- unpack stage [switch-gentoo-release.tar.gz](https://bell.7u.org/pub/gentoo-switch/) to `./root/`
-- Call the `./buildscripts/update_buildhost.sh`
-
-Second way is
-- Call `./buildscripts/build_release.sh`  to build own release build from binhost packages
-- Copy `./out/release/` dir to `./root/`
-- Call the `./buildscripts/update_buildhost.sh`
-
-# Use the toolchain / compile own binhost
-## Cross compiling
-- call `./qemu-chroot.sh` to enter the qemu build chroot
-- emerge things you need
-- (optional) all packages covered by bell07's binhost can be installed by `FEATURES="-getbinpkg" emerge app-portage/nintendo-switch-buildhost-meta`
-- by default the FEATURES="-getbinpkg" is set in buildhost root so binary packages are rebuilt by default
-- Copy the `./packages` folder to your web server for binhost
 
 ## build the Release
 - call the `./buildscripts/build_release.sh`
