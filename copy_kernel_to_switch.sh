@@ -18,6 +18,8 @@ SWITCH=nintendo-switch
 ## Mounted by udev for user, gentoo root partition have "gentoo-switch" label
 URI="$(realpath /run/media/*/gentoo-switch | head -n 1)"
 
+[[ -z "$URI" ]] && exit 1
+
 ## Sync all modules
 rsync -avz --delete "$PROJ_DIR"/root/lib/modules/"$KERNEL_VERSION" "$URI"/lib/modules/
 
