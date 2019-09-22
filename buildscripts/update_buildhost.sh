@@ -39,3 +39,4 @@ EOL
 
 echo "-- Step 4: copy version-junkie-update.sh to $TARGET_DIR"
 cp "$PROJ_DIR"/tools/version-junkie-update.sh "$TARGET_DIR"
+cp "$PROJ_DIR"/tools/check-overlay-profile.sh "$TARGET_DIR"
