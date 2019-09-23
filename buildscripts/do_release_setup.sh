@@ -7,13 +7,14 @@ echo '* Enable services'
 rc-update add reboot2hekate boot
 rc-update add wicd default
 rc-update add bluetooth default
+rc-update add joycond default
 rc-update add sshd default
 rc-update add dbus default
 rc-update add xdm default
 
 echo '* Configure services'
 echo 'Enable rc_parallel="YES"'
-sed -i 's/#rc_parallel="NO"/rc_parallel="YES"/g' etc/rc.conf
+sed -i 's/#rc_parallel="NO"/rc_parallel="YES"/g' /etc/rc.conf
 
 echo "Set hostname to 'nintendo-switch'"
 echo 'hostname="nintendo-switch"' > /etc/conf.d/hostname
@@ -32,7 +33,7 @@ echo 'Set root password to "switch"'
 echo -e "switch\nswitch\nswitch" | passwd root
 
 echo 'create new user "switch" with "switch"'
-useradd -m switch -G audio,plugdev,users,video,wheel
+useradd -m switch -G audio,input,plugdev,users,video,wheel
 echo -e "switch\nswitch\nswitch" | passwd switch
 
 echo '* Enable and configure lightdm'
@@ -53,3 +54,6 @@ modules="g_serial"
 EOL
 
 echo 'f0:12345:respawn:/sbin/agetty 115200 ttyGS0 vt100' >> /etc/inittab
+
+sed -i 's/#FastConnectable.*/FastConnectable = true/g' /etc/bluetooth/main.conf
+sed -i 's/#AutoEnable.*/AutoEnable = true/g' /etc/bluetooth/main.conf

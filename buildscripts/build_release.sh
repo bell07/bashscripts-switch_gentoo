@@ -41,7 +41,7 @@ RELEASE_SETUP="$(cat "$CFG_DIR"/do_release_setup.sh)"
 "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
 
 PORTDIR_OVERLAY="/var/db/repos/switch_binhost_overlay" \
-	FEATURES="getbinpkg" PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/" emerge -vj app-portage/nintendo-switch-overlay
+	FEATURES="getbinpkg -pid-sandbox" PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/" emerge -vj app-portage/nintendo-switch-overlay
 
 eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop
 mv /etc/portage/make.conf /etc/portage/make.conf.orig
