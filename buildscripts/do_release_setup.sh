@@ -53,7 +53,7 @@ cat >> /etc/conf.d/modules << EOL
 modules="g_serial"
 EOL
 
-echo 'f0:12345:respawn:/sbin/agetty 115200 ttyGS0 vt100' >> /etc/inittab
+echo 'f1:12345:respawn:/sbin/agetty 115200 ttyGS0 vt100' >> /etc/inittab
 
 sed -i 's/#FastConnectable.*/FastConnectable = true/g' /etc/bluetooth/main.conf
 sed -i 's/#AutoEnable.*/AutoEnable = true/g' /etc/bluetooth/main.conf
