@@ -40,8 +40,12 @@ echo '* Enable and configure lightdm'
 sed -i 's/^DISPLAYMANAGER=.*/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
 mkdir -p /var/cache/lightdm/dmrc/
 echo 'keyboard=onboard' >> /etc/lightdm/lightdm-gtk-greeter.conf
+sed -i 's!#allow-user-switching=.*!allow-user-switching=true!g' /etc/lightdm/lightdm.conf
+sed -i 's!#display-setup-script=.*!display-setup-script=/usr/bin/dock-script.sh!g' /etc/lightdm/lightdm.conf
+
 echo '[Desktop]' > /var/cache/lightdm/dmrc/switch.dmrc
 echo 'Session=xfce' >> /var/cache/lightdm/dmrc/switch.dmrc
+echo 'Language=C.utf8' >> /var/cache/lightdm/dmrc/switch.dmrc
 
 echo "* Apply kernel modules configuration"
 cat >> /etc/conf.d/modules << EOL

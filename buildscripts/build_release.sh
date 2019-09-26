@@ -41,11 +41,17 @@ RELEASE_SETUP="$(cat "$CFG_DIR"/do_release_setup.sh)"
 "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
 
 PORTDIR_OVERLAY="/var/db/repos/switch_binhost_overlay" \
-	FEATURES="getbinpkg -pid-sandbox" PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/" emerge -vj app-portage/nintendo-switch-overlay
+	FEATURES="getbinpkg -pid-sandbox" PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/" \
+	emerge -vj --nodeps app-portage/nintendo-switch-overlay
 
-eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop
+eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop_base
 mv /etc/portage/make.conf /etc/portage/make.conf.orig
-emerge --usepkg --with-bdeps=n -evDN --jobs=5 app-portage/nintendo-switch-release-meta @system @world
+
+emerge --usepkg --with-bdeps=n -1uj sys-devel/binutils sys-devel/gcc sys-kernel/linux-headers sys-libs/glibc
+emerge --depclean sys-devel/binutils sys-devel/gcc sys-kernel/linux-headers sys-libs/glibc
+. /etc/profile
+
+emerge --buildpkg --usepkg --with-bdeps=n -evDN --jobs=5 app-portage/nintendo-switch-release-meta @system @world
 emerge --depclean
 
 echo '#####################################################'
