@@ -40,3 +40,11 @@ EOL
 echo "-- Step 4: copy version-junkie-update.sh to $TARGET_DIR"
 cp "$PROJ_DIR"/tools/version-junkie-update.sh "$TARGET_DIR"
 cp "$PROJ_DIR"/tools/check-overlay-profile.sh "$TARGET_DIR"
+
+echo "-- Step 5: misc local configuration"
+# Do not generate all locales in buildhost
+echo 'echo "en_US ISO-8859-1" > "$TARGET_DIR"/etc/locale.gen'
+echo "en_US ISO-8859-1" > "$TARGET_DIR"/etc/locale.gen
+echo 'echo "en_US.UTF-8 UTF-8" >> "$TARGET_DIR"/etc/locale.gen'
+echo "en_US.UTF-8 UTF-8" >> "$TARGET_DIR"/etc/locale.gen
+
