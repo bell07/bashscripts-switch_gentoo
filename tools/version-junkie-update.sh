@@ -2,7 +2,7 @@
 I=/tmp/ebuild.installed
 C=/tmp/ebuild.portage
 cleanup () {
-   sed 's/#.*//g'  $1 | \
+   sed 's/ *#.*//g'  $1 | \
    grep -v   $1   \
    -e "^$"   \
    -e 'KEYWORDS='   \
@@ -20,7 +20,7 @@ sort |\
 while read FILE
 do
    EBUILD_INSTALLED=$(basename $FILE)
-   PACKAGE=$(echo $EBUILD_INSTALLED | cut -f1 -d '.')
+   PACKAGE=$(echo $EBUILD_INSTALLED | sed 's/[.]ebuild//g')
    CATEGORIE=$(echo $FILE | cut -f2 -d'/')
    REPO="$(cat "$(dirname $FILE)/repository")"
    [[ "$REPO" == "gentoo" ]] && REPO_PATH=/usr/portage
