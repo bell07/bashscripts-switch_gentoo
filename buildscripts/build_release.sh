@@ -47,7 +47,7 @@ PORTDIR_OVERLAY="/var/db/repos/switch_binhost_overlay" \
 eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop_base
 mv /etc/portage/make.conf /etc/portage/make.conf.orig
 
-emerge --usepkg --with-bdeps=n -1uj sys-devel/binutils sys-devel/gcc sys-kernel/linux-headers sys-libs/glibc
+emerge --usepkg --with-bdeps=n -1uj sys-devel/binutils sys-devel/gcc:9.2.0 sys-kernel/linux-headers sys-libs/glibc
 emerge --depclean sys-devel/binutils sys-devel/gcc sys-kernel/linux-headers sys-libs/glibc
 . /etc/profile
 
