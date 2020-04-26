@@ -5,7 +5,7 @@ update-boot.scr.sh
 echo '* Enable services'
 
 rc-update add reboot2hekate boot
-rc-update add wicd default
+rc-update add wpa_supplicant default
 rc-update add bluetooth default
 rc-update add joycond default
 rc-update add sshd default

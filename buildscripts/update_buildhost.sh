@@ -37,9 +37,8 @@ MAKEOPTS="-j6"                         # Useful for local distcc (I think so)
 EMERGE_DEFAULT_OPTS="\$EMERGE_DEFAULT_OPTS --with-bdeps y"
 EOL
 
-echo "-- Step 4: copy version-junkie-update.sh to $TARGET_DIR"
-cp "$PROJ_DIR"/tools/version-junkie-update.sh "$TARGET_DIR"
-cp "$PROJ_DIR"/tools/check-overlay-profile.sh "$TARGET_DIR"
+## Will be mounted
+mkdir /checks
 
 echo "-- Step 5: misc local configuration"
 # Do not generate all locales in buildhost

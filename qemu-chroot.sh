@@ -17,14 +17,14 @@ PACKAGES="$PROJ_DIR"/packages
 
 /etc/init.d/qemu-binfmt start
 /etc/init.d/distccd start
-gcc-config aarch64-unknown-linux-gnu-9.2.0
+gcc-config aarch64-unknown-linux-gnu-9.3.0
 
 "$PROJ_DIR"/tools/system_chroot/chroot-mount.sh "$TARGET_DIR"
 
 mkdir -p "$TARGET_DIR"/usr/portage/packages
 mount -v --bind "$PACKAGES" "$TARGET_DIR"/usr/portage/packages
 mount -v --bind "$PROJ_DIR"/overlays "$TARGET_DIR"/var/db/repos
-mkdir -p "$PACKAGES"
+mount -v --bind "$PROJ_DIR"/checks "$TARGET_DIR"/checks
 mount -v --bind "$PACKAGES" "$TARGET_DIR"/var/cache/binpkgs
 
 echo 'export FEATURES="-pid-sandbox"'
@@ -43,3 +43,4 @@ echo "Left chroot"
 umount -v "$TARGET_DIR"/var/db/repos
 umount -v "$TARGET_DIR"/usr/portage/packages
 umount -v "$TARGET_DIR"/var/cache/binpkgs
+umount -v "$TARGET_DIR"/checks
