@@ -35,6 +35,8 @@ FEATURES="\$FEATURES distcc"                      # Move compiling to crossdev o
 MAKEOPTS="-j6"                         # Useful for local distcc (I think so)
 
 EMERGE_DEFAULT_OPTS="\$EMERGE_DEFAULT_OPTS --with-bdeps y"
+
+LC_ALL=en_US.UTF-8
 EOL
 
 ## Will be mounted
