@@ -13,19 +13,37 @@ else
 	TARGET_DIR="$PROJ_DIR"/root
 fi
 
-PACKAGES="$PROJ_DIR"/packages
-
 /etc/init.d/qemu-binfmt start
 /etc/init.d/distccd start
 gcc-config aarch64-unknown-linux-gnu-9.3.0
 
 "$PROJ_DIR"/tools/system_chroot/chroot-mount.sh "$TARGET_DIR"
 
-mkdir -p "$TARGET_DIR"/usr/portage/packages
-mount -v --bind "$PACKAGES" "$TARGET_DIR"/usr/portage/packages
-mount -v --bind "$PROJ_DIR"/overlays "$TARGET_DIR"/var/db/repos
+# Mount packages folder
+PACKAGES="$PROJ_DIR"/packages
+
+if [ -d "$TARGET_DIR"/usr/portage/packages ]; then
+	DST_PACKAGES="$TARGET_DIR"/usr/portage/packages
+elif [ -d "$TARGET_DIR"/var/cache/binpkgs ]; then
+	DST_PACKAGES="$TARGET_DIR"/var/cache/binpkgs
+elif [ -d "$TARGET_DIR"/usr/portage ]; then
+	DST_PACKAGES="$TARGET_DIR"/usr/portage/packages
+	mkdir "$DST_PACKAGES"
+else
+	DST_PACKAGES="$TARGET_DIR"/var/cache/binpkgs
+	mkdir -p "$DST_PACKAGES"
+fi
+mount -v --bind "$PACKAGES" "$DST_PACKAGES"
+
+# Mount overlays
+for OVERLAY in "$PROJ_DIR"/overlays/*; do
+	TARGET_OVERLAY="$TARGET_DIR""/var/db/repos/""$(basename $OVERLAY)"
+	[ -d "$TARGET_OVERLAY" ] || mkdir "$TARGET_OVERLAY"
+	mount -v --bind "$OVERLAY" "$TARGET_OVERLAY"
+done
+
+# Mount checks
 mount -v --bind "$PROJ_DIR"/checks "$TARGET_DIR"/checks
-mount -v --bind "$PACKAGES" "$TARGET_DIR"/var/cache/binpkgs
 
 echo 'export FEATURES="-pid-sandbox"'
 export FEATURES="-pid-sandbox"
@@ -38,9 +56,8 @@ rm "$TARGET_DIR"/usr/bin/qemu-aarch64
 echo "Left chroot"
 
 "$PROJ_DIR"/tools/system_chroot/chroot-umount.sh "$TARGET_DIR"
-# umount -v "$TARGET_PATH"/usr/portage/packages recursive umounted by chroot-umount.sh
 
-umount -v "$TARGET_DIR"/var/db/repos
-umount -v "$TARGET_DIR"/usr/portage/packages
-umount -v "$TARGET_DIR"/var/cache/binpkgs
-umount -v "$TARGET_DIR"/checks
+# Umount remaining mounts
+mount | grep "$TARGET_DIR" | while read x on DIR rest; do echo $DIR; done | sort -r | while read MOUNT; do
+	umount -v "$MOUNT"
+done
