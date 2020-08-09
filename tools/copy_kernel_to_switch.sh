@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PROJ_DIR="$(dirname $0)"
+PROJ_DIR="$(dirname $0)"/..
 
 ## Version to sync
 KERNEL_VERSION=4.9.140.32.2-nintendo-switch-l4t
