@@ -14,7 +14,7 @@ if [ "$1" == "switch" ] || [ "$1" == "both" ] ; then
 	ln -s /var/db/repos/switch_overlay/profiles/nintendo_switch/make.defaults make.conf
 	for pkg in /var/db/repos/switch_overlay/profiles/nintendo_switch/package.*; do ln -s "$pkg" .; done
 
-	eix-test-obsolete
+	EIX_LIMIT=0 eix-test-obsolete
 
 	rm package.*
 	rm make.conf
@@ -27,7 +27,7 @@ if [ "$1" == "binary" ] || [ "$1" == "both" ] ; then
 	ln -s /var/db/repos/switch_binhost_overlay/profiles/nintendo_switch_binhost/make.defaults make.conf
 	for pkg in /var/db/repos/switch_binhost_overlay/profiles/nintendo_switch_binhost/package.*; do ln -s "$pkg" .; done
 
-	eix-test-obsolete
+	EIX_LIMIT=0 eix-test-obsolete
 
 	rm package.*
 	rm make.conf
