@@ -19,6 +19,11 @@ gcc-config aarch64-unknown-linux-gnu-9.3.0
 
 "$PROJ_DIR"/tools/system_chroot/chroot-mount.sh "$TARGET_DIR"
 
+if ! [ -d "$TARGET_DIR" ]; then
+	echo "No valid root"
+	exit
+fi
+
 # Mount packages folder
 PACKAGES="$PROJ_DIR"/packages
 
