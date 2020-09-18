@@ -23,9 +23,7 @@ do
    PACKAGE=$(echo $EBUILD_INSTALLED | sed 's/[.]ebuild//g')
    CATEGORIE=$(echo $FILE | cut -f2 -d'/')
    REPO="$(cat "$(dirname $FILE)/repository")"
-   [[ "$REPO" == "gentoo" ]] && REPO_PATH=/usr/portage
-   [[ "$REPO" == "switch" ]] && REPO_PATH=/var/db/repos/switch_overlay
-   [[ "$REPO" == "switch_binhost" ]] && REPO_PATH=/var/db/repos/switch_binhost_overlay
+   REPO_PATH="/var/db/repos/gentoo/$REPO"
 
    EBUILD_PORTAGE=$(ls "$REPO_PATH"/"$CATEGORIE"/$(echo $PACKAGE | cut -f1 -d'-')*/$EBUILD_INSTALLED 2>/dev/null)
    [[ -f $EBUILD_PORTAGE ]] || continue
