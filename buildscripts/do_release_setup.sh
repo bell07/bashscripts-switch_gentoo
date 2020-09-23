@@ -5,7 +5,7 @@ update-boot.scr.sh
 echo '* Enable services'
 
 rc-update add reboot2hekate boot
-rc-update add wpa_supplicant default
+rc-update add connman default
 rc-update add bluetooth default
 rc-update add joycond default
 rc-update add sshd default
@@ -47,17 +47,4 @@ echo '[Desktop]' > /var/cache/lightdm/dmrc/switch.dmrc
 echo 'Session=xfce' >> /var/cache/lightdm/dmrc/switch.dmrc
 echo 'Language=C.utf8' >> /var/cache/lightdm/dmrc/switch.dmrc
 
-echo "* Apply kernel modules configuration"
-cat >> /etc/conf.d/modules << EOL
-
-## Enable this module if you like to connect trough usb network IP 192.168.76.1
-#modules="g_ncm"
-
-# By default the nintendo open serial terminal on USB
-modules="g_serial"
-EOL
-
 echo 'f1:12345:respawn:/sbin/agetty 115200 ttyGS0 vt100' >> /etc/inittab
-
-sed -i 's/#FastConnectable.*/FastConnectable = true/g' /etc/bluetooth/main.conf
-sed -i 's/#AutoEnable.*/AutoEnable = true/g' /etc/bluetooth/main.conf
