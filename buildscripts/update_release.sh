@@ -32,7 +32,6 @@ tar -czf ../switch-gentoo-release-"$(date +"%Y-%m-%d")".tar.gz *
 echo "----- Step 6 Build SDCARD --"
 rm -Rf "$PROJ_DIR"/out/release_SD
 cp -av "$TARGET_DIR"/usr/share/sdcard1 "$PROJ_DIR"/out/release_SD/
-cp -av "$TARGET_DIR"/boot "$PROJ_DIR"/out/release_SD/gentoo
 
 cd "$PROJ_DIR"/out/release_SD
 rm ../switch-gentoo-boot-"$(date +"%Y-%m-%d")".zip

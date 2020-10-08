@@ -1,6 +1,8 @@
 #!/bin/bash
 ## This script is called from build release in qemu chroot
-update-boot.scr.sh
+
+# Update bootloader
+ebuild /var/db/repos/switch_overlay/sys-boot/nintendo-switch-coreboot-bin/nintendo-switch-coreboot-bin-9999.ebuild config
 
 echo '* Enable services'
 
@@ -19,14 +21,8 @@ sed -i 's/#rc_parallel="NO"/rc_parallel="YES"/g' /etc/rc.conf
 echo "Set hostname to 'nintendo-switch'"
 echo 'hostname="nintendo-switch"' > /etc/conf.d/hostname
 
-echo '* Update fstab'
-echo "Write mmcblk0p1 as /mnt/sdcard1 to fstab"
-mkdir /mnt/sdcard1
-echo '/dev/mmcblk0p1		/mnt/sdcard1	vfat		noauto,noatime		0 1' >> /etc/fstab
-
 echo "Write mmcblk0p2 as root to fstab"
 echo '/dev/mmcblk0p2		/		ext4		noatime		0 1' >> /etc/fstab
-
 
 echo '* Configure users'
 echo 'Set root password to "switch"'
