@@ -1,9 +1,6 @@
 #!/bin/bash
 ## This script is called from build release in qemu chroot
 
-# Update bootloader
-ebuild /var/db/repos/switch_overlay/sys-boot/nintendo-switch-coreboot-bin/nintendo-switch-coreboot-bin-9999.ebuild config
-
 echo '* Enable services'
 
 rc-update add reboot2hekate boot

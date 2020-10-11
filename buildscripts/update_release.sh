@@ -51,9 +51,12 @@ rmdir "$PROJ_DIR"/out/tmpmount
 
 echo "----- Step 8 Compose hekate package --"
 rm -Rf "$PROJ_DIR"/out/release_HEKATE
-cp -a "$PROJ_DIR"/out/release_SD/ "$PROJ_DIR"/out/release_HEKATE
 mkdir -p "$PROJ_DIR"/out/release_HEKATE/switchroot/install
-cp "$EXT4_IMG" "$PROJ_DIR"/out/release_HEKATE/switchroot/install/gentoo
+mkdir -p "$PROJ_DIR"/out/release_HEKATE/bootloader/ini
+
+cp -a "$PROJ_DIR"/out/release_SD/switchroot/* "$PROJ_DIR"/out/release_HEKATE/switchroot
+cp -a "$PROJ_DIR"/out/release_SD/bootloader/ini/* "$PROJ_DIR"/out/release_HEKATE/bootloader/ini
+cp -a "$EXT4_IMG" "$PROJ_DIR"/out/release_HEKATE/switchroot/install/l4t.00
 
 cd "$PROJ_DIR"/out/release_HEKATE
 rm ../switch-gentoo-hekate-"$(date +"%Y-%m-%d")".7z
