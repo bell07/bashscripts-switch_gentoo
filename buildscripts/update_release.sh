@@ -38,7 +38,7 @@ rm ../switch-gentoo-boot-"$(date +"%Y-%m-%d")".zip
 zip -r ../switch-gentoo-boot-"$(date +"%Y-%m-%d")".zip *
 
 echo "----- Step 7 create ext4-Image --"
-EXT4_IMG="$PROJ_DIR"/out/switch-gentoo-root-"$(date +"%Y-%m-%d")".img
+EXT4_IMG="$PROJ_DIR"/out/switch-gentoo-root-"$(date +"%Y-%m-%d")".ext4
 rm "$EXT4_IMG"*
 truncate -s 4194300K "$EXT4_IMG"  # Size is 4G (max size) minus 4k block
 mkfs.ext4 -L "switch-gentoo" "$EXT4_IMG"
