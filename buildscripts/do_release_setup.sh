@@ -22,12 +22,12 @@ echo "Write mmcblk0p2 as root to fstab"
 echo '/dev/mmcblk0p2		/		ext4		noatime		0 1' >> /etc/fstab
 
 echo '* Configure users'
-echo 'Set root password to "switch"'
-echo -e "switch\nswitch\nswitch" | passwd root
+echo 'Set root password to "l4s!linux"'
+echo -e 'switch\nl4s!linux\nl4s!linux' | passwd root
 
-echo 'create new user "switch" with "switch"'
-useradd -m switch -G audio,input,plugdev,users,video,wheel
-echo -e "switch\nswitch\nswitch" | passwd switch
+echo 'create new user "switch" with "l4s!linux"'
+useradd -m switch -G audio,input,users,video,wheel
+echo -e 'switch\nl4s!linux\nl4s!linux' | passwd switch
 
 echo '* Enable and configure lightdm'
 sed -i 's/^DISPLAYMANAGER=.*/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/xdm
