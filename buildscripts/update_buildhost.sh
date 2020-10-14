@@ -16,7 +16,8 @@ BUILDHOST_PACKAGES="app-portage/gentoolkit sys-devel/distcc"
 
 echo "-- Step 2: Install/Update additional packages"
 "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
-FEATURES="buildpkg" emerge --usepkg --with-bdeps=n --noreplace -v --jobs=5 $BUILDHOST_PACKAGES
+eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop_gcc9
+FEATURES="buildpkg" emerge --getbinpkg --usepkg --with-bdeps=n --noreplace -v --jobs=5 $BUILDHOST_PACKAGES
 EOF
 
 echo "-- Step 3: Configure make.conf for buildpkg and distcc"
@@ -37,10 +38,11 @@ MAKEOPTS="-j6"                         # Useful for local distcc (I think so)
 EMERGE_DEFAULT_OPTS="\$EMERGE_DEFAULT_OPTS --with-bdeps y"
 
 LC_ALL=en_US.UTF-8
-EOL
 
 ## Will be mounted
 mkdir /checks
+
+EOL
 
 echo "-- Step 5: misc local configuration"
 # Do not generate all locales in buildhost
