@@ -37,5 +37,3 @@ sed -i 's!#allow-user-switching=.*!allow-user-switching=true!g' /etc/lightdm/lig
 sed -i 's!#display-setup-script=.*!display-setup-script=/usr/bin/dock-script.sh!g' /etc/lightdm/lightdm.conf
 sed -i 's!#autologin-user=.*!autologin-user=switch!g' /etc/lightdm/lightdm.conf
 sed -i 's!#autologin-session=.*!autologin-session=xfce!g' /etc/lightdm/lightdm.conf
-
-echo 'f1:12345:respawn:/sbin/agetty 115200 ttyGS0 vt100' >> /etc/inittab
