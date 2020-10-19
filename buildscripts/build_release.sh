@@ -2,8 +2,11 @@
 CFG_DIR="$(realpath "$(dirname $0)")"
 PROJ_DIR="$(dirname "$CFG_DIR")"
 
-BASE_STAGE=stage3-arm64-20200609.tar.bz2
-BASE_STAGE_URL=http://distfiles.gentoo.org/experimental/arm64/"${BASE_STAGE}"
+LATEST_FILE=($(curl 'http://distfiles.gentoo.org/releases/arm64/autobuilds/latest-stage3-arm64.txt' | grep -v ^#)) || exit 1
+
+BASE_STAGE="$(basename ${LATEST_FILE[0]})"
+BASE_STAGE_URL="http://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64/${BASE_STAGE}"
+echo "Use $BASE_STAGE from $BASE_STAGE_URL"
 
 TARGET_DIR="$PROJ_DIR"/out/release
 
@@ -21,22 +24,15 @@ mkdir -p "$TARGET_DIR"  || exit 1
 cd "$TARGET_DIR"  || exit 1
 
 if ! [ -f "$PROJ_DIR"/tmp/"$BASE_STAGE" ]; then
-	mkdir "$PROJ_DIR"/tmp
+	mkdir "$PROJ_DIR"/tmp 2>/dev/null
 	wget -O "$PROJ_DIR"/tmp/"$BASE_STAGE" "$BASE_STAGE_URL"
 fi
 
-tar -jxf "$PROJ_DIR"/tmp/"$BASE_STAGE" || exit 1
+tar -xf "$PROJ_DIR"/tmp/"$BASE_STAGE" || exit 1
 
 echo '#####################################################'
 echo "----- Step 2. Install world"
 echo '#####################################################'
-
-#  mirgate to new portage location
-mkdir "$TARGET_DIR"/var/db/repos
-rm -Rf "$TARGET_DIR"/usr/portage
-mkdir -p "$TARGET_DIR"/var/db/repos/gentoo
-mkdir -p "$TARGET_DIR"/var/cache/distfiles
-mkdir -p "$TARGET_DIR"/var/cache/binpkgs
 
 # Enable overlays
 mkdir -p "$TARGET_DIR"/var/db/repos/switch_overlay
@@ -75,8 +71,6 @@ RELEASE_SETUP="$(cat "$CFG_DIR"/do_release_setup.sh)"
 rm /etc/portage/make.conf
 rm /etc/portage/make.profile
 ln -s /var/db/repos/gentoo/profiles/default/linux/arm64/17.0 /etc/portage/make.profile
-sed -i 's:/usr/portage/distfiles:/var/cache/distfiles:g' /usr/share/portage/config/make.globals
-sed -i 's:/usr/portage/packages:/var/cache/binpkgs:g' /usr/share/portage/config/make.globals
 
 eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop_base_gcc9
 
