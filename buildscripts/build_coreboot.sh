@@ -44,4 +44,4 @@ make nintendo_switch_defconfig
 
 echo "-------- Make it"
 make all CPUS=${nproc}
-cp build/coreboot.rom "$PROJ_DIR"/distfiles/coreboot-"$(date +"%Y-%m-%d")".rom
+cp build/coreboot.rom "$PROJ_DIR"/distfiles/coreboot-"$(date +"%Y%m%d")".rom
