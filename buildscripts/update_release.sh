@@ -39,8 +39,8 @@ echo '#####################################################'
 echo "----- Step 5 create tar package --"
 echo '#####################################################'
 cd "$TARGET_DIR"
-rm ../switch-gentoo-root-"$(date +"%Y-%m-%d")".tar.gz
-tar -czf ../switch-gentoo-root-"$(date +"%Y-%m-%d")".tar.gz *
+rm ../switch-gentoo-root-"$(date +"%Y-%m-%d")".tar.xz
+tar -cJf ../switch-gentoo-root-"$(date +"%Y-%m-%d")".tar.xz *
 
 echo '#####################################################'
 echo "----- Step 6 Build SDCARD --"
@@ -50,7 +50,8 @@ cp -av "$TARGET_DIR"/usr/share/sdcard1 "$PROJ_DIR"/out/release_SD/
 
 cd "$PROJ_DIR"/out/release_SD
 rm ../switch-gentoo-boot-"$(date +"%Y-%m-%d")".zip
-zip -r ../switch-gentoo-boot-"$(date +"%Y-%m-%d")".zip *
+zip -r ../switch-gentoo-boot-nyx-"$(date +"%Y-%m-%d")".zip *
+zip -r ../switch-gentoo-boot-"$(date +"%Y-%m-%d")".zip switchroot bootloader/ini
 
 echo '#####################################################'
 echo "----- Step 7 create ext4-Image --"
@@ -84,4 +85,4 @@ rm ../switch-gentoo-hekate-"$(date +"%Y-%m-%d")".7z
 echo '#####################################################'
 echo "----- Step 9 Compress ext4 image --"
 echo '#####################################################'
-gzip "$EXT4_IMG"
+xz -veT0 "$EXT4_IMG"
