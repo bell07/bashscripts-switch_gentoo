@@ -3,13 +3,15 @@
 
 echo '* Enable services'
 
-rc-update add reboot2hekate boot
 rc-update add connman default
 rc-update add bluetooth default
-rc-update add joycond default
 rc-update add sshd default
 rc-update add dbus default
 rc-update add xdm default
+
+rc-update add alsa-ucm-fix default
+rc-update add reboot2hekate boot
+rc-update add joycond default
 
 echo '* Configure services'
 echo 'Enable rc_parallel="YES"'
