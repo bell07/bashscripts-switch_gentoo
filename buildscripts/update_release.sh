@@ -16,7 +16,7 @@ if ! [ "$1" == "noupdate" ]; then
 	"$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
 eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop_base_gcc9
 emerge --usepkg --with-bdeps=n -uvDN --jobs=5 @system @world
-emerge --depclean
+emerge --depclean --with-bdeps=n
 eselect profile set switch:nintendo_switch/17.0/desktop
 EOF
 fi
