@@ -1,7 +1,7 @@
 #!/bin/bash
 
 COREBOOT_FORK="https://gitlab.com/switchroot/bootstack/switch-coreboot"
-COREBOOT_BRANCH="switch-proper-vpr"
+COREBOOT_BRANCH="switch"
 
 CFG_DIR="$(realpath "$(dirname $0)")"
 PROJ_DIR="$(dirname "$CFG_DIR")"
