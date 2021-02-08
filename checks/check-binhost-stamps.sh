@@ -7,7 +7,7 @@
 
 cd /var/db/pkg/ || exit 1
 
-PACKAGES=$(cat "$(portageq pkgdir)"/packages/Packages)
+PACKAGES=$(cat "$(portageq pkgdir)"/Packages)
 
 find . -mindepth 3 -type f -name '*.ebuild' | \
 		sort | while read FILE; do

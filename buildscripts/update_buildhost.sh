@@ -38,11 +38,10 @@ MAKEOPTS="-j6"                         # Useful for local distcc (I think so)
 EMERGE_DEFAULT_OPTS="\$EMERGE_DEFAULT_OPTS --with-bdeps y"
 
 LC_ALL=en_US.UTF-8
-
-## Will be mounted
-mkdir /checks
-
 EOL
+
+## Will be mounted for check scripts
+mkdir "$TARGET_DIR"/checks
 
 echo "-- Step 5: misc local configuration"
 # Do not generate all locales in buildhost
