@@ -16,7 +16,7 @@ BUILDHOST_PACKAGES="app-portage/gentoolkit sys-devel/distcc"
 
 echo "-- Step 2: Install/Update additional packages"
 "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
-eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop_gcc9
+eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop
 FEATURES="buildpkg" emerge --getbinpkg --usepkg --with-bdeps=n --noreplace -v --jobs=5 $BUILDHOST_PACKAGES
 EOF
 

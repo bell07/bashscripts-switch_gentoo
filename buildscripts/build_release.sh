@@ -35,10 +35,12 @@ echo "----- Step 2. Install world"
 echo '#####################################################'
 
 # Enable overlays
-mkdir -p "$TARGET_DIR"/var/db/repos/switch_overlay
-mkdir -p "$TARGET_DIR"/var/db/repos/switch_binhost_overlay
+mkdir -p "$TARGET_DIR"/var/db/repos/switch_overlay/
+mkdir -p "$TARGET_DIR"/var/db/repos/switch_binhost_overlay/
 
 mkdir -p "$TARGET_DIR"/etc/portage/repos.conf/
+mkdir -p "$TARGET_DIR"/var/db/repos/gentoo/
+
 cat > "$TARGET_DIR"/etc/portage/repos.conf/switch_overlay.conf << EOF
 [switch]
 location = /var/db/repos/switch_overlay
@@ -70,20 +72,20 @@ RELEASE_SETUP="$(cat "$CFG_DIR"/do_release_setup.sh)"
 # Delete catalyst settings - Migrate to new portage locations
 rm /etc/portage/make.conf
 rm /etc/portage/make.profile
-ln -s /var/db/repos/gentoo/profiles/default/linux/arm64/17.0 /etc/portage/make.profile
+eselect profile set default/linux/arm64/17.0
 
-eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop_base_gcc9
+eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop_base
 
 echo "Enable en_US language support only" in /etc/locale.gen
 sed -i 's/#en_US/en_US/g' /etc/locale.gen
 
 # Update toolchain if anything needs to be compiled
-emerge --usepkg --with-bdeps=n -1uj sys-devel/binutils sys-devel/gcc:9.3.0 sys-kernel/linux-headers sys-libs/glibc
+emerge --usepkg --with-bdeps=n -1uj sys-devel/binutils sys-devel/gcc sys-kernel/linux-headers sys-libs/glibc
 emerge --depclean sys-devel/binutils sys-devel/gcc sys-kernel/linux-headers sys-libs/glibc
 . /etc/profile
 
 # Rebuild system
-emerge --buildpkg --usepkg --with-bdeps=n -evDN --jobs=5 @system @world
+emerge --buildpkg --usepkg --with-bdeps=n -evDN --jobs=5 --keep-going @system @world
 emerge --depclean --with-bdeps=n
 
 echo '#####################################################'
