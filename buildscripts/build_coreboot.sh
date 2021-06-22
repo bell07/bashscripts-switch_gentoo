@@ -1,7 +1,9 @@
 #!/bin/bash
 
+echo "Warning - the script is known broken on gentoo. Use the docker script build_bootstack_docker.sh instead"
+
 COREBOOT_FORK="https://gitlab.com/switchroot/bootstack/switch-coreboot"
-COREBOOT_BRANCH="switch"
+COREBOOT_BRANCH="switch-linux"
 
 CFG_DIR="$(realpath "$(dirname $0)")"
 PROJ_DIR="$(dirname "$CFG_DIR")"
@@ -11,14 +13,18 @@ mkdir -p "$BUILD_DIR"
 ####### Download coreboot
 if [ -d "$BUILD_DIR"/coreboot ]; then
 	echo "-------- Use existing $BUILD_DIR/coreboot"
-	git submodule update --init --recursive "$BUILD_DIR"/coreboot
+	cd "$BUILD_DIR"/coreboot
+	git checkout -b "$COREBOOT_BRANCH" origin/"$COREBOOT_BRANCH" >/dev/null
+	git checkout "$COREBOOT_BRANCH"
+	git pull --recurse-submodules
+	git submodule update --init --recursive
 else
 	echo "-------- Check out $COREBOOT_FORK"
-	git clone "$COREBOOT_FORK" "$BUILD_DIR"/coreboot
+	git clone --recurse-submodules -b "$COREBOOT_BRANCH" "$COREBOOT_FORK" "$BUILD_DIR"/coreboot
+	cd "$BUILD_DIR"/coreboot
 fi
 
-cd "$BUILD_DIR"/coreboot
-git checkout origin/"$COREBOOT_BRANCH"
+exit 0
 
 ####### Build crossgcc-aarch64
 echo "-------- Build up crossgcc-aarch64"

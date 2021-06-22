@@ -3,3 +3,4 @@ packages/
 out/
 coreboot-build/
 tmp/
+bootstack-build/
