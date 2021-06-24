@@ -22,8 +22,18 @@ function do_update() {
 	cd "$DST"/"$T"
 	rm Manifest
 	for F in *.ebuild; do
-		sed -i 's/KEYWORDS="~[a-z].*/KEYWORDS="~arm64"/g' "$F"
-		sed -i 's/KEYWORDS="[a-z].*/KEYWORDS="arm64"/g' "$F"
+	    CURR_KEYWORDS="$(fgrep "KEYWORDS=" "$F" )"
+	    if [[ "$CURR_KEYWORDS" =~ .*arm64.* ]]; then
+			NEW_KEYWORDS="$CURR_KEYWORDS"
+	    elif [[ "$CURR_KEYWORDS" =~ .*arm.* ]]; then
+			NEW_KEYWORDS="${CURR_KEYWORDS/arm/arm64}"
+	    elif [[ "$CURR_KEYWORDS" =~ .*amd64.* ]]; then
+			NEW_KEYWORDS="${CURR_KEYWORDS/amd64/arm64}"
+	    elif [[ "$CURR_KEYWORDS" =~ .*x86.* ]]; then
+			NEW_KEYWORDS="${CURR_KEYWORDS/x86/arm64}"
+	    fi
+
+		sed -i 's/^.*KEYWORDS=.*$/'"$NEW_KEYWORDS"/g "$F"
 
 		if [ -n "$P" ]; then
 			patch -p1 "$F" < "$PROJ"/patches/"$P"
