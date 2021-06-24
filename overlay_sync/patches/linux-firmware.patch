@@ -5,7 +5,7 @@
  	fi
  
 +	einfo "Removing files provided by Switchroot kernel ..."
-+	rm -v brcm/brcmfmac4356-pcie.bin || die
++	sed -i /brcmfmac4356-pcie.bin/d  WHENCE || die
 +
  	restore_config ${PN}.conf
  }

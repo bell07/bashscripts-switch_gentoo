@@ -36,7 +36,7 @@ function do_update() {
 		sed -i 's/^.*KEYWORDS=.*$/'"$NEW_KEYWORDS"/g "$F"
 
 		if [ -n "$P" ]; then
-			patch -p1 "$F" < "$PROJ"/patches/"$P"
+			patch -p1 --no-backup-if-mismatch "$F" < "$PROJ"/patches/"$P"
 		fi
 
 		ebuild "$F" manifest
