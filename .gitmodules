@@ -7,3 +7,9 @@
 [submodule "overlays/switch_binhost_overlay"]
 	path = overlays/switch_binhost_overlay
 	url = https://gitlab.com/bell07/gentoo-switch_binhost_overlay
+[submodule "overlay_sync/waffle-builds"]
+	path = overlay_sync/waffle-builds
+	url = https://github.com/FlyingWaffleDev/waffle-builds
+[submodule "overlay_sync/wjn-overlay"]
+	path = overlay_sync/wjn-overlay
+	url = https://bitbucket.org/wjn/wjn-overlay

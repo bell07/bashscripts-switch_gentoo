@@ -1,0 +1,86 @@
+diff --git a/app-accessibility/onboard/files/onboard-1.2.0-remove-duplicated-docs.patch b/app-accessibility/onboard/files/onboard-1.2.0-remove-duplicated-docs.patch
+deleted file mode 100644
+index 21994868..00000000
+--- a/app-accessibility/onboard/files/onboard-1.2.0-remove-duplicated-docs.patch
++++ /dev/null
+@@ -1,16 +0,0 @@
+---- onboard.orig/setup.py	2015-11-24 14:25:36.219862475 +0000
+-+++ onboard/setup.py	2015-11-24 14:50:00.704828553 +0000
+-@@ -348,13 +348,6 @@
+-     packages = ['Onboard', 'Onboard.pypredict'],
+- 
+-     data_files = [('share/glib-2.0/schemas', glob.glob('data/*.gschema.xml')),
+--                  ('share/onboard', glob.glob('AUTHORS')),
+--                  ('share/onboard', glob.glob('CHANGELOG')),
+--                  ('share/onboard', glob.glob('COPYING*')),
+--                  ('share/onboard', glob.glob('HACKING')),
+--                  ('share/onboard', glob.glob('NEWS')),
+--                  ('share/onboard', glob.glob('README')),
+--                  ('share/onboard', glob.glob('onboard-defaults.conf.example')),
+-                   ('share/icons/hicolor/22x22/apps', glob.glob('icons/hicolor/22/*')),
+-                   ('share/icons/hicolor/scalable/apps', glob.glob('icons/hicolor/scalable/*')),
+-                   ('share/icons/HighContrast/scalable/apps', glob.glob('icons/HighContrast/*')),
+diff --git a/app-accessibility/onboard/files/onboard-1.3.0-remove-duplicated-docs.patch b/app-accessibility/onboard/files/onboard-1.3.0-remove-duplicated-docs.patch
+deleted file mode 100644
+index 5085562b..00000000
+--- a/app-accessibility/onboard/files/onboard-1.3.0-remove-duplicated-docs.patch
++++ /dev/null
+@@ -1,17 +0,0 @@
+-diff -ur --unidirectional-new-file -u -urN onboard-1.3.0.orig/setup.py onboard-1.3.0/setup.py
+---- onboard-1.3.0.orig/setup.py	2016-08-28 23:09:31.546193364 +0000
+-+++ onboard-1.3.0/setup.py	2016-08-28 23:10:37.971194642 +0000
+-@@ -352,13 +352,6 @@
+- 
+-     data_files = [('share/glib-2.0/schemas', glob.glob('data/*.gschema.xml')),
+-                   ('share/dbus-1/services', glob.glob('data/org.onboard.Onboard.service')),
+--                  ('share/onboard', glob.glob('AUTHORS')),
+--                  ('share/onboard', glob.glob('CHANGELOG')),
+--                  ('share/onboard', glob.glob('COPYING*')),
+--                  ('share/onboard', glob.glob('HACKING')),
+--                  ('share/onboard', glob.glob('NEWS')),
+--                  ('share/onboard', glob.glob('README')),
+--                  ('share/onboard', glob.glob('onboard-defaults.conf.example')),
+-                   ('share/icons/hicolor/16x16/apps', glob.glob('icons/hicolor/16/*')),
+-                   ('share/icons/hicolor/22x22/apps', glob.glob('icons/hicolor/22/*')),
+-                   ('share/icons/hicolor/24x24/apps', glob.glob('icons/hicolor/24/*')),
+diff --git a/app-accessibility/onboard/files/onboard-remove-duplicated-docs.patch b/app-accessibility/onboard/files/onboard-remove-duplicated-docs.patch
+deleted file mode 100644
+index 54c63e14..00000000
+--- a/app-accessibility/onboard/files/onboard-remove-duplicated-docs.patch
++++ /dev/null
+@@ -1,22 +0,0 @@
+---- setup.py.orig	2015-11-24 14:25:36.219862475 +0000
+-+++ setup.py	2015-11-24 14:50:00.704828553 +0000
+-@@ -319,19 +319,11 @@
+-     packages = ['Onboard', 'Onboard.pypredict'],
+- 
+-     data_files = [('share/glib-2.0/schemas', glob.glob('data/*.gschema.xml')),
+--                  ('share/onboard', glob.glob('AUTHORS')),
+--                  ('share/onboard', glob.glob('CHANGELOG')),
+--                  ('share/onboard', glob.glob('COPYING')),
+--                  ('share/onboard', glob.glob('NEWS')),
+--                  ('share/onboard', glob.glob('README')),
+--                  ('share/onboard', glob.glob('onboard-defaults.conf.example')),
+--                  ('share/onboard', glob.glob('onboard-defaults.conf.example.nexus7')),
+-                   ('share/icons/hicolor/scalable/apps', glob.glob('icons/hicolor/*')),
+-                   ('share/icons/HighContrast/scalable/apps', glob.glob('icons/HighContrast/*')),
+-                   ('share/icons/ubuntu-mono-dark/status/22', glob.glob('icons/ubuntu-mono-dark/*')),
+-                   ('share/icons/ubuntu-mono-light/status/22', glob.glob('icons/ubuntu-mono-light/*')),
+-                   ('share/sounds/freedesktop/stereo', glob.glob('sounds/*')),
+--                  ('share/onboard/docs', glob.glob('docs/*')),
+-                   ('share/onboard/layouts', glob.glob('layouts/*.*')),
+-                   ('share/onboard/layouts/images', glob.glob('layouts/images/*')),
+-                   ('share/onboard/themes', glob.glob('themes/*')),
+diff --git a/app-accessibility/onboard/onboard-1.4.1.ebuild b/app-accessibility/onboard/onboard-1.4.1.ebuild
+index 8597fdc0..6e356f9f 100644
+--- a/app-accessibility/onboard/onboard-1.4.1.ebuild
++++ b/app-accessibility/onboard/onboard-1.4.1.ebuild
+@@ -14,7 +14,7 @@ SRC_URI="https://launchpad.net/${PN}/$(get_version_component_range 1-2)/${PV}/+d
+ # po/* are licensed under BSD 3-clause
+ LICENSE="GPL-3+ BSD"
+ SLOT="0"
+-KEYWORDS=""
++KEYWORDS="arm arm64"
+ 
+ COMMON_DEPEND="app-text/hunspell:=
+ 	dev-libs/dbus-glib

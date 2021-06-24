@@ -1,0 +1,12 @@
+--- a/linux-firmware
++++ b/linux-firmware
+@@ -256,6 +256,9 @@
+ 		IFS="${OLDIFS}"
+ 	fi
+ 
++	einfo "Removing files provided by Switchroot kernel ..."
++	rm -v brcm/brcmfmac4356-pcie.bin || die
++
+ 	restore_config ${PN}.conf
+ }
+
