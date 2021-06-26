@@ -1,12 +1,23 @@
---- a/linux-firmware
-+++ b/linux-firmware
-@@ -256,6 +256,9 @@
+--- /var/db/repos/gentoo/sys-kernel/linux-firmware/linux-firmware-99999999.ebuild	2021-05-13 02:39:37.000000000 +0200
++++ overlays/switch_overlay/sys-kernel/linux-firmware/linux-firmware-99999999.ebuild	2021-06-25 12:01:32.713833977 +0200
+@@ -29,7 +29,7 @@
+ 		linux-fw-redistributable ( BSD-2 BSD BSD-4 ISC MIT no-source-code ) )
+ 	unknown-license? ( all-rights-reserved )"
+ SLOT="0"
+-IUSE="initramfs +redistributable savedconfig unknown-license"
++IUSE="initramfs +redistributable savedconfig unknown-license +switch_mod"
+ REQUIRED_USE="initramfs? ( redistributable )"
+ 
+ RESTRICT="binchecks strip test
+@@ -256,6 +256,11 @@
  		IFS="${OLDIFS}"
  	fi
  
-+	einfo "Removing files provided by Switchroot kernel ..."
-+	sed -i /brcmfmac4356-pcie.bin/d  WHENCE || die
++	if use switch_mod; then
++		einfo "Removing files provided by Switchroot kernel ..."
++		sed -i /brcmfmac4356-pcie.bin/d  WHENCE || die
++	fi
 +
  	restore_config ${PN}.conf
  }
-
+ 
