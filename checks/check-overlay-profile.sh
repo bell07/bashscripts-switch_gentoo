@@ -35,4 +35,4 @@ fi
 
 echo "Restore binhost"
 mv make.conf.bak make.conf
-eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop_gcc9
+eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop

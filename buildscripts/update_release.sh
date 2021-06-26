@@ -27,13 +27,19 @@ echo '#####################################################'
 "$PROJ_DIR"/tools/system_chroot/chroot-umount.sh "$TARGET_DIR" # Be sure all is unmounted in case of errors
 umount -v "$TARGET_DIR"/var/cache/binpkgs
 
+rm "$TARGET_DIR"/boot/*.old
+rm "$TARGET_DIR"/etc/resolv.conf
+rm -Rf "$TARGET_DIR"/root/*
+rm -Rf "$TARGET_DIR"/root/.*
+touch "$TARGET_DIR"/root/.keep
 rm -Rf "$TARGET_DIR"/tmp/*
-rm -Rf "$TARGET_DIR"/var/tmp/*
+rm -Rf "$TARGET_DIR"/var/cache/edb/binhost
 rm "$TARGET_DIR"/var/log/emerge*
 rm "$TARGET_DIR"/var/log/portage/elog/summary.log
-rm -Rf "$TARGET_DIR"/var/cache/edb/binhost
-rm "$TARGET_DIR"/etc/resolv.conf
 rm "$TARGET_DIR"/root/.bash_history
+rm -Rf "$TARGET_DIR"/var/tmp/*
+
+
 
 echo '#####################################################'
 echo "----- Step 5 create tar package --"
