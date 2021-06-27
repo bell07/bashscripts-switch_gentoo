@@ -34,7 +34,7 @@ echo '* Enable and configure lightdm'
 sed -i 's/^DISPLAYMANAGER=.*/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/display-manager
 
 echo 'keyboard=onboard' >> /etc/lightdm/lightdm-gtk-greeter.conf
-#sed -i 's!#allow-user-switching=.*!allow-user-switching=true!g' /etc/lightdm/lightdm.conf
+sed -i 's!#allow-user-switching=.*!allow-user-switching=true!g' /etc/lightdm/lightdm.conf
 #sed -i 's!#display-setup-script=.*!display-setup-script=/usr/bin/dock-script.sh!g' /etc/lightdm/lightdm.conf
 sed -i 's!#autologin-user=.*!autologin-user=switch!g' /etc/lightdm/lightdm.conf
-sed -i 's!#autologin-session=.*!autologin-session=xfce!g' /etc/lightdm/lightdm.conf
+sed -i 's!#user-session=.*!user-session=xfce!g' /etc/lightdm/lightdm.conf

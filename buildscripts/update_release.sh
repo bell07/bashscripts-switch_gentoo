@@ -40,6 +40,7 @@ rm "$TARGET_DIR"/root/.bash_history
 rm -Rf "$TARGET_DIR"/var/tmp/*
 
 
+export XZ_OPT="-ve -T0" # speed up the xz compressions
 
 echo '#####################################################'
 echo "----- Step 5 create tar package --"
@@ -91,4 +92,4 @@ rm ../switch-gentoo-hekate-"$(date +"%Y-%m-%d")".7z
 echo '#####################################################'
 echo "----- Step 9 Compress ext4 image --"
 echo '#####################################################'
-xz -veT0 "$EXT4_IMG"
+xz "$EXT4_IMG"
