@@ -1,7 +1,7 @@
 #!/bin/bash
 ## This script is called from build release in qemu chroot
 
-DEFAULT_PASSWORD="Gentoo!Switch"
+export DEFAULT_PASSWORD='Gentoo4Switch!'
 
 echo '* Enable services'
 
@@ -23,12 +23,12 @@ echo "Write mmcblk0p2 as root to fstab"
 echo '/dev/mmcblk0p2		/		ext4		noatime		0 1' >> /etc/fstab
 
 echo '* Configure users'
-echo 'Set root password to "'"$DEFAULT_PASSWORD"'"'
-echo -e 'switch\n'"DEFAULT_PASSWORD"\n"DEFAULT_PASSWORD" | passwd root
+echo 'Set root password to '"$DEFAULT_PASSWORD"
+echo -e "$DEFAULT_PASSWORD\n$DEFAULT_PASSWORD" | passwd root
 
 echo 'create new user "switch" with password "'"$DEFAULT_PASSWORD"'"'
 useradd -m switch -G audio,input,users,video,wheel
-echo -e 'switch\n'"DEFAULT_PASSWORD"\n"DEFAULT_PASSWORD"  | passwd switch
+echo -e "$DEFAULT_PASSWORD\n$DEFAULT_PASSWORD" | passwd switch
 
 echo '* Enable and configure lightdm'
 sed -i 's/^DISPLAYMANAGER=.*/DISPLAYMANAGER="lightdm"/g' /etc/conf.d/display-manager
