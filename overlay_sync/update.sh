@@ -41,6 +41,7 @@ function do_update() {
 
 		ebuild "$F" manifest
 	done
+	cd -
 }
 
 

@@ -1,5 +1,5 @@
---- /var/db/repos/gentoo/sys-kernel/linux-firmware/linux-firmware-99999999.ebuild	2021-05-13 02:39:37.000000000 +0200
-+++ overlays/switch_overlay/sys-kernel/linux-firmware/linux-firmware-99999999.ebuild	2021-06-25 12:01:32.713833977 +0200
+--- a/linux-firmware-99999999.ebuild
++++ b/linux-firmware-99999999.ebuild
 @@ -29,7 +29,7 @@
  		linux-fw-redistributable ( BSD-2 BSD BSD-4 ISC MIT no-source-code ) )
  	unknown-license? ( all-rights-reserved )"
