@@ -102,8 +102,7 @@ do_move games-emulation/atari800-libretro
 do_move games-emulation/bk-libretro
 do_move games-emulation/bluemsx-libretro
 do_move games-emulation/boom3-libretro
-do_move games-emulation/bsnes-libretro
-do_move games-emulation/bsnes-mercury-libretro
+do_move games-emulation/bsnes-mercury-performance-libretro
 do_move games-emulation/cannonball-libretro
 do_move games-emulation/cap32-libretro
 do_move games-emulation/chailove-libretro
@@ -114,12 +113,10 @@ do_move games-emulation/daphne-libretro
 #do_move games-emulation/desmume-libretro - patched
 do_move games-emulation/dinothawr-libretro
 do_move games-emulation/dolphin-libretro
-do_move games-emulation/easyrpg-libretro
 do_move games-emulation/ecwolf-libretro
 do_move games-emulation/fbalpha2012-libretro
 do_move games-emulation/fbalpha-libretro
 do_move games-emulation/fbneo-libretro
-do_move games-emulation/fceumm-libretro
 do_move games-emulation/fceu-next-libretro
 do_move games-emulation/ffmpeg-libretro
 do_move games-emulation/flycast-libretro
@@ -149,7 +146,6 @@ do_move games-emulation/mame2003-libretro
 mo_move games-emulation/mame2003_plus-libretro
 do_move games-emulation/mame2010-libretro
 do_move games-emulation/mame2015-libretro
-do_move games-emulation/mame2016-libretro
 do_move games-emulation/mame-libretro
 do_move games-emulation/mednafen-bsnes-libretro
 do_move games-emulation/mednafen-gba-libretro
@@ -174,14 +170,12 @@ do_move games-emulation/mu-libretro
 do_move games-emulation/mupen64next-libretro
 do_move games-emulation/nekop2-libretro
 do_move games-emulation/neocd-libretro
-do_move games-emulation/nestopia-libretro
 do_move games-emulation/np2kai-libretro
 do_move games-emulation/nxengine-libretro
 do_move games-emulation/o2em-libretro
 do_move games-emulation/oberon-libretro
 do_move games-emulation/openlara-libretro
 do_move games-emulation/opera-libretro
-do_move games-emulation/parallel-n64-libretro
 do_move games-emulation/pcsx-rearmed-libretro
 do_move games-emulation/picodrive-libretro
 do_move games-emulation/play-libretro
@@ -195,7 +189,6 @@ do_move games-emulation/px68k-libretro
 do_move games-emulation/quasi88-libretro
 do_move games-emulation/quicknes-libretro
 do_move games-emulation/race-libretro
-do_move games-emulation/redbook-libretro
 do_move games-emulation/reminiscence-libretro
 do_move games-emulation/retroarch
 do_move games-emulation/retroarch-assets
@@ -206,10 +199,8 @@ do_move games-emulation/scummvm-libretro
 do_move games-emulation/snes9x2002-libretro
 do_move games-emulation/snes9x2005-libretro
 do_move games-emulation/snes9x2010-libretro
-do_move games-emulation/snes9x-libretro
 do_move games-emulation/squirreljme-libretro
 do_move games-emulation/stella2014-libretro
-do_move games-emulation/stella-libretro
 do_move games-emulation/tgbdual-libretro
 do_move games-emulation/theodore-libretro
 do_move games-emulation/tyrquake-libretro
