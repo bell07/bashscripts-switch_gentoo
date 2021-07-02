@@ -100,10 +100,11 @@ do_move games-emulation/3dengine-libretro
 do_move games-emulation/81-libretro
 do_move games-emulation/atari800-libretro
 do_move games-emulation/bk-libretro
+do_move games-emulation/blastem-libretro
 do_move games-emulation/bluemsx-libretro
 do_move games-emulation/boom3-libretro
 do_move games-emulation/bsnes-mercury-performance-libretro
-do_move games-emulation/cannonball-libretro
+do_move games-emulation/bsnes2014-performance-libretro
 do_move games-emulation/cap32-libretro
 do_move games-emulation/chailove-libretro
 #do_move games-emulation/citra-libretro  - patched
@@ -113,6 +114,7 @@ do_move games-emulation/daphne-libretro
 #do_move games-emulation/desmume-libretro - patched
 do_move games-emulation/dinothawr-libretro
 do_move games-emulation/dolphin-libretro
+do_move games-emulation/dosbox-svn-libretro
 do_move games-emulation/ecwolf-libretro
 do_move games-emulation/fbalpha2012-libretro
 do_move games-emulation/fbalpha-libretro
@@ -129,7 +131,10 @@ do_move games-emulation/gambatte-libretro
 do_move games-emulation/gearboy-libretro
 do_move games-emulation/gearsystem-libretro
 do_move games-emulation/genesis_plus_gx-libretro
+do_move games-emulation/genesis_plus_gx_wide-libretro
+do_move games-emulation/glsl-shaders
 do_move games-emulation/gme-libretro
+do_move games-emulation/gong-libretro
 do_move games-emulation/gpsp-libretro
 do_move games-emulation/gw-libretro
 do_move games-emulation/handy-libretro
@@ -140,6 +145,7 @@ do_move games-emulation/libretro-common-shaders
 do_move games-emulation/libretro-database
 do_move games-emulation/libretro-info
 do_move games-emulation/libretro-meta
+do_move games-emulation/lowresnx-libretro
 do_move games-emulation/lutro-libretro
 do_move games-emulation/mame2000-libretro
 do_move games-emulation/mame2003-libretro
@@ -155,13 +161,16 @@ do_move games-emulation/mednafen-pce-fast-libretro
 do_move games-emulation/mednafen-pce-libretro
 do_move games-emulation/mednafen-pcfx-libretro
 do_move games-emulation/mednafen-psx-libretro
+do_move games-emulation/mednafen-psx-hw-libretro
 do_move games-emulation/mednafen-saturn-libretro
+do_move games-emulation/mednafen-supafaust-libretro
 do_move games-emulation/mednafen-supergrafx-libretro
 do_move games-emulation/mednafen-vb-libretro
 do_move games-emulation/mednafen-wswan-libretro
 do_move games-emulation/melonds-libretro
 do_move games-emulation/meowpc98-libretro
 do_move games-emulation/mesen-libretro
+do_move games-emulation/mesens-libretro
 do_move games-emulation/mess2015-libretro
 do_move games-emulation/meteor-libretro
 do_move games-emulation/mgba-libretro
@@ -176,11 +185,13 @@ do_move games-emulation/o2em-libretro
 do_move games-emulation/oberon-libretro
 do_move games-emulation/openlara-libretro
 do_move games-emulation/opera-libretro
+do_move games-emulation/parallel_n64-libretro
 do_move games-emulation/pcsx-rearmed-libretro
 do_move games-emulation/picodrive-libretro
 do_move games-emulation/play-libretro
 do_move games-emulation/pocketcdg-libretro
 do_move games-emulation/pokemini-libretro
+do_move games-emulation/potator-libretro
 do_move games-emulation/ppsspp-libretro
 do_move games-emulation/prboom-libretro
 do_move games-emulation/prosystem-libretro
@@ -190,19 +201,26 @@ do_move games-emulation/quasi88-libretro
 do_move games-emulation/quicknes-libretro
 do_move games-emulation/race-libretro
 do_move games-emulation/reminiscence-libretro
+do_move games-emulation/retro8-libretro
 do_move games-emulation/retroarch
 do_move games-emulation/retroarch-assets
 do_move games-emulation/retroarch-joypad-autoconfig
 do_move games-emulation/retrodream-libretro
 do_move games-emulation/sameboy-libretro
 do_move games-emulation/scummvm-libretro
+do_move games-emulation/slang-shaders
+do_move games-emulation/smsplus-libretro
 do_move games-emulation/snes9x2002-libretro
 do_move games-emulation/snes9x2005-libretro
 do_move games-emulation/snes9x2010-libretro
 do_move games-emulation/squirreljme-libretro
 do_move games-emulation/stella2014-libretro
+do_move games-emulation/stonesoup-libretro
+do_move games-emulation/swanstation-libretro
 do_move games-emulation/tgbdual-libretro
 do_move games-emulation/theodore-libretro
+do_move games-emulation/thepowdertoy-libretro
+do_move games-emulation/tic80-libretro
 do_move games-emulation/tyrquake-libretro
 do_move games-emulation/uzem-libretro
 do_move games-emulation/vbam-libretro
