@@ -2,7 +2,7 @@
 
 PROJ="$(realpath $(dirname $0))"  # Absolute path
 DST="$PROJ"/../overlays/switch_overlay/
-PATCHDIR="$PROJ"/patches/
+PATCHDIR="$PROJ"/patches
 RSYNC="rsync -a --info=NAME --delete --exclude=.git --exclude=.gitignore"
 
 PORTAGE=/var/db/repos/gentoo
@@ -56,11 +56,11 @@ function do_move() {
 	cd "$DST"/"$T"
 	rm Manifest
 
-	PATCHFILES="$(ls "$PATCHDIR"/source/"$(basename "$T")*" 2>/dev/null)"
+	PATCHFILES="$(ls "$PATCHDIR"/source/"$(basename "$T")"/* 2>/dev/null)"
 	if [ -n "$PATCHFILES" ]; then
 		echo "**** Copy patches ****"
 		mkdir files
-		cp -v "$PATCHDIR"/source/"$(basename "$T")"* files
+		cp -v "$PATCHDIR"/source/"$(basename "$T")/"* files
 	fi
 
 	for F in *.ebuild; do
@@ -71,7 +71,6 @@ function do_move() {
 	done
 	cd -
 }
-
 
 # Use kernel-build.eclass
 echo "**** Sync kernel-build.eclass to $DST/eclass ****"
@@ -95,7 +94,8 @@ do_move "sys-apps/touchegg" "x11-misc/touchegg"
 SRC="$PROJ"/menelkir
 cp -v "$SRC"/eclass/libretro*  "$DST"/eclass
 
-dev-lang/rgbds
+do_move dev-lang/rgbds
+do_move games-emulation/desmume-libretro
 do_move games-emulation/3dengine-libretro
 do_move games-emulation/81-libretro
 do_move games-emulation/atari800-libretro
@@ -107,11 +107,11 @@ do_move games-emulation/bsnes-mercury-performance-libretro
 do_move games-emulation/bsnes2014-performance-libretro
 do_move games-emulation/cap32-libretro
 do_move games-emulation/chailove-libretro
-#do_move games-emulation/citra-libretro  - patched
+do_move games-emulation/citra-libretro
 do_move games-emulation/craft-libretro
 do_move games-emulation/crocods-libretro
 do_move games-emulation/daphne-libretro 
-#do_move games-emulation/desmume-libretro - patched
+do_move games-emulation/desmume-libretro
 do_move games-emulation/dinothawr-libretro
 do_move games-emulation/dolphin-libretro
 do_move games-emulation/dosbox-svn-libretro

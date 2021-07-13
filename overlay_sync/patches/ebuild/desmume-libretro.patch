@@ -1,0 +1,15 @@
+--- a/desmume-libretro
++++ b/desmume-libretro
+@@ -20,2 +20,12 @@
+ 
+ S="${S}/desmume/src/frontend/libretro"
++src_prepare() {
++	eapply "${FILESDIR}/desmume-001-arm64-build-fix.patch"
++	libretro-core_src_prepare
++}
++
++src_compile() {
++	myemakeargs="platform=arm64-unix"
++	libretro-core_src_compile
++}
++
