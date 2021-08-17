@@ -11,4 +11,4 @@ cd "$BUILD_DIR"
 
 docker pull "$DOCKER_IMG"
 docker run -it --rm -e CPUS=$(nproc) -e DISTRO=gentoo -v "${PWD}"/out:/out "$DOCKER_IMG"
-mv -v "$BUILD_DIR"/out/switchroot-gentoo-boot* "$PROJ_DIR"/distfiles
+mv -v "$BUILD_DIR"/out/switchroot-gentoo-boot.7z "$PROJ_DIR"/distfiles/switchroot-gentoo-boot-"$(date +%F)".7z
