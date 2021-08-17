@@ -16,3 +16,6 @@
 [submodule "overlay_sync/menelkir"]
 	path = overlay_sync/menelkir
 	url = https://gitlab.com/menelkir/gentoo-overlay.git
+[submodule "overlay_sync/bell07_overlay"]
+	path = overlay_sync/bell07_overlay
+	url = https://github.com/bell07/gentoo-bell07_overlay

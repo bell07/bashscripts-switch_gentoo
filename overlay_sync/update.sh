@@ -246,3 +246,8 @@ do_move games-emulation/yabause-libretro
 
 # Nice game selection UI
 do_move games-util/gamehub
+
+
+# Libretro / Retroarch from menelkir
+SRC="$PROJ"/bell07_overlay
+do_move x11-misc/dock-hotplug
