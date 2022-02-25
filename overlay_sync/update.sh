@@ -22,7 +22,9 @@ function do_patch_keyword( ) {
 		NEW_KEYWORDS="${CURR_KEYWORDS/x86/arm64}"
 	fi
 
-	sed -i 's/^.*KEYWORDS=.*$/'"$NEW_KEYWORDS"/g "$F"
+	if [ -n "$NEW_KEYWORDS" ]; then
+		sed -i 's/^.*KEYWORDS=.*$/'"$NEW_KEYWORDS"/g "$F"
+	fi
 }
 
 
@@ -82,9 +84,8 @@ SRC="$PORTAGE"
 do_move "sys-kernel/linux-firmware"
 
 # Use onboard from wjn overlay
-SRC="$PROJ"/wjn-overlay/
+SRC="$PROJ"/earshark/
 do_move "app-accessibility/onboard"
-rm -v "$DST"/"app-accessibility/onboard/files/"{onboard-1.2.0-remove-duplicated-docs.patch,onboard-1.3.0-remove-duplicated-docs.patch,onboard-remove-duplicated-docs.patch}
 
 # Use x11-misc/touchegg from waffle-builds overlay
 SRC="$PROJ"/waffle-builds/
@@ -149,7 +150,6 @@ do_move games-emulation/lowresnx-libretro
 do_move games-emulation/lutro-libretro
 do_move games-emulation/mame2000-libretro
 do_move games-emulation/mame2003-libretro
-mo_move games-emulation/mame2003_plus-libretro
 do_move games-emulation/mame2010-libretro
 do_move games-emulation/mame2015-libretro
 do_move games-emulation/mame-libretro
