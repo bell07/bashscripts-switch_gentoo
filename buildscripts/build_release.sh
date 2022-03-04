@@ -6,7 +6,7 @@ LATEST_FILE=($(curl 'http://distfiles.gentoo.org/releases/arm64/autobuilds/lates
 
 BASE_STAGE="$(basename ${LATEST_FILE[0]})"
 BASE_STAGE_URL="http://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64/${BASE_STAGE}"
-echo "Use $BASE_STAGE from $BASE_STAGE_URL"
+echo "Use latest autobuild version $BASE_STAGE from $BASE_STAGE_URL"
 
 TARGET_DIR="$PROJ_DIR"/out/release
 
@@ -74,7 +74,7 @@ rm /etc/portage/make.conf
 rm /etc/portage/make.profile
 eselect profile set default/linux/arm64/17.0
 
-eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop_base
+eselect profile set switch_binhost:nintendo_switch_binhost/17.0_desktop
 
 echo "Enable en_US language support only" in /etc/locale.gen
 sed -i 's/#en_US/en_US/g' /etc/locale.gen
@@ -92,7 +92,6 @@ echo '#####################################################'
 echo '----- Step 3. Configure'
 echo '#####################################################'
 $RELEASE_SETUP
-
 eselect profile set switch:nintendo_switch/17.0/desktop
 EOF
 
