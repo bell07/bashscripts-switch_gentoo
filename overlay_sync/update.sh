@@ -79,10 +79,6 @@ echo "**** Sync kernel-build.eclass to $DST/eclass ****"
 cp -v "$PORTAGE"/eclass/kernel-build.eclass  "$DST"/eclass
 patch -p1 "$DST"/eclass/kernel-build.eclass < "$PROJ"/patches/eclass_kernel_build.patch
 
-# Use linux-firmware from portage
-SRC="$PORTAGE"
-do_move "sys-kernel/linux-firmware"
-
 # Use onboard from wjn overlay
 SRC="$PROJ"/earshark/
 do_move "app-accessibility/onboard"
