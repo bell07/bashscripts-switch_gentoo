@@ -1,0 +1,34 @@
+#!/sbin/openrc-run
+depend()
+{
+	need sysfs
+	before udev modules
+}
+
+start()
+{
+	einfo Adjust framebuffer and other settings
+	/usr/lib/pre-udev.sh
+
+	einfo Create Fallback Bluetooth MAC
+	BT_MAC_ADDR=$(sed -e "s/^"0x"//" /sys/block/mmcblk0/device/serial)
+	BT_MAC_ADDR=${BT_MAC_ADDR%??}
+	BT_MAC_ADDR="98B6E9${BT_MAC_ADDR}"
+
+	# Create Wifi MAC Should never change, once set....
+	NEW_WIFI_MAC=${BT_MAC_ADDR%??}
+	NEW_WIFI_MAC=${NEW_WIFI_MAC}$(sed -e "s/^"0x"//" /sys/block/mmcblk0/device/serial | grep -o '.\{2\}$')
+	NEW_WIFI_MAC=$(echo ${NEW_WIFI_MAC} | tr '[:upper:]' '[:lower:]')
+	NEW_WIFI_MAC=$(echo ${NEW_WIFI_MAC} | sed 's/\(..\)/\1:/g;s/:$//')
+
+	#Patch WIFI Mac
+	sed -i 's/macaddr=.*/macaddr='${NEW_WIFI_MAC}'/' /lib/firmware/brcm/brcmfmac4356A3-pcie.txt
+	einfo "WIFI address patched to ${NEW_WIFI_MAC}";
+
+	einfo Setup wpa_supplicant.conf
+	mount /dev/mmcblk0p1 /mnt
+	cp -v /mnt/switchroot/live/wpa_supplicant.conf /etc/wpa_supplicant/
+	umount /mnt
+	
+	eend 0
+}
