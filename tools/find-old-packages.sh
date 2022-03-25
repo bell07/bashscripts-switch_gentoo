@@ -1,2 +1,2 @@
 #!/bin/bash
-find packages -type f -ctime +90 -exec ls -l {} \;
+find packages -type f -ctime +180 -exec ls -l {} \;
