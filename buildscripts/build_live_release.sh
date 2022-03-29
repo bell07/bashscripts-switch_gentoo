@@ -2,17 +2,24 @@
 
 CFG_DIR="$(realpath "$(dirname $0)")"
 PROJ_DIR="$(dirname "$CFG_DIR")"
+KERNEL_VERSION=4.9.140.341-l4t-gentoo-dist
 
 # Build / Update live source environment using the "root" environment
 if ! [ "$1" == "noupdate" ] ; then
-
+	mkdir -p "$PROJ_DIR"/live-initramfs/root
 	mount -v --bind "$PROJ_DIR"/live-initramfs "$PROJ_DIR"/root/mnt
 	"$PROJ_DIR"/qemu-chroot.sh << EOF
 export ROOT=/mnt/root
 export PORTAGE_CONFIGROOT=/mnt/portage_configroot
-
-emerge -uvtDNj world
-emerge --depclean
+if [[ -f /mnt/root/var/lib/portage/world ]]; then
+	# Update
+	emerge --usepkg --with-bdeps=n -uvtDN --jobs=5 world
+else
+	# Initial run
+	emerge --usepkg --with-bdeps=n -uvtDN --jobs=5 system
+	emerge --usepkg --with-bdeps=n -uvtDN --jobs=5 app-portage/nintendo-switch-livetools-meta
+fi
+emerge --depclean --with-bdeps=n
 env-update
 EOF
 fi
@@ -46,6 +53,7 @@ rsync -a --exclude emerge.sh \
 		--exclude /usr/lib64/pkgconfig \
 		--exclude /usr/share/i18n \
 		--exclude /usr/share/locale \
+		--exclude /usr/sdcard1 \
 		--exclude /usr/src \
 		--exclude /var/cache \
 		--exclude /var/db/pkg \
@@ -64,6 +72,13 @@ cp -v root/usr/lib/gcc/aarch64-unknown-linux-gnu/*/*so* "$TARGET_DIR"/lib64/
 cp -v "$PROJ_DIR"/root/etc/{passwd,shadow,group} "$TARGET_DIR"/etc/
 
 cp -v "$PROJ_DIR"/live-initramfs/extras/switch-setup  "$TARGET_DIR"/etc/init.d/
+
+echo "Copy kenrel module and firmware files $PROJ_DIR"/root/lib/modules/"$KERNEL_VERSION"
+mkdir -pv "$TARGET_DIR"/lib/{modules,firmware/brcm,firmware/ttusb-budget}
+cp -a "$PROJ_DIR"/root/lib/modules/"$KERNEL_VERSION" "$TARGET_DIR"/lib/modules
+cp -v "$PROJ_DIR"/root/lib/firmware/brcm/BCM4356A3.hcd-"$KERNEL_VERSION" "$TARGET_DIR"/lib/firmware/brcm/BCM4356A3.hcd
+cp -v "$PROJ_DIR"/root/lib/firmware/brcm/brcmfmac4356A3-pcie.bin-"$KERNEL_VERSION" "$TARGET_DIR"/lib/firmware/brcm/brcmfmac4356A3-pcie.bin
+cp -v "$PROJ_DIR"/root/lib/firmware/ttusb-budget/dspbootcode.bin-"$KERNEL_VERSION" "$TARGET_DIR"/lib/firmware/ttusb-budget/dspbootcode.bin
 
 echo "Set hostname to 'switch-live'"
 echo 'hostname="switch-live"' > "$TARGET_DIR"/etc/conf.d/hostname
@@ -108,9 +123,10 @@ mkimage -A arm64 -O linux -T ramdisk -C gzip -d "$PROJ_DIR"/out/live_initramfs.t
 rm "$PROJ_DIR"/out/live_initramfs.tmp
 
 echo "Copy kernel and dtb files"
-cp -v "$PROJ_DIR"/live-initramfs/root/usr/src/linux/arch/arm64/boot/dts/tegra210-icosa.dtb "$SDCARD_DIR"/switchroot/live/
-cp -v "$PROJ_DIR"/live-initramfs/root/usr/src/linux/arch/arm64/boot/Image.gz "$SDCARD_DIR"/switchroot/live/
-gunzip "$SDCARD_DIR"/switchroot/live/Image.gz
+# Copy kernel files
+cp "$PROJ_DIR"/root/boot/Image-"$KERNEL_VERSION" "$SDCARD_DIR"/switchroot/live/Image
+cp "$PROJ_DIR"/root/boot/tegra210-icosa.dtb-"$KERNEL_VERSION" "$SDCARD_DIR"/switchroot/live/tegra210-icosa.dtb
+
 
 echo "Copy additional files"
 cp -v "$PROJ_DIR"/live-initramfs/extras/wpa_supplicant.conf "$SDCARD_DIR"/switchroot/live/

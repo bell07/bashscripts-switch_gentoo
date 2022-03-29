@@ -1,1 +1,1 @@
-/var/db/repos/switch_overlay/profiles/nintendo_switch/17.0
+/var/db/repos/switch_binhost_overlay/profiles/nintendo_switch_binhost/17.0/
