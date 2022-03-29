@@ -2,10 +2,10 @@
 CFG_DIR="$(realpath "$(dirname $0)")"
 PROJ_DIR="$(dirname "$CFG_DIR")"
 
-LATEST_FILE=($(curl 'http://distfiles.gentoo.org/releases/arm64/autobuilds/latest-stage3-arm64.txt' | grep -v ^#)) || exit 1
+LATEST_FILE=($(curl 'http://distfiles.gentoo.org/releases/arm64/autobuilds/latest-stage3-arm64-openrc.txt' | grep -v ^#)) || exit 1
 
 BASE_STAGE="$(basename ${LATEST_FILE[0]})"
-BASE_STAGE_URL="http://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64/${BASE_STAGE}"
+BASE_STAGE_URL="http://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64-openrc/${BASE_STAGE}"
 echo "Use latest autobuild version $BASE_STAGE from $BASE_STAGE_URL"
 
 TARGET_DIR="$PROJ_DIR"/out/release
