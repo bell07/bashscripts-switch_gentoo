@@ -19,3 +19,6 @@
 [submodule "overlay_sync/earshark"]
 	path = overlay_sync/earshark
 	url = https://github.com/Chemrat/overlay
+[submodule "overlay_sync/x11"]
+	path = overlay_sync/x11
+	url = https://github.com/gentoo-mirror/x11.git
