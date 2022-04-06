@@ -81,11 +81,11 @@ patch -p1 "$DST"/eclass/kernel-build.eclass < "$PROJ"/patches/eclass_kernel_buil
 
 # Use onboard from wjn overlay
 SRC="$PROJ"/earshark/
-do_move "app-accessibility/onboard"
+do_move app-accessibility/onboard
 
 # Use x11-misc/touchegg from waffle-builds overlay
 SRC="$PROJ"/waffle-builds/
-do_move "sys-apps/touchegg" "x11-misc/touchegg"
+do_move sys-apps/touchegg x11-misc/touchegg
 
 SRC="$PROJ"/x11
 do_move app-benchmarks/glmark2

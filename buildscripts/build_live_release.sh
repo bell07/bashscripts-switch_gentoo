@@ -17,7 +17,7 @@ if [[ -f /mnt/root/var/lib/portage/world ]]; then
 else
 	# Initial run
 	emerge --usepkg --with-bdeps=n -uvtDN --jobs=5 system
-	emerge --usepkg --with-bdeps=n -uvtDN --jobs=5 app-portage/nintendo-switch-livetools-meta
+	emerge --usepkg --with-bdeps=n -uvtDN --jobs=5 sys-firmware/jetson-tx1-firmware app-portage/nintendo-switch-livetools-meta
 fi
 emerge --depclean --with-bdeps=n
 env-update
@@ -98,6 +98,7 @@ rc-update add switch-setup sysinit
 rc-update add sshd default
 rc-update add wpa_supplicant default
 rc-update add dhcpcd default
+rc-update add gpm default
 
 echo 'Set root password to '"$DEFAULT_PASSWORD"
 echo -e "$DEFAULT_PASSWORD\n$DEFAULT_PASSWORD" | passwd root
