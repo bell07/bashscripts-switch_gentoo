@@ -88,6 +88,8 @@ sed -i 's:^#PermitRootLogin.*:PermitRootLogin yes:g' "$TARGET_DIR"/etc/ssh/sshd_
 
 echo "Disable ttyAMA0 tty"
 sed -i 's:.*ttyAMA0.*::g' "$TARGET_DIR"/etc/inittab
+echo "Clear console after boot (fix missplaced messages)"
+sed -i 's:--noclear ::g' "$TARGET_DIR"/etc/inittab
 
 # chroot target for additional configuration setup
 export DEFAULT_PASSWORD='Gentoo4Switch!'
