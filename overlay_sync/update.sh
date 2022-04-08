@@ -45,7 +45,7 @@ function do_patch_ebuild( ) {
 function do_move() {
 	S="$1" # Source package
 	T="$2" # Target (optional)
-	
+
 	if [ -z "$T" ]; then
 		T="$S"
 	fi
@@ -79,6 +79,9 @@ echo "**** Sync kernel-build.eclass to $DST/eclass ****"
 cp -v "$PORTAGE"/eclass/kernel-build.eclass  "$DST"/eclass
 patch -p1 "$DST"/eclass/kernel-build.eclass < "$PROJ"/patches/eclass_kernel_build.patch
 
+SRC="$PORTAGE"
+do_move sys-apps/shadow
+
 # Use onboard from wjn overlay
 SRC="$PROJ"/earshark/
 do_move app-accessibility/onboard
@@ -110,7 +113,7 @@ do_move games-emulation/chailove-libretro
 do_move games-emulation/citra-libretro
 do_move games-emulation/craft-libretro
 do_move games-emulation/crocods-libretro
-do_move games-emulation/daphne-libretro 
+do_move games-emulation/daphne-libretro
 do_move games-emulation/desmume-libretro
 do_move games-emulation/dinothawr-libretro
 do_move games-emulation/dolphin-libretro
