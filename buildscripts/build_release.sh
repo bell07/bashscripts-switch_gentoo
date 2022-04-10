@@ -34,10 +34,6 @@ echo '#####################################################'
 echo "----- Step 2. Install world"
 echo '#####################################################'
 
-# Enable overlays
-mkdir -p "$TARGET_DIR"/var/db/repos/switch_overlay/
-mkdir -p "$TARGET_DIR"/var/db/repos/switch_binhost_overlay/
-
 mkdir -p "$TARGET_DIR"/etc/portage/repos.conf/
 mkdir -p "$TARGET_DIR"/var/db/repos/gentoo/
 
