@@ -3,7 +3,7 @@
 PROJ="$(realpath $(dirname $0))"  # Absolute path
 DST="$PROJ"/../overlays/switch_overlay/
 PATCHDIR="$PROJ"/patches
-RSYNC="rsync -a --info=NAME --delete --exclude=.git --exclude=.gitignore"
+RSYNC="rsync -q -a --info=NAME --delete --exclude=.git --exclude=.gitignore"
 
 PORTAGE=/var/db/repos/gentoo
 
@@ -64,14 +64,12 @@ function do_move() {
 		mkdir files
 		cp -v "$PATCHDIR"/source/"$(basename "$T")/"* files
 	fi
-
 	for F in *.ebuild; do
-		echo "Apply patches to $F"
 		do_patch_ebuild "$F"
 		do_patch_keyword "$F"
-		ebuild "$F" manifest
+		ebuild "$F" manifest >/dev/null
 	done
-	cd -
+	cd - > /dev/null
 }
 
 # Use kernel-build.eclass
@@ -207,7 +205,6 @@ do_move games-emulation/retro8-libretro
 do_move games-emulation/retroarch
 do_move games-emulation/retroarch-assets
 do_move games-emulation/retroarch-joypad-autoconfig
-do_move games-emulation/retrodream-libretro
 do_move games-emulation/sameboy-libretro
 do_move games-emulation/scummvm-libretro
 do_move games-emulation/slang-shaders

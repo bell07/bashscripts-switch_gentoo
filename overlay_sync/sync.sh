@@ -21,7 +21,7 @@ fi
 # 3 display "remote -v"
 
 
-find . -name ".git" -type d | while read repo; do
+find . -name ".git" | while read repo; do
 	echo ''
 	echo '--------------------------------------'
 	echo "$(dirname "$repo")"
