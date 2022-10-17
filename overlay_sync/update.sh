@@ -79,6 +79,7 @@ patch -p1 "$DST"/eclass/kernel-build.eclass < "$PROJ"/patches/eclass_kernel_buil
 
 SRC="$PORTAGE"
 do_move sys-apps/shadow
+do_move sys-apps/systemd-utils
 do_move x11-libs/libdrm
 
 # Use onboard from wjn overlay

@@ -1,0 +1,10 @@
+--- systemd-utils-251.6.ebuild
++++ systemd-utils-251.6.ebuild
+@@ -108,6 +108,7 @@
+ 		# Breaks Clang. Revert the commit for now and force off F_S=3.
+ 		"${FILESDIR}/251-revert-fortify-source-3-fix.patch"
+ 		"${FILESDIR}/251-gpt-auto-no-cryptsetup.patch"
++		"${FILESDIR}/systemd-utils-001-fix-filesystem-checks.patch"
+ 	)
+ 
+ 	if use elibc_musl; then
