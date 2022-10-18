@@ -22,3 +22,6 @@
 [submodule "overlay_sync/x11"]
 	path = overlay_sync/x11
 	url = https://github.com/gentoo-mirror/x11.git
+[submodule "gentoo-config-files"]
+	path = gentoo-config-files
+	url = ./gentoo-config-files
