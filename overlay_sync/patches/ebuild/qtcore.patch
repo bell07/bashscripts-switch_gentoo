@@ -1,0 +1,12 @@
+--- qtcore-5.15.5-r2.ebuild
++++ qtcore-5.15.5-r2.ebuild
+@@ -45,6 +45,10 @@
+ 	!:xml
+ )
+ 
++PATCHES+=(
++	"${FILESDIR}"/0002-eglfs-add-a-default-framebuffer-to-NVIDIA-eglstreams.patch
++)
++
+ pkg_pretend() {
+ 	use kernel_linux || r

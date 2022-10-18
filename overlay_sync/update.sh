@@ -61,7 +61,7 @@ function do_move() {
 	PATCHFILES="$(ls "$PATCHDIR"/source/"$(basename "$T")"/* 2>/dev/null)"
 	if [ -n "$PATCHFILES" ]; then
 		echo "**** Copy patches ****"
-		mkdir files
+		mkdir files 2> /dev/null
 		cp -v "$PATCHDIR"/source/"$(basename "$T")/"* files
 	fi
 	for F in *.ebuild; do
@@ -78,6 +78,7 @@ cp -v "$PORTAGE"/eclass/kernel-build.eclass  "$DST"/eclass
 patch -p1 "$DST"/eclass/kernel-build.eclass < "$PROJ"/patches/eclass_kernel_build.patch
 
 SRC="$PORTAGE"
+do_move dev-qt/qtcore
 do_move sys-apps/shadow
 do_move sys-apps/systemd-utils
 do_move x11-libs/libdrm
