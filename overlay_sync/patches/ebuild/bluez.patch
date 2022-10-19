@@ -1,0 +1,24 @@
+--- /var/db/repos/gentoo/net-wireless/bluez/bluez-5.65.ebuild	2022-09-11 10:10:53.000000000 +0200
++++ net-wireless/bluez/bluez-5.65-new.ebuild	2022-10-18 10:13:14.870158456 +0200
+@@ -40,10 +40,10 @@
+ "
+ DEPEND="
+ 	>=dev-libs/glib-2.28:2[${MULTILIB_USEDEP}]
+-	btpclient? ( >=dev-libs/ell-0.39 )
++	btpclient? ( >=dev-libs/ell-0.30 )
+ 	cups? ( net-print/cups:= )
+ 	mesh? (
+-		>=dev-libs/ell-0.39
++		>=dev-libs/ell-0.30
+ 		>=dev-libs/json-c-0.13:=
+ 		sys-libs/readline:0=
+ 	)
+@@ -62,6 +62,8 @@
+ RESTRICT="!test? ( test )"
+ 
+ PATCHES=(
++	"${FILESDIR}"/bluez_ell_patch.patch
++
+ 	# Try both udevadm paths to cover udev/systemd vs. eudev locations (#539844)
+ 	# http://www.spinics.net/lists/linux-bluetooth/msg58739.html
+ 	# https://bugs.gentoo.org/539844

@@ -79,6 +79,7 @@ patch -p1 "$DST"/eclass/kernel-build.eclass < "$PROJ"/patches/eclass_kernel_buil
 
 SRC="$PORTAGE"
 do_move dev-qt/qtcore
+do_move net-wireless/bluez
 do_move sys-apps/shadow
 do_move sys-apps/systemd-utils
 do_move x11-libs/libdrm
@@ -247,6 +248,7 @@ do_move games-emulation/xrick-libretro
 do_move games-emulation/yabause-libretro
 
 # Nice game selection UI
+SRC="$PROJ"/guru
 do_move games-util/gamehub
 
 

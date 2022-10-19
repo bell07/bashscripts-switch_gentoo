@@ -1,0 +1,14 @@
+diff -Naur bluez-5.64/configure.ac bluez-5.64-2/configure.ac
+--- bluez-5.64/configure.ac	2022-05-01 19:42:44.619722022 -0700
++++ bluez-5.64-2/configure.ac	2022-05-01 19:52:31.143920941 -0700
+@@ -272,8 +272,8 @@
+ 				[enable external Embedded Linux library]),
+ 					[enable_external_ell=${enableval}])
+ if (test "${enable_external_ell}" = "yes"); then
+-	PKG_CHECK_MODULES(ELL, ell >= 0.39, dummy=yes,
+-		AC_MSG_ERROR(Embedded Linux library >= 0.39 is required))
++	PKG_CHECK_MODULES(ELL, ell >= 0.28, dummy=yes,
++		AC_MSG_ERROR(Embedded Linux library >= 0.28 is required))
+ 	AC_SUBST(ELL_CFLAGS)
+ 	AC_SUBST(ELL_LIBS)
+ fi
