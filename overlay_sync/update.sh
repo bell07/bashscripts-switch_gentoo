@@ -32,11 +32,17 @@ function do_patch_ebuild( ) {
 	EBUILD="$1"
 	BASENAME1="$(basename "$EBUILD" | sed 's/[.]ebuild$//g')"
 	BASENAME2="$(basename "$EBUILD" | sed 's/[-][0-9].*//g')"
+	SEL_PATCH="$BASENAME2".patch
 
-	if [ -f "$PATCHDIR"/ebuild/"$BASENAME1".patch ]; then
-		patch -p1 --no-backup-if-mismatch "$EBUILD" < "$PATCHDIR"/ebuild/"$BASENAME1".patch
-	elif [ -f "$PATCHDIR"/ebuild/"$BASENAME2".patch ]; then
-		patch -p1 --no-backup-if-mismatch "$EBUILD" < "$PATCHDIR"/ebuild/"$BASENAME2".patch
+	for patch in "$PATCHDIR"/ebuild/"$BASENAME2"*; do
+		if ! [[ "$(basename "$patch")" > "$BASENAME1".patch ]]; then
+			SEL_PATCH="$(basename "$patch")"
+		fi
+	done
+
+	if [ -f "$PATCHDIR"/ebuild/"$SEL_PATCH" ]; then
+		echo "apply patch $SEL_PATCH to $EBUILD"
+		patch -p1 --no-backup-if-mismatch "$EBUILD" < "$PATCHDIR"/ebuild/"$SEL_PATCH" 
 	fi
 }
 
@@ -100,7 +106,6 @@ SRC="$PROJ"/menelkir
 cp -v "$SRC"/eclass/libretro*  "$DST"/eclass
 
 do_move dev-lang/rgbds
-do_move games-emulation/desmume-libretro
 do_move games-emulation/3dengine-libretro
 do_move games-emulation/81-libretro
 do_move games-emulation/atari800-libretro
