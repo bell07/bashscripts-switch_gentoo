@@ -1,5 +1,5 @@
---- /var/db/repos/gentoo/net-wireless/bluez/bluez-5.65.ebuild	2022-09-11 10:10:53.000000000 +0200
-+++ net-wireless/bluez/bluez-5.65-new.ebuild	2022-10-18 10:13:14.870158456 +0200
+--- net-wireless/bluez/bluez-5.65.ebuild
++++ net-wireless/bluez/bluez-5.65.ebuild
 @@ -40,10 +40,10 @@
  "
  DEPEND="
