@@ -1,6 +1,6 @@
 --- a/kernel-build.eclass
 +++ b/kernel-build.eclass
-@@ -112,10 +112,11 @@
+@@ -142,10 +142,11 @@
  kernel-build_src_test() {
  	debug-print-function ${FUNCNAME} "${@}"
  	local targets=( modules_install )
@@ -16,7 +16,7 @@
  
  	emake O="${WORKDIR}"/build "${MAKEARGS[@]}" \
  		INSTALL_MOD_PATH="${T}" "${targets[@]}"
-@@ -136,10 +137,11 @@
+@@ -170,10 +171,11 @@
  	# do not use 'make install' as it behaves differently based
  	# on what kind of installkernel is installed
  	local targets=( modules_install )
