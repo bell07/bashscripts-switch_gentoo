@@ -44,8 +44,13 @@ function do_patch_ebuild( ) {
 		echo "apply patch $SEL_PATCH to $EBUILD"
 		patch -p1 --no-backup-if-mismatch "$EBUILD" < "$PATCHDIR"/ebuild/"$SEL_PATCH" 
 	fi
-}
 
+	if [[ "$SRC" == "$PORTAGE" ]]; then
+		CATEGORY="$(basename "$(dirname "$(realpath .)")")"
+		echo add "=$CATEGORY/$BASENAME1" to package.unmask
+		echo "=$CATEGORY/$BASENAME1" >> "$DST"/profiles/nintendo_switch/package.unmask
+	fi
+}
 
 # Copy and patch ebuilds function
 function do_move() {
@@ -84,6 +89,7 @@ cp -v "$PORTAGE"/eclass/kernel-build.eclass  "$DST"/eclass
 patch -p1 "$DST"/eclass/kernel-build.eclass < "$PROJ"/patches/eclass_kernel_build.patch
 
 SRC="$PORTAGE"
+rm "$DST"/profiles/nintendo_switch/package.unmask 2>/dev/null
 do_move dev-qt/qtcore
 do_move net-wireless/bluez
 do_move sys-apps/shadow
