@@ -42,7 +42,7 @@ EOF
 # Delete catalyst settings - Migrate to new portage locations
 rm /etc/portage/make.conf
 rm /etc/portage/make.profile
-eselect profile set default/linux/arm64/17.0
+eselect profile set switch:nintendo_switch/17.0
 
 # Update toolchain at the first if anything needs to be compiled
 emerge --usepkg --with-bdeps=n -1uj sys-devel/binutils sys-devel/gcc sys-kernel/linux-headers sys-libs/glibc
