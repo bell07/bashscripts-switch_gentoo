@@ -31,14 +31,24 @@ function do_patch_keyword( ) {
 function do_patch_ebuild( ) {
 	EBUILD="$1"
 	BASENAME1="$(basename "$EBUILD" | sed 's/[.]ebuild$//g')"
-	BASENAME2="$(basename "$EBUILD" | sed 's/[-][0-9].*//g')"
-	SEL_PATCH="$BASENAME2".patch
 
-	for patch in "$PATCHDIR"/ebuild/"$BASENAME2"*; do
-		if ! [[ "$(basename "$patch")" > "$BASENAME1".patch ]]; then
-			SEL_PATCH="$(basename "$patch")"
+	SEL_PATCH=""
+	# Try exact version
+	if [[ -f "$PATCHDIR"/ebuild/"$BASENAME1".patch ]]; then
+		SEL_PATCH="$BASENAME1".patch
+	else
+		# Try without version / Search for best match
+		BASENAME2="$(basename "$EBUILD" | sed 's/[-][0-9].*//g')"
+		if [[ -f "$PATCHDIR"/ebuild/"$BASENAME2".patch ]]; then
+			SEL_PATCH="$BASENAME2".patch
 		fi
-	done
+
+		for patch in "$PATCHDIR"/ebuild/"$BASENAME2"*; do
+			if [[ "$SEL_PATCH" == "" ]] || ! [[ "$(basename "$patch")" > "$BASENAME1".patch ]]; then
+				SEL_PATCH="$(basename "$patch")"
+			fi
+		done
+	fi
 
 	if [ -f "$PATCHDIR"/ebuild/"$SEL_PATCH" ]; then
 		echo "apply patch $SEL_PATCH to $EBUILD"
@@ -86,7 +96,7 @@ function do_move() {
 # Use kernel-build.eclass
 echo "**** Sync kernel-build.eclass to $DST/eclass ****"
 cp -v "$PORTAGE"/eclass/kernel-build.eclass  "$DST"/eclass
-patch -p1 "$DST"/eclass/kernel-build.eclass < "$PROJ"/patches/eclass_kernel_build.patch
+patch -p1 --no-backup-if-mismatch "$DST"/eclass/kernel-build.eclass < "$PROJ"/patches/eclass_kernel_build.patch
 
 SRC="$PORTAGE"
 rm "$DST"/profiles/nintendo_switch/package.unmask 2>/dev/null
