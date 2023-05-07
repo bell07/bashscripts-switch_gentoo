@@ -16,7 +16,7 @@ fi
 /etc/init.d/qemu-binfmt start
 /etc/init.d/distccd start
 
-"$PROJ_DIR"/tools/system_chroot/chroot-mount.sh "$TARGET_DIR"
+chroot-mount.sh "$TARGET_DIR"
 
 if ! [ -d "$TARGET_DIR" ]; then
 	echo "No valid root"
@@ -59,7 +59,7 @@ chroot "$TARGET_DIR" $CMD
 rm "$TARGET_DIR"/usr/bin/qemu-aarch64
 echo "Left chroot"
 
-"$PROJ_DIR"/tools/system_chroot/chroot-umount.sh "$TARGET_DIR"
+chroot-umount.sh "$TARGET_DIR"
 
 # Umount remaining mounts
 mount | grep "$TARGET_DIR" | while read x on DIR rest; do echo $DIR; done | sort -r | while read MOUNT; do

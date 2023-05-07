@@ -1,6 +1,3 @@
-[submodule "tools/system_chroot"]
-	path = tools/system_chroot
-	url = https://github.com/bell07/bashscripts-system_chroot
 [submodule "overlays/switch_overlay"]
 	path = overlays/switch_overlay
 	url = https://gitlab.com/bell07/gentoo-switch_overlay/

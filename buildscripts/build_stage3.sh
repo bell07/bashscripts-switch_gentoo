@@ -70,7 +70,7 @@ fi
 echo '#####################################################'
 echo "-----Cleanup"
 echo '#####################################################'
-"$PROJ_DIR"/tools/system_chroot/chroot-umount.sh "$TARGET_DIR" # Be sure all is unmounted in case of errors
+chroot-umount.sh "$TARGET_DIR" # Be sure all is unmounted in case of errors
 umount -v "$TARGET_DIR"/var/cache/binpkgs
 rm "$TARGET_DIR"/etc/resolv.conf
 rm -Rf "$TARGET_DIR"/var/cache/edb/binhost
