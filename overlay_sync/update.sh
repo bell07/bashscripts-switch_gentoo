@@ -104,9 +104,10 @@ do_move dev-qt/qtcore
 do_move net-wireless/bluez
 do_move sys-apps/shadow
 do_move sys-apps/systemd-utils
+#do_move x11-base/xwayland #23.1.1 does not build
 do_move x11-libs/libdrm
 
-# Use onboard from wjn overlay
+# Use onboard from earshark overlay
 SRC="$PROJ"/earshark/
 do_move app-accessibility/onboard
 
@@ -271,8 +272,3 @@ do_move games-emulation/yabause-libretro
 # Nice game selection UI
 SRC="$PROJ"/guru
 do_move games-util/gamehub
-
-
-# Libretro / Retroarch from menelkir
-SRC="$PROJ"/bell07_overlay
-do_move x11-misc/dock-hotplug

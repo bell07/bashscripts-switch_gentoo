@@ -1,0 +1,27 @@
+--- portage-git/x11-base/xwayland/xwayland-22.1.1.ebuild	2022-10-16 16:33:55.889967467 +0200
++++ overlays/switch_overlay/x11-base/xwayland/xwayland-22.1.1.ebuild	2022-10-08 19:40:55.071939382 +0200
+@@ -9,7 +9,7 @@
+ HOMEPAGE="https://wayland.freedesktop.org/xserver.html"
+ SRC_URI="https://xorg.freedesktop.org/archive/individual/xserver/${P}.tar.xz"
+ 
+-IUSE="selinux video_cards_nvidia unwind xcsecurity"
++IUSE="selinux +video_cards_tegra video_cards_nvidia unwind xcsecurity"
+ 
+ LICENSE="MIT"
+ SLOT="0"
+@@ -36,6 +36,7 @@
+ 
+ 	unwind? ( sys-libs/libunwind )
+ 	video_cards_nvidia? ( gui-libs/egl-wayland )
++	video_cards_tegra? ( gui-libs/egl-wayland )
+ "
+ DEPEND="
+ 	${COMMON_DEPEND}
+@@ -63,6 +64,7 @@
+ 		$(meson_use unwind libunwind)
+ 		$(meson_use xcsecurity)
+ 		$(meson_use video_cards_nvidia xwayland_eglstream)
++		$(meson_use video_cards_tegra xwayland_eglstream)
+ 		-Ddpms=true
+ 		-Ddri3=true
+ 		-Ddrm=true
