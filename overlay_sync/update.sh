@@ -99,11 +99,12 @@ cp -v "$PORTAGE"/eclass/kernel-build.eclass  "$DST"/eclass
 patch -p1 --no-backup-if-mismatch "$DST"/eclass/kernel-build.eclass < "$PROJ"/patches/eclass_kernel_build.patch
 
 SRC="$PORTAGE"
-rm "$DST"/profiles/nintendo_switch/package.unmask 2>/dev/null
+csplit "$DST"/profiles/nintendo_switch/package.unmask '/# Portage sync/+1' -f /tmp/_unmask > /dev/null
+cp /tmp/_unmask00 "$DST"/profiles/nintendo_switch/package.unmask
 do_move dev-qt/qtcore
 do_move net-wireless/bluez
 do_move sys-apps/shadow
-do_move sys-apps/systemd-utils
+#do_move sys-apps/systemd-utils 253.* does not build
 #do_move x11-base/xwayland #23.1.1 does not build
 do_move x11-libs/libdrm
 
