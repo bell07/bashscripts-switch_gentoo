@@ -10,24 +10,36 @@ if ! [ -d "$TARGET_DIR" ]; then
 	echo "----- Create new stage"
 	echo '#####################################################'
 
-	LATEST_FILE=($(curl 'http://distfiles.gentoo.org/releases/arm64/autobuilds/latest-stage3-arm64-openrc.txt' | grep -v ^#)) || exit 1
+	"$CFG_DIR"/do_skeleton.sh "$TARGET_DIR" portage
 
-	BASE_STAGE="$(basename ${LATEST_FILE[0]})"
-	BASE_STAGE_URL="http://distfiles.gentoo.org/releases/arm64/autobuilds/current-stage3-arm64-openrc/${BASE_STAGE}"
-	echo "Use latest autobuild version $BASE_STAGE from $BASE_STAGE_URL"
+	cat > "$TARGET_DIR"/etc/portage/repos.conf/switch_overlay.conf << EOF
+[switch]
+location = $PROJ_DIR/overlays/switch_overlay
+EOF
 
-	if ! [ -f "$PROJ_DIR"/tmp/"$BASE_STAGE" ]; then
-		mkdir "$PROJ_DIR"/tmp 2>/dev/null
-		wget -O "$PROJ_DIR"/tmp/"$BASE_STAGE" "$BASE_STAGE_URL"
-	fi
+# Set switch_overlay:nintendo_switch/17.0/ profile that contain all needed setup
+	ln -s "$PROJ_DIR"/overlays/switch_overlay/profiles/nintendo_switch/17.0/ "$TARGET_DIR"/etc/portage/make.profile
 
-	mkdir /scripts/switch_gentoo/out/release_stage3 || exit 1
-	cd "$TARGET_DIR"  || exit 1
-	tar -xf "$PROJ_DIR"/tmp/"$BASE_STAGE" || exit 1
+	mount -o bind /var/cache/distfiles "$TARGET_DIR"/var/cache/distfiles
+	mount -o bind /var/db/repos/gentoo "$TARGET_DIR"/var/db/repos/gentoo
+	mount -o bind "$PROJ_DIR"/packages "$TARGET_DIR"/var/cache/binpkgs
+	mount -o bind "$PROJ_DIR"/overlays/switch_overlay "$TARGET_DIR"/var/db/repos/switch_overlay
 
-	# Enable new layout
-	mkdir -p "$TARGET_DIR"/etc/portage/repos.conf/
-	mkdir -p "$TARGET_DIR"/var/db/repos/gentoo/
+	# Build essential toolchain packages
+	PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/" FEATURES="getbinpkg" \
+		ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" \
+		CHOST=aarch64-unknown-linux-gnu \
+			cross-emerge -uva1 --usepkg sys-devel/gcc glibc binutils linux-headers
+
+	# Build @system
+	PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/" FEATURES="getbinpkg" \
+		ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" \
+		CHOST=aarch64-unknown-linux-gnu \
+			cross-emerge -uva1 --usepkg --with-bdeps y @system
+
+	# Set switch_overlay:nintendo_switch/17.0/ profile that contain all needed setup
+	rm "$TARGET_DIR"/etc/portage/make.profile
+	ln -s ../../var/db/repos/switch_overlay/profiles/nintendo_switch/17.0/ "$TARGET_DIR"/etc/portage/make.profile
 
 	cat > "$TARGET_DIR"/etc/portage/repos.conf/switch_overlay.conf << EOF
 [switch]
@@ -39,21 +51,16 @@ EOF
 
 	# Do initial setup
 	"$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
-# Delete catalyst settings - Migrate to new portage locations
-rm /etc/portage/make.conf
-rm /etc/portage/make.profile
-eselect profile set switch:nintendo_switch/17.0
-
-# Update toolchain at the first if anything needs to be compiled
-emerge --usepkg --with-bdeps=n -1uj sys-devel/binutils sys-devel/gcc sys-kernel/linux-headers sys-libs/glibc
-
 # Remove old versions
-emerge --depclean sys-devel/binutils sys-devel/gcc sys-kernel/linux-headers sys-libs/glibc
+env-update
 . /etc/profile
 
+export PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/"
+FEATURES="-pid-sandbox getbinpkg"
+
 # Full rebuild system
-emerge --usepkg --with-bdeps=n -evDN --jobs=5 --keep-going system
-emerge --usepkg --with-bdeps=n --jobs=5 dev-vcs/git
+emerge --with-bdeps=n -evDN --jobs=5 --keep-going --usepkg system
+emerge --with-bdeps=n -v --jobs=5 --usepkg dev-vcs/git
 emerge --depclean --with-bdeps=n
 EOF
 else
@@ -67,18 +74,7 @@ emerge --depclean --with-bdeps=n
 EOF
 fi
 
-echo '#####################################################'
-echo "-----Cleanup"
-echo '#####################################################'
-chroot-umount.sh "$TARGET_DIR" # Be sure all is unmounted in case of errors
-umount -v "$TARGET_DIR"/var/cache/binpkgs
-rm "$TARGET_DIR"/etc/resolv.conf
-rm -Rf "$TARGET_DIR"/var/cache/edb/binhost
-rm "$TARGET_DIR"/var/log/emerge*
-rm "$TARGET_DIR"/var/log/portage/elog/summary.log
-rm "$TARGET_DIR"/root/.bash_history
-rm -Rf "$TARGET_DIR"/var/tmp/*
-rmdir "$TARGET_DIR"/var/db/repos/switch_binhost_overlay/
+"$CFG_DIR"/do_clearup.sh "$TARGET_DIR"
 
 echo '#####################################################'
 echo "----- create tar package --"
