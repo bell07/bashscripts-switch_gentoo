@@ -49,9 +49,6 @@ done
 # Mount checks
 mount -v --bind "$PROJ_DIR"/checks "$TARGET_DIR"/checks
 
-echo 'export FEATURES="-pid-sandbox"'
-export FEATURES="-pid-sandbox"
-
 echo "Entering chroot ..."
 cp /usr/bin/qemu-aarch64 "$TARGET_DIR"/usr/bin/
 echo chroot "$TARGET_DIR" $CMD

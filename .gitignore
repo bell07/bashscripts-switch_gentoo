@@ -1,6 +1,3 @@
 root/
 packages/
 out/
-coreboot-build/
-tmp/
-bootstack-build/

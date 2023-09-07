@@ -3,6 +3,21 @@ CFG_DIR="$(realpath "$(dirname $0)")"
 PROJ_DIR="$(dirname "$CFG_DIR")"
 
 TARGET_DIR="$PROJ_DIR"/out/release_stage3
+STAGE_CONFIGROOT="$PROJ_DIR"/stage3-build/portage_configroot
+
+function setup_bell07_overlay() {
+	mkdir "$TARGET_DIR"/var/db/repos/bell07
+	cat > "$TARGET_DIR"/etc/portage/repos.conf/bell07_overlay.conf << EOF
+[bell07]
+location = /var/db/repos/bell07
+EOF
+}
+
+function remove_bell07_overlay() {
+ rm "$TARGET_DIR"/etc/portage/repos.conf/bell07_overlay.conf
+ umount -q "$TARGET_DIR"/var/db/repos/bell07
+ rmdir "$TARGET_DIR"/var/db/repos/bell07
+}
 
 ## Setup fresh build
 if ! [ -d "$TARGET_DIR" ]; then
@@ -12,34 +27,18 @@ if ! [ -d "$TARGET_DIR" ]; then
 
 	"$CFG_DIR"/do_skeleton.sh "$TARGET_DIR" portage
 
-	cat > "$TARGET_DIR"/etc/portage/repos.conf/switch_overlay.conf << EOF
-[switch]
-location = $PROJ_DIR/overlays/switch_overlay
-EOF
-
-# Set switch_overlay:nintendo_switch/17.0/ profile that contain all needed setup
-	ln -s "$PROJ_DIR"/overlays/switch_overlay/profiles/nintendo_switch/17.0/ "$TARGET_DIR"/etc/portage/make.profile
-
 	mount -o bind /var/cache/distfiles "$TARGET_DIR"/var/cache/distfiles
 	mount -o bind /var/db/repos/gentoo "$TARGET_DIR"/var/db/repos/gentoo
 	mount -o bind "$PROJ_DIR"/packages "$TARGET_DIR"/var/cache/binpkgs
 	mount -o bind "$PROJ_DIR"/overlays/switch_overlay "$TARGET_DIR"/var/db/repos/switch_overlay
 
 	# Build essential toolchain packages
-	PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/" FEATURES="getbinpkg" \
-		ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" \
-		CHOST=aarch64-unknown-linux-gnu \
-			cross-emerge -uva1 --usepkg sys-devel/gcc glibc binutils linux-headers
+	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
+			aarch64-unknown-linux-gnu-emerge -uv1 --jobs=5 --buildpkg n sys-devel/gcc glibc binutils linux-headers
 
 	# Build @system
-	PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/" FEATURES="getbinpkg" \
-		ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$TARGET_DIR" \
-		CHOST=aarch64-unknown-linux-gnu \
-			cross-emerge -uva1 --usepkg --with-bdeps y @system
-
-	# Set switch_overlay:nintendo_switch/17.0/ profile that contain all needed setup
-	rm "$TARGET_DIR"/etc/portage/make.profile
-	ln -s ../../var/db/repos/switch_overlay/profiles/nintendo_switch/17.0/ "$TARGET_DIR"/etc/portage/make.profile
+	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
+			aarch64-unknown-linux-gnu-emerge -uv1 --jobs=5 --buildpkg n --with-bdeps y @system
 
 	cat > "$TARGET_DIR"/etc/portage/repos.conf/switch_overlay.conf << EOF
 [switch]
@@ -50,31 +49,37 @@ auto-sync = yes
 EOF
 
 	# Do initial setup
+	setup_bell07_overlay
 	"$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
 # Remove old versions
+sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
+locale-gen
 env-update
 . /etc/profile
 
-export PORTAGE_BINHOST="http://bell.7u.org/pub/gentoo-switch/packages/"
-FEATURES="-pid-sandbox getbinpkg"
-
 # Full rebuild system
-emerge --with-bdeps=n -evDN --jobs=5 --keep-going --usepkg system
-emerge --with-bdeps=n -v --jobs=5 --usepkg dev-vcs/git
+eselect profile set bell07:my_switch_stage
+FEATURES="$FEATURES -distcc" emerge --with-bdeps=n -evDN --jobs=5 --keep-going system
+FEATURES="$FEATURES -distcc" emerge --with-bdeps=n -v --jobs=5 --usepkg dev-vcs/git
 emerge --depclean --with-bdeps=n
+eselect profile set switch:nintendo_switch/17.0
 EOF
 else
 	echo '#####################################################'
 	echo "----- Update stage"
 	echo '#####################################################'
 	# Just do update
+	setup_bell07_overlay
 	"$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
-emerge --usepkg --with-bdeps=n --changed-deps y --jobs=5 --keep-going -uvDN world
-emerge --depclean --with-bdeps=n
+eselect profile set bell07:my_switch_stage
+FEATURES="$FEATURES -distcc" emerge --usepkg --with-bdeps=n --changed-deps y --jobs=5 --keep-going -uvDN world
+FEATURES="$FEATURES -distcc" emerge --depclean --with-bdeps=n
+eselect profile set switch:nintendo_switch/17.0
 EOF
 fi
 
 "$CFG_DIR"/do_clearup.sh "$TARGET_DIR"
+remove_bell07_overlay
 
 echo '#####################################################'
 echo "----- create tar package --"
