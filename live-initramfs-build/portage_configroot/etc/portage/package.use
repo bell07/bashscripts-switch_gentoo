@@ -1,2 +1,3 @@
-app-misc/my-world-meta -mediacenter
+app-misc/my-world-meta admin -mediacenter
 net-misc/dhcp -server
+virtual/ssh -minimal # Prefer openssh

@@ -93,11 +93,11 @@ cp -v "$PROJ_DIR"/root/usr/lib/dracut/modules.d/65NintendoSwitch/pre-udev.sh "$R
 cp -v "$PROJ_DIR"/live-initramfs-build/extras/switch-setup  "$RELEASE_DIR"/etc/init.d/
 
 echo "Copy kenrel module and firmware files $PROJ_DIR"/root/lib/modules/"$KERNEL_VERSION"
-mkdir -pv "$TARGET_DIR"/lib/{modules,firmware/brcm,firmware/ttusb-budget}
-cp -a "$PROJ_DIR"/root/lib/modules/"$KERNEL_VERSION" "$TARGET_DIR"/lib/modules
-cp -v "$PROJ_DIR"/root/lib/firmware/brcm/BCM4356A3.hcd-"$KERNEL_VERSION" "$TARGET_DIR"/lib/firmware/brcm/BCM4356A3.hcd
-cp -v "$PROJ_DIR"/root/lib/firmware/brcm/brcmfmac4356A3-pcie.bin-"$KERNEL_VERSION" "$TARGET_DIR"/lib/firmware/brcm/brcmfmac4356A3-pcie.bin
-cp -v "$PROJ_DIR"/root/lib/firmware/ttusb-budget/dspbootcode.bin-"$KERNEL_VERSION" "$TARGET_DIR"/lib/firmware/ttusb-budget/dspbootcode.bin
+mkdir -pv "$RELEASE_DIR"/lib/{modules,firmware/brcm,firmware/ttusb-budget}
+cp -a "$PROJ_DIR"/root/lib/modules/"$KERNEL_VERSION" "$RELEASE_DIR"/lib/modules
+cp -v "$PROJ_DIR"/root/lib/firmware/brcm/BCM4356A3.hcd-"$KERNEL_VERSION" "$RELEASE_DIR"/lib/firmware/brcm/BCM4356A3.hcd
+cp -v "$PROJ_DIR"/root/lib/firmware/brcm/brcmfmac4356A3-pcie.bin-"$KERNEL_VERSION" "$RELEASE_DIR"/lib/firmware/brcm/brcmfmac4356A3-pcie.bin
+cp -v "$PROJ_DIR"/root/lib/firmware/ttusb-budget/dspbootcode.bin-"$KERNEL_VERSION" "$RELEASE_DIR"/lib/firmware/ttusb-budget/dspbootcode.bin
 
 echo "Set hostname to 'switch-live'"
 echo 'hostname="switch-live"' > "$RELEASE_DIR"/etc/conf.d/hostname
@@ -114,7 +114,7 @@ sed -i 's:--noclear ::g' "$RELEASE_DIR"/etc/inittab
 export DEFAULT_PASSWORD='Gentoo4Switch!'
 
 "$PROJ_DIR"/qemu-chroot.sh "$RELEASE_DIR"  << EOF
-tmpfiles --create
+systemd-tmpfiles --create
 find . -mount -xtype l -exec rm {} \;
 echo '* Configure services'
 rc-update add switch-setup sysinit
