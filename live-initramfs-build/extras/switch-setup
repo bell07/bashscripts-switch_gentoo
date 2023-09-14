@@ -7,8 +7,8 @@ depend()
 
 start()
 {
-	einfo Adjust framebuffer and other settings
-	/usr/lib/pre-udev.sh
+	einfo Adjustframebuffer and other settings
+	bash /usr/lib/pre-udev.sh
 
 	einfo Create Fallback Bluetooth MAC
 	BT_MAC_ADDR=$(sed -e "s/^"0x"//" /sys/block/mmcblk0/device/serial)

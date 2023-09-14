@@ -54,7 +54,6 @@ EOF
 # Remove old versions
 sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 locale-gen
-env-update
 . /etc/profile
 
 # Full rebuild system
