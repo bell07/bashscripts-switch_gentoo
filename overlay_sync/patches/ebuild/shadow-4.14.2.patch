@@ -1,0 +1,10 @@
+--- shadow-4.14.2.ebuild.orig
++++ shadow-4.14.2.ebuild
+@@ -72,6 +72,7 @@
+ fi
+ 
+ src_prepare() {
++	sed -i '1 s/^/#include <stddef.h>\n/' libmisc/btrfs.c
+ 	default
+ 	elibtoolize
+ }
