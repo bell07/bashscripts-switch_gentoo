@@ -30,6 +30,10 @@ if ! [ "$1" == "noupdate" ]; then
 		aarch64-unknown-linux-gnu-emerge --depclean --with-bdeps=n
 fi
 
+# Print installed output
+echo "Installed packages:"
+ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" CROSS_CMD="eix" aarch64-unknown-linux-gnu-ebuild -cI
+
 # build up live target envirinment
 echo "Copy selected files to release folder"
 RELEASE_DIR="$PROJ_DIR"/out/release_LIVE
