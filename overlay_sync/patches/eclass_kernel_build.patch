@@ -1,23 +1,12 @@
---- a/kernel-build.eclass
-+++ b/kernel-build.eclass
-@@ -206,8 +206,8 @@
- kernel-build_src_test() {
- 	debug-print-function ${FUNCNAME} "${@}"
- 	local targets=( modules_install )
--	# on arm or arm64 you also need dtb
--	if use arm || use arm64 || use riscv; then
-+### SWITCH: l4t sources does not support that
-+	if use riscv; then
- 		targets+=( dtbs_install )
- 	fi
- 
-@@ -234,8 +234,8 @@
+--- /var/db/repos/gentoo/eclass/kernel-build.eclass	2023-12-11 14:10:35.000000000 +0100
++++ eclass/kernel-build.eclass	2023-12-15 12:25:02.958089409 +0100
+@@ -257,8 +257,8 @@
  	# do not use 'make install' as it behaves differently based
  	# on what kind of installkernel is installed
  	local targets=( modules_install )
 -	# on arm or arm64 you also need dtb
 -	if use arm || use arm64 || use riscv; then
-+### SWITCH: l4t sources does not support that
++	# on arm or arm64 you also need dtb - But switch l4t sources does not support that
 +	if use riscv; then
  		targets+=( dtbs_install )
  	fi

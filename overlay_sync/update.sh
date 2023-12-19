@@ -9,22 +9,43 @@ PORTAGE=/var/db/repos/gentoo
 
 
 function do_patch_keyword( ) {
+echo "Check $1"
 	F="$1"
+	# Keyword levels: Will be mapped to  ~arm64 / arm64
+	# 0 = **
+	# 1 = ~*, 2 = *
+	# 3 = ~arm, 4 = arm
+	# 5 = ~arm64, 6 = arm64
+	KEYWORD_LEVEL=0
 
-	CURR_KEYWORDS="$(fgrep "KEYWORDS=" "$F" )"
-	if [[ "$CURR_KEYWORDS" =~ .*arm64.* ]]; then
-		NEW_KEYWORDS="$CURR_KEYWORDS"
-	elif [[ "$CURR_KEYWORDS" =~ .*arm.* ]]; then
-		NEW_KEYWORDS="${CURR_KEYWORDS/arm/arm64}"
-	elif [[ "$CURR_KEYWORDS" =~ .*amd64.* ]]; then
-		NEW_KEYWORDS="${CURR_KEYWORDS/amd64/arm64}"
-	elif [[ "$CURR_KEYWORDS" =~ .*x86.* ]]; then
-		NEW_KEYWORDS="${CURR_KEYWORDS/x86/arm64}"
+	for keyword in $(fgrep "KEYWORDS=" "$F" | sed 's/.*KEYWORDS='//g'; s/"//g' ); do
+		if [ "$keyword" == "~arm" ]; then
+			NEW_KEYWORD_LEVEL=3
+		elif [ "$keyword" == "arm" ]; then
+			NEW_KEYWORD_LEVEL=4
+		elif [ "$keyword" == "~arm64" ]; then
+			NEW_KEYWORD_LEVEL=5
+		elif [ "$keyword" == "arm64" ]; then
+			NEW_KEYWORD_LEVEL=6
+		elif [ "${keyword:0:1}" == "~" ]; then
+			NEW_KEYWORD_LEVEL=1
+		else
+			NEW_KEYWORD_LEVEL=2
+		fi
+		if [ "$NEW_KEYWORD_LEVEL" -gt "$KEYWORD_LEVEL" ]; then
+			KEYWORD_LEVEL="$NEW_KEYWORD_LEVEL"
+		fi
+	done
+
+	if [ "$KEYWORD_LEVEL" == 2 ] || \
+		[ "$KEYWORD_LEVEL" == 4 ] || \
+		[ "$KEYWORD_LEVEL" == 6 ]; then
+			NEW_KEYWORDS="arm64"
+	else
+			NEW_KEYWORDS="~arm64"
 	fi
 
-	if [ -n "$NEW_KEYWORDS" ]; then
-		sed -i 's/^.*KEYWORDS=.*$/'"$NEW_KEYWORDS"/g "$F"
-	fi
+	sed -i 's/KEYWORDS=.*$/KEYWORDS="'"$NEW_KEYWORDS"'"/g' "$F"
 }
 
 
