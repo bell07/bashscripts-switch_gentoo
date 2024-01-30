@@ -25,3 +25,7 @@ if [ "$2" == "portage" ]; then
 	mkdir -p "$TARGET_DIR"/var/db/repos/gentoo
 	mkdir -p "$TARGET_DIR"/var/db/repos/switch_overlay
 fi
+
+# Required for cross and for chroot emerge
+mkdir -p "$TARGET_DIR"/usr/share/openpgp-keys
+cp -v /usr/share/openpgp-keys/gentoo-release.asc "$TARGET_DIR"/usr/share/openpgp-keys/gentoo-release.asc

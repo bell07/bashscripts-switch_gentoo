@@ -16,13 +16,18 @@ fi
 if ! [ "$1" == "noupdate" ]; then
 	# Update system
 	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
-		aarch64-unknown-linux-gnu-emerge -uvDN --jobs=5 --buildpkg n @system net-misc/dhcp
+		aarch64-unknown-linux-gnu-emerge -uvDN --jobs=5 \
+		--buildpkg n --binpkg-changed-deps n \
+			@system net-misc/dhcp
 
 	# Update world
 	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
-		aarch64-unknown-linux-gnu-emerge -uvDN --jobs=5 --buildpkg n \
+		aarch64-unknown-linux-gnu-emerge -uvDN --jobs=5 \
+		--buildpkg n --binpkg-changed-deps n \
+			sys-kernel/nintendo-switch-l4t-kernel \
 			sys-firmware/jetson-tx1-firmware \
 			sys-apps/nintendo-switch-meta \
+			sys-libs/gentoo-config-files \
 			app-misc/my-world-meta
 
 	# Cleanup
@@ -42,6 +47,7 @@ rm -Rf "$RELEASE_DIR"
 rsync -a --exclude emerge.sh \
 		--exclude /_ldd.list \
 		--exclude /boot \
+		--exclude /etc/dracut.conf.d \
 		--exclude /etc/kernel \
 		--exclude /etc/logrotate.d \
 		--exclude /etc/portage \
@@ -51,6 +57,7 @@ rsync -a --exclude emerge.sh \
 		--exclude /lib/systemd/system \
 		--exclude /usr/aarch64-unknown-linux-gnu \
 		--exclude /usr/include \
+		--exclude /usr/lib/dracut \
 		--exclude /usr/lib/gcc \
 		--exclude /usr/lib/locale \
 		--exclude '/usr/lib/python*/test/' \
@@ -69,6 +76,7 @@ rsync -a --exclude emerge.sh \
 		--exclude /usr/share/info \
 		--exclude /usr/share/locale \
 		--exclude /usr/share/man \
+		--exclude /usr/share/openpgp-keys \
 		--exclude /usr/sdcard1 \
 		--exclude /usr/src \
 		--exclude /var/cache \
@@ -95,13 +103,6 @@ ln -v -s /sbin/init "$RELEASE_DIR"/init
 
 cp -v "$PROJ_DIR"/root/usr/lib/dracut/modules.d/65NintendoSwitch/pre-udev.sh "$RELEASE_DIR"/usr/lib/
 cp -v "$PROJ_DIR"/live-initramfs-build/extras/switch-setup  "$RELEASE_DIR"/etc/init.d/
-
-echo "Copy kenrel module and firmware files $PROJ_DIR"/root/lib/modules/"$KERNEL_VERSION"
-mkdir -pv "$RELEASE_DIR"/lib/{modules,firmware/brcm,firmware/ttusb-budget}
-cp -a "$PROJ_DIR"/root/lib/modules/"$KERNEL_VERSION" "$RELEASE_DIR"/lib/modules
-cp -v "$PROJ_DIR"/root/lib/firmware/brcm/BCM4356A3.hcd-"$KERNEL_VERSION" "$RELEASE_DIR"/lib/firmware/brcm/BCM4356A3.hcd
-cp -v "$PROJ_DIR"/root/lib/firmware/brcm/brcmfmac4356A3-pcie.bin-"$KERNEL_VERSION" "$RELEASE_DIR"/lib/firmware/brcm/brcmfmac4356A3-pcie.bin
-cp -v "$PROJ_DIR"/root/lib/firmware/ttusb-budget/dspbootcode.bin-"$KERNEL_VERSION" "$RELEASE_DIR"/lib/firmware/ttusb-budget/dspbootcode.bin
 
 echo "Set hostname to 'switch-live'"
 echo 'hostname="switch-live"' > "$RELEASE_DIR"/etc/conf.d/hostname
@@ -146,7 +147,7 @@ rm "$PROJ_DIR"/out/live_initramfs.tmp
 
 echo "Copy kernel boot files"
 cp -v "$PROJ_DIR"/root/boot/uImage-"$KERNEL_VERSION" "$SDCARD_DIR"/switchroot/live/uImage
-cp -v "$PROJ_DIR"/root/boot/nx-plat.dtimg-"$KERNEL_VERSION" "$SDCARD_DIR"/switchroot/live/nx-plat.dtimg
+cp -v "$PROJ_DIR"/root/boot/nx-plat-"$KERNEL_VERSION".dtimg "$SDCARD_DIR"/switchroot/live/nx-plat.dtimg
 cp -v "$PROJ_DIR"/root/usr/share/sdcard1/switchroot/gentoo/* "$SDCARD_DIR"/switchroot/live/
 cp -v "$PROJ_DIR"/live-initramfs-build/extras/L4T-live.ini "$SDCARD_DIR"/bootloader/ini/
 

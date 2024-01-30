@@ -34,11 +34,11 @@ if ! [ -d "$TARGET_DIR" ]; then
 
 	# Build essential toolchain packages
 	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
-			aarch64-unknown-linux-gnu-emerge -uv1 --jobs=5 --buildpkg n sys-devel/gcc glibc binutils linux-headers
+			aarch64-unknown-linux-gnu-emerge -uv1 --jobs=5 --buildpkg n --binpkg-changed-deps n sys-devel/gcc glibc binutils linux-headers
 
 	# Build @system
 	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
-			aarch64-unknown-linux-gnu-emerge -uv1 --jobs=5 --buildpkg n --with-bdeps y @system
+			aarch64-unknown-linux-gnu-emerge -uv1 --jobs=5 --buildpkg n --binpkg-changed-deps n --with-bdeps y @system
 
 	cat > "$TARGET_DIR"/etc/portage/repos.conf/switch_overlay.conf << EOF
 [switch]
@@ -51,6 +51,7 @@ EOF
 	# Do initial setup
 	setup_bell07_overlay
 	"$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
+env-update
 # Remove old versions
 sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 locale-gen
@@ -58,9 +59,10 @@ locale-gen
 
 # Full rebuild system
 eselect profile set bell07:my_switch_stage
-FEATURES="$FEATURES -distcc" emerge --with-bdeps=n -evDN --jobs=5 --keep-going system
-FEATURES="$FEATURES -distcc" emerge --with-bdeps=n -v --jobs=5 --usepkg dev-vcs/git
-emerge --depclean --with-bdeps=n
+FEATURES="$FEATURES -distcc" emerge --with-bdeps=n --changed-deps=y --jobs=5 --keep-going -evDN system
+FEATURES="$FEATURES -distcc" emerge --with-bdeps=n --changed-deps=y --jobs=5 --keep-going -uvDN dev-vcs/git
+FEATURES="$FEATURES -distcc" emerge --with-bdeps=n --changed-deps=y --binpkg-changed-deps y --jobs=5 --keep-going -uvDN world
+FEATURES="$FEATURES -distcc" emerge --depclean --with-bdeps=n
 eselect profile set switch:nintendo_switch/17.0
 EOF
 else
@@ -71,11 +73,13 @@ else
 	setup_bell07_overlay
 	"$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
 eselect profile set bell07:my_switch_stage
-FEATURES="$FEATURES -distcc" emerge --usepkg --with-bdeps=n --changed-deps y --jobs=5 --keep-going -uvDN world
+FEATURES="$FEATURES -distcc" emerge --with-bdeps=n --changed-deps=y --jobs=5 --keep-going -uvDN world
+FEATURES="$FEATURES -distcc" emerge --with-bdeps=n --changed-deps=y --binpkg-changed-deps y --jobs=5 --keep-going -uvDN world
 FEATURES="$FEATURES -distcc" emerge --depclean --with-bdeps=n
 eselect profile set switch:nintendo_switch/17.0
 EOF
 fi
+
 
 "$CFG_DIR"/do_clearup.sh "$TARGET_DIR"
 remove_bell07_overlay
