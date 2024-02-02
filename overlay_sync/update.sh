@@ -107,8 +107,8 @@ function do_move() {
 		cp -v "$PATCHDIR"/source/"$(basename "$T")/"* files
 	fi
 	for F in *.ebuild; do
-		do_patch_ebuild "$F"
 		do_patch_keyword "$F"
+		do_patch_ebuild "$F"
 		ebuild "$F" manifest >/dev/null
 	done
 	cd - > /dev/null
@@ -293,5 +293,5 @@ do_move games-emulation/xrick-libretro
 do_move games-emulation/yabause-libretro
 
 # Nice game selection UI
-SRC="$PROJ"/guru
+SRC=/var/db/repos/guru
 do_move games-util/gamehub
