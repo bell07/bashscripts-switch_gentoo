@@ -1,5 +1,5 @@
---- sys-kernel/installkernel/installkernel-23.ebuild
-+++ sys-kernel/installkernel/installkernel-23.ebuild
+--- sys-kernel/installkernel/installkernel-24.ebuild
++++ sys-kernel/installkernel/installkernel-24.ebuild
 @@ -15,12 +15,16 @@
  LICENSE="GPL-2+"
  SLOT="0"
@@ -12,10 +12,10 @@
  REQUIRED_USE="systemd-boot? ( systemd )"
  
  RDEPEND="
-+	nsw? ( sys-libs/gentoo-config-files[installkernel] )
  	!<=sys-kernel/installkernel-systemd-3
--	dracut? ( >=sys-kernel/dracut-060_pre20240104 )
-+	dracut? ( >=sys-kernel/dracut-060_pre20240104 sys-libs/gentoo-config-files[initramfs] )
+-	dracut? ( >=sys-kernel/dracut-060_pre20240104-r1 )
++	nsw? ( sys-libs/gentoo-config-files[installkernel] )
++	dracut? ( >=sys-kernel/dracut-060_pre20240104-r1 sys-libs/gentoo-config-files[initramfs] )
  	grub? ( sys-boot/grub )
  	systemd? (
  		|| (

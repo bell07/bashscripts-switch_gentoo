@@ -138,9 +138,6 @@ do_move app-accessibility/onboard
 SRC="$PROJ"/waffle-builds/
 do_move sys-apps/touchegg x11-misc/touchegg
 
-SRC="$PROJ"/x11
-do_move app-benchmarks/glmark2
-
 # Libretro / Retroarch from menelkir
 SRC="$PROJ"/menelkir
 cp -v "$SRC"/eclass/libretro*  "$DST"/eclass
