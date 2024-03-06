@@ -1,0 +1,27 @@
+--- sys-kernel/installkernel/installkernel-28.ebuild
++++ sys-kernel/installkernel/installkernel-28.ebuild
+@@ -15,17 +15,22 @@
+ LICENSE="GPL-2+"
+ SLOT="0"
+ KEYWORDS="~arm64"
+-IUSE="dracut grub refind systemd systemd-boot uki ukify"
++IUSE="dracut grub +nsw refind systemd systemd-boot uki ukify"
++
++PATCHES=( "${FILESDIR}"/add-nsw-install-18.patch )
++
+ REQUIRED_USE="
+ 	systemd-boot? ( systemd )
+ 	ukify? ( uki )
+-	?? ( grub refind systemd-boot )
++	?? ( grub refind systemd-boot nsw )
+ "
+ 
+ RDEPEND="
+ 	!<=sys-kernel/installkernel-systemd-3
++	nsw? ( >=sys-libs/gentoo-config-files-20240127-r1[installkernel] )
+ 	dracut? (
+ 		>=sys-kernel/dracut-060_pre20240104-r1
++		sys-libs/gentoo-config-files[initramfs]
+ 		uki? (
+ 			|| (
+ 				sys-apps/systemd[boot(-)]
