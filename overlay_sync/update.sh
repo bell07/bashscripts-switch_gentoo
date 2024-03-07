@@ -288,7 +288,3 @@ do_move games-emulation/vitavoyager-libretro
 do_move games-emulation/x1-libretro
 do_move games-emulation/xrick-libretro
 do_move games-emulation/yabause-libretro
-
-# Nice game selection UI
-SRC=/var/db/repos/guru
-do_move games-util/gamehub
