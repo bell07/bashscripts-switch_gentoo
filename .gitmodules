@@ -10,9 +10,6 @@
 [submodule "overlay_sync/earshark"]
 	path = overlay_sync/earshark
 	url = https://github.com/Chemrat/overlay
-[submodule "overlay_sync/guru"]
-	path = overlay_sync/guru
-	url = https://gitweb.gentoo.org/repo/proj/guru.git
 [submodule "gentoo-config-files"]
 	path = gentoo-config-files
 	url = https://gitlab.com/bell07/gentoo-config-files
