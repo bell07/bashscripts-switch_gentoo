@@ -1,0 +1,12 @@
+--- /var/db/repos/gentoo/dev-libs/libmanette/libmanette-0.2.7.ebuild	2024-04-10 01:10:56.000000000 +0200
++++ overlays/switch_overlay/dev-libs/libmanette/libmanette-0.2.7.ebuild	2024-05-20 13:28:30.996029533 +0200
+@@ -29,6 +29,9 @@
+ 	vala? ( $(vala_depend) )
+ 	virtual/pkgconfig
+ "
++PATCHES=(
++		"${FILESDIR}/fix-4.x-kernel-evdev.patch"
++)
+ 
+ src_prepare() {
+ 	xdg_src_prepare

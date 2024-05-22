@@ -1,0 +1,19 @@
+diff '-bpurNx*~' a/src/manette-device.c b/src/manette-device.c
+--- a/src/manette-device.c	2020-09-12 15:47:47.000000000 +0200
++++ b/src/manette-device.c	2021-03-16 05:02:47.491416594 +0100
+@@ -22,6 +22,15 @@
+ #include <fcntl.h>
+ #include <libevdev/libevdev.h>
+ #include <linux/input-event-codes.h>
++#ifndef input_event_sec
++#if (__BITS_PER_LONG != 32 || !defined(__USE_TIME_BITS64)) && !defined(__KERNEL__)
++#define input_event_sec time.tv_sec
++#define input_event_usec time.tv_usec
++#else
++#define input_event_sec  __sec
++#define input_event_usec __usec
++#endif
++#endif
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>

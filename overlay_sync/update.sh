@@ -123,6 +123,7 @@ SRC="$PORTAGE"
 csplit "$DST"/profiles/nintendo_switch/package.unmask '/# Portage sync/+1' -f /tmp/_unmask > /dev/null
 cp /tmp/_unmask00 "$DST"/profiles/nintendo_switch/package.unmask
 do_move dev-qt/qtcore
+do_move dev-libs/libmanette
 do_move net-wireless/bluez
 do_move sys-apps/shadow
 #do_move sys-apps/systemd-utils 253.* does not build
