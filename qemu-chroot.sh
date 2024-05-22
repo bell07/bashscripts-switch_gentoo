@@ -11,6 +11,7 @@ if [ -n "$1" ]; then
 	fi
 else
 	TARGET_DIR="$PROJ_DIR"/root
+	CMD="/bin/bash --login"
 fi
 
 /etc/init.d/qemu-binfmt start
