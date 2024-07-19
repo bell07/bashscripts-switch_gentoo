@@ -1,0 +1,30 @@
+--- installkernel/installkernel
++++ installkernel/installkernel
+@@ -238,6 +238,27 @@
+ 	fi
+ 	echo "Installing Unified Kernel Image for ${ver}..."
+ 	updatever "${img_dest}" "${uki}" "${suffix}"
++
++# The NSW/switchroot way
++elif [ -f "${base_dir}/nx-plat.dtimg" ] && [ "${INSTALLKERNEL_LAYOUT}" = nsw ]; then
++	echo "Installing nx-plat.dtimg for ${ver}..."
++	updatever nx-plat "${base_dir}/nx-plat.dtimg" .dtimg
++
++	echo "Installing uImage for ${ver}..."
++	updatever uImage "${base_dir}/uImage"
++	initramfs="${base_dir}/initramfs"
++	if [ -f "${initramfs}" ]; then
++		echo "Installing initramfs image for ${ver}..."
++		updatever initramfs "${initramfs}"
++	fi
++
++	config=$(dirname "${map}")
++	config="${config}/.config"
++	if [ -f "${config}" ]; then
++		echo "Installing config for ${ver}..."
++		updatever config "${config}"
++	fi
++
+ else
+ 	echo "Installing kernel image for ${ver}..."
+ 	updatever "${img_dest}" "${img}" "${suffix}"
