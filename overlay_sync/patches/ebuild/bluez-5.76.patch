@@ -1,6 +1,6 @@
---- net-wireless/bluez/bluez-5.65.ebuild
-+++ net-wireless/bluez/bluez-5.65.ebuild
-@@ -40,10 +40,10 @@
+--- net-wireless/bluez/bluez-5.76.ebuild
++++ net-wireless/bluez/bluez-5.76.ebuild
+@@ -39,10 +39,10 @@
  "
  DEPEND="
  	>=dev-libs/glib-2.28:2[${MULTILIB_USEDEP}]
@@ -13,11 +13,11 @@
  		>=dev-libs/json-c-0.13:=
  		sys-libs/readline:0=
  	)
-@@ -62,6 +62,8 @@
+@@ -61,6 +61,8 @@
  RESTRICT="!test? ( test )"
  
  PATCHES=(
-+	"${FILESDIR}"/bluez_ell_patch.patch
++	"${FILESDIR}"/bluez_ell_patch-5.76.patch
 +
  	# Try both udevadm paths to cover udev/systemd vs. eudev locations (#539844)
  	# http://www.spinics.net/lists/linux-bluetooth/msg58739.html

@@ -1,0 +1,12 @@
+diff -Naur bluez-5.64/configure.ac bluez-5.64-2/configure.ac
+--- bluez/configure.ac.bak
++++ bluez/configure.ac
+@@ -287,7 +287,7 @@
+ 				[enable external Embedded Linux library]),
+ 					[enable_external_ell=${enableval}])
+ if (test "${enable_external_ell}" = "yes"); then
+-	PKG_CHECK_MODULES(ELL, ell >= 0.39)
++	PKG_CHECK_MODULES(ELL, ell >= 0.28)
+ fi
+ if (test "${enable_external_ell}" != "yes" &&
+ 		(test "${enable_btpclient}" = "yes" || test "${enable_mesh}" = "yes")); then
