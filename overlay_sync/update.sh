@@ -129,7 +129,7 @@ do_move sys-apps/shadow
 #do_move sys-apps/systemd-utils 253.* does not build
 do_move sys-kernel/installkernel
 #do_move x11-base/xwayland #23.1.1 does not build
-do_move x11-libs/libdrm
+#do_move x11-libs/libdrm # 2.4.121 does not build
 
 # Use onboard from earshark overlay
 SRC="$PROJ"/earshark/
