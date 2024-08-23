@@ -9,8 +9,9 @@ TARGET_DIR="$PROJ_DIR"/live-initramfs-build/root
 STAGE_CONFIGROOT="$PROJ_DIR"/live-initramfs-build/portage_configroot
 
 # Build / Update live source environment using the "root" environment
-if [ "$1" == "rebuild" ] ; then
-	"$CFG_DIR"/do_skeleton.sh "$TARGET_DIR"
+if [ ! -d "$TARGET_DIR" ] || [ "$1" == "rebuild" ] ; then
+	echo "Create fresh skeleton"
+	"$CFG_DIR"/do_skeleton.sh "$TARGET_DIR" portage
 fi
 
 if ! [ "$1" == "noupdate" ]; then
@@ -42,7 +43,7 @@ ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" CROSS_CMD="eix" aarch6
 # build up live target envirinment
 echo "Copy selected files to release folder"
 RELEASE_DIR="$PROJ_DIR"/out/release_LIVE
-rm -Rf "$RELEASE_DIR"
+"$CFG_DIR"/do_skeleton.sh "$RELEASE_DIR"
 
 rsync -a --exclude emerge.sh \
 		--exclude /_ldd.list \
@@ -89,17 +90,19 @@ rsync -a --exclude emerge.sh \
 
 # Collect and copy all required libraries
  "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR" << EOF
+	echo "Collect all needed library files"
 	ldconfig
 	find . -executable -type f -exec ldd {} \; 2> /dev/null > /_ldd.list
 EOF
 
-mkdir "$RELEASE_DIR"/lib64
+cp "$TARGET_DIR"/lib64/ld-linux-aarch64.so.1 "$RELEASE_DIR"/lib64
+ln -s "../lib64/ld-linux-aarch64.so.1" "$RELEASE_DIR"/lib
 for file in $(cat "$TARGET_DIR"/_ldd.list | awk 'NF == 4 { print $3 }' | sort -u); do
 	cp "$TARGET_DIR"/"$file" "$RELEASE_DIR"/lib64
 done
 
 echo "Patch  and apply additional files"
-ln -v -s /sbin/init "$RELEASE_DIR"/init
+ln -v -s usr/bin/init "$RELEASE_DIR"/init
 
 cp -v "$PROJ_DIR"/root/usr/lib/dracut/modules.d/65NintendoSwitch/pre-udev.sh "$RELEASE_DIR"/usr/lib/
 cp -v "$PROJ_DIR"/live-initramfs-build/extras/switch-setup  "$RELEASE_DIR"/etc/init.d/

@@ -1,3 +1,4 @@
-app-misc/my-world-meta admin -mediacenter
+app-misc/my-world-meta admin -mediacenter -gaming
+app-misc/my-gentoo-config -portage
 net-misc/dhcp -server
 virtual/ssh -minimal # Prefer openssh

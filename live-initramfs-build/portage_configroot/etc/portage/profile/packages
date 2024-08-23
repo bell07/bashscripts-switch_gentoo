@@ -1,10 +1,10 @@
 # Disable portage system packages
+-*dev-build/make
 -*sec-keys/openpgp-keys-gentoo-release
 -*sys-apps/diffutils
 -*sys-apps/man-pages
 -*sys-devel/binutils
 -*sys-devel/gnuconfig
--*sys-devel/make
 -*sys-devel/patch
 -*virtual/man
 -*virtual/os-headers

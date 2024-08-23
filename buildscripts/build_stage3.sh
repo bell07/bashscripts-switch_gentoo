@@ -51,11 +51,11 @@ EOF
 	# Do initial setup
 	setup_bell07_overlay
 	"$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
-env-update
+/usr/sbin/env-update
+. /etc/profile
 # Remove old versions
 sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 locale-gen
-. /etc/profile
 
 # Full rebuild system
 eselect profile set bell07:my_switch_stage
