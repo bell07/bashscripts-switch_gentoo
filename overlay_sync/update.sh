@@ -125,7 +125,7 @@ cp /tmp/_unmask00 "$DST"/profiles/nintendo_switch/package.unmask
 do_move dev-qt/qtcore
 do_move dev-libs/libmanette
 do_move net-wireless/bluez
-do_move sys-apps/shadow
+#do_move sys-apps/shadow   #shadow-4.14.6 requires glibc >= 2.38
 #do_move sys-apps/systemd-utils 253.* does not build
 do_move sys-kernel/installkernel
 #do_move x11-base/xwayland #23.1.1 does not build
