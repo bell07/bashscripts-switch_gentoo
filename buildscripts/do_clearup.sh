@@ -1,5 +1,6 @@
 if [ -z "$1"  ]; then
-	echo "Target Parameter required to build skeleton"
+	echo "Target Parameter required for clearup"
+	exit 1
 fi
 
 TARGET_DIR="$1"
