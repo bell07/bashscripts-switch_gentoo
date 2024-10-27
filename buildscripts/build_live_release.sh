@@ -40,28 +40,48 @@ fi
 echo "Installed packages:"
 ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" CROSS_CMD="eix" aarch64-unknown-linux-gnu-ebuild -cI
 
+# Adjust settings, collect and copy all required libraries
+ "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR" << EOF
+echo "Settung up en_US locale"
+echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
+locale-gen
+
+echo "Collect all needed library files"
+ldconfig
+find . -executable -type f -exec ldd {} \; 2> /dev/null > /_ldd.list
+EOF
+
 # build up live target envirinment
 echo "Copy selected files to release folder"
 RELEASE_DIR="$PROJ_DIR"/out/release_LIVE
+
+echo "Create fresh skeleton in release dir before sync"
 "$CFG_DIR"/do_skeleton.sh "$RELEASE_DIR"
 
+# Sync most files
 rsync -a --exclude emerge.sh \
 		--exclude /_ldd.list \
 		--exclude /boot \
+		--exclude '/etc/*-' \
+		--exclude /etc/cron.daily \
+		--exclude /etc/default \
 		--exclude /etc/dracut.conf.d \
+		--exclude /etc/env.d \
+		--exclude /etc/environment.d \
 		--exclude /etc/kernel \
+		--exclude /etc/local.d \
+		--exclude /etc/locale.gen \
+		--exclude /etc/logrotate.d \
 		--exclude /etc/logrotate.d \
 		--exclude /etc/portage \
 		--exclude /etc/skel \
 		--exclude /lib64 \
-		--exclude /lib/locale \
-		--exclude /lib/systemd/system \
 		--exclude /usr/aarch64-unknown-linux-gnu \
 		--exclude /usr/include \
 		--exclude /usr/lib/dracut \
 		--exclude /usr/lib/gcc \
-		--exclude /usr/lib/locale \
 		--exclude '/usr/lib/python*/test/' \
+		--exclude /usr/lib/systemd/system \
 		--exclude /usr/lib/sysusers.d \
 		--exclude /usr/lib64 \
 		--exclude /usr/libexec/gcc \
@@ -88,12 +108,6 @@ rsync -a --exclude emerge.sh \
 		--exclude '[_]_pycache__' \
 		"$TARGET_DIR"/. "$RELEASE_DIR"
 
-# Collect and copy all required libraries
- "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR" << EOF
-	echo "Collect all needed library files"
-	ldconfig
-	find . -executable -type f -exec ldd {} \; 2> /dev/null > /_ldd.list
-EOF
 
 cp "$TARGET_DIR"/lib64/ld-linux-aarch64.so.1 "$RELEASE_DIR"/lib64
 ln -s "../lib64/ld-linux-aarch64.so.1" "$RELEASE_DIR"/lib
