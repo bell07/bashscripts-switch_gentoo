@@ -131,8 +131,8 @@ do_move sys-kernel/installkernel
 #do_move x11-base/xwayland #23.1.1 does not build
 #do_move x11-libs/libdrm # 2.4.121 does not build
 
-# Use onboard from earshark overlay
-SRC="$PROJ"/earshark/
+## Use onboard from bell07 overlay
+SRC=/var/db/repos/bell07
 do_move app-accessibility/onboard
 
 # Use x11-misc/touchegg from waffle-builds overlay
