@@ -48,7 +48,7 @@ locale-gen
 
 echo "Collect all needed library files"
 ldconfig
-find . -executable -type f -exec ldd {} \; 2> /dev/null > /_ldd.list
+find / -executable -type f -exec ldd {} \; 2> /dev/null > /_ldd.list
 EOF
 
 # build up live target envirinment
@@ -75,7 +75,6 @@ rsync -a --exclude emerge.sh \
 		--exclude /etc/logrotate.d \
 		--exclude /etc/portage \
 		--exclude /etc/skel \
-		--exclude /lib64 \
 		--exclude /usr/aarch64-unknown-linux-gnu \
 		--exclude /usr/include \
 		--exclude /usr/lib/dracut \
@@ -83,7 +82,13 @@ rsync -a --exclude emerge.sh \
 		--exclude '/usr/lib/python*/test/' \
 		--exclude /usr/lib/systemd/system \
 		--exclude /usr/lib/sysusers.d \
-		--exclude /usr/lib64 \
+		--exclude '/usr/lib64/**[.]so' \
+		--exclude '/usr/lib64/**[.]so[.]*' \
+		--exclude '/usr/lib64/**[.]a' \
+		--exclude '/usr/lib64/**[.]o' \
+		--exclude '/usr/lib64/**[.]h' \
+		--exclude '/usr/lib64/**[.]pc' \
+		--exclude '/usr/lib64/**[.]cmake' \
 		--exclude /usr/libexec/gcc \
 		--exclude /usr/local \
 		--exclude /usr/share/bash-competitions \
@@ -120,6 +125,11 @@ ln -v -s usr/bin/init "$RELEASE_DIR"/init
 
 cp -v "$PROJ_DIR"/root/usr/lib/dracut/modules.d/65NintendoSwitch/pre-udev.sh "$RELEASE_DIR"/usr/lib/
 cp -v "$PROJ_DIR"/live-initramfs-build/extras/switch-setup  "$RELEASE_DIR"/etc/init.d/
+
+echo "Remove empty dirs"
+find "$RELEASE_DIR"/usr -type d  | sort -r | while read dir; do 
+	rmdir "$dir" 2> /dev/null && echo " removed: $dir"
+done
 
 echo "Set hostname to 'switch-live'"
 echo 'hostname="switch-live"' > "$RELEASE_DIR"/etc/conf.d/hostname
