@@ -1,9 +1,11 @@
 #!/bin/bash
-mount -o bind packages out/pub/packages
-#echo "Sync to orbsmart"
-#rsync -av --delete --progress out/pub/. admin@orbsmart:/var/www/localhost/htdocs/pub/gentoo-switch/
+TOOLS_DIR="$(realpath "$(dirname $0)")"
+PROJ_DIR="$(dirname "$TOOLS_DIR")"
+
+
+mount -o bind "$PROJ_DIR"/packages "$PROJ_DIR"/out/pub/packages
 
 echo "Sync to homer"
-rsync -av --delete --progress out/pub/. admin@homer:/media/bigdata/pub/gentoo-switch/
-umount out/pub/packages/
+rsync -av --delete --progress "$PROJ_DIR"/out/pub/. admin@homer:/media/bigdata/pub/gentoo-switch/
+umount "$PROJ_DIR"/out/pub/packages/
 
