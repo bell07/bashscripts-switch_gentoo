@@ -1,0 +1,48 @@
+--- sys-libs/glibc/glibc-2.41-r5.ebuild
++++ sys-libs/glibc/glibc-2.41-r5.ebuild
+@@ -799,11 +799,11 @@
+ 			[[ ${I_ALLOW_TO_BREAK_MY_SYSTEM} = yes ]] || die "Aborting to save your system."
+ 		fi
+ 
+-		if ! do_run_test '#include <unistd.h>\n#include <sys/syscall.h>\nint main(){return syscall(1000)!=-1;}\n' ; then
+-			eerror "Your old kernel is broken. You need to update it to a newer"
+-			eerror "version as syscall(<bignum>) will break. See bug 279260."
+-			die "Old and broken kernel."
+-		fi
++#		if ! do_run_test '#include <unistd.h>\n#include <sys/syscall.h>\nint main(){return syscall(1000)!=-1;}\n' ; then
++#			eerror "Your old kernel is broken. You need to update it to a newer"
++#			eerror "version as syscall(<bignum>) will break. See bug 279260."
++#			die "Old and broken kernel."
++#		fi
+ 	fi
+ 
+ 	if [[ ${CTARGET} == i386-* ]] ; then
+@@ -992,6 +992,13 @@
+ 	chmod u+x "${S}"/scripts/*.sh
+ 
+ 	cd "${S}" || die
++
++	# NSW old kernel. Remove symbols not in old kernel
++	sed -i \
++		-e "s:# define STATX_DIOALIGN 0x2000U::g" \
++		"${S}"/io/bits/statx-generic.h \
++		|| die "patching statx-generic.h failed"
++	# NSW old kernel end
+ }
+ 
+ # src_configure
+@@ -1400,6 +1407,14 @@
+ 	# We'll take care of the cache ourselves
+ 	rm -f "${ED}"/etc/ld.so.cache
+ 
++	# NSW old kernel. Remove symbols not in old kernel
++	# Hacky version, just remove from target file before installation
++	sed -i \
++		-e "s:# define STATX_BASIC_STATS 0x07ffU::g" \
++		"${ED}"/usr/include/bits/statx-generic.h \
++		|| die "patching statx-generic.h failed"
++	# NSW old kernel end
++
+ 	# Everything past this point just needs to be done once ...
+ 	is_final_abi || return 0
+ 

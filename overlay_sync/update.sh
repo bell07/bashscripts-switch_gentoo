@@ -122,15 +122,15 @@ patch -p1 --no-backup-if-mismatch "$DST"/eclass/kernel-build.eclass < "$PROJ"/pa
 SRC="$PORTAGE"
 csplit "$DST"/profiles/nintendo_switch/package.unmask '/# Portage sync/+1' -f /tmp/_unmask > /dev/null
 cp /tmp/_unmask00 "$DST"/profiles/nintendo_switch/package.unmask
-do_move dev-qt/qtcore
-do_move dev-libs/libmanette
-do_move net-wireless/bluez
-#do_move sys-apps/shadow   #shadow-4.14.6 requires glibc >= 2.38
-#do_move sys-apps/systemd-utils 253.* does not build
-do_move sys-kernel/installkernel
-#do_move x11-base/xwayland #23.1.1 does not build
-#do_move x11-libs/libdrm # 2.4.121 does not build
+# Modified portage packages
 
+do_move dev-qt/qtcore
+do_move net-wireless/bluez
+do_move sys-apps/shadow
+do_move sys-kernel/installkernel
+do_move sys-libs/glibc
+
+exit 0
 ## Use onboard from bell07 overlay
 SRC=/var/db/repos/bell07
 do_move app-accessibility/onboard
