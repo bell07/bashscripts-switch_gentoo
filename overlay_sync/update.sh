@@ -125,12 +125,10 @@ cp /tmp/_unmask00 "$DST"/profiles/nintendo_switch/package.unmask
 # Modified portage packages
 
 do_move dev-qt/qtcore
-do_move net-wireless/bluez
 do_move sys-apps/shadow
 do_move sys-kernel/installkernel
 do_move sys-libs/glibc
 
-exit 0
 ## Use onboard from bell07 overlay
 SRC=/var/db/repos/bell07
 do_move app-accessibility/onboard
