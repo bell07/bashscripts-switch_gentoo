@@ -2,6 +2,11 @@
 CFG_DIR="$(realpath "$(dirname $0)")"
 PROJ_DIR="$(dirname "$CFG_DIR")"
 
+if [ "$(which aarch64-unknown-linux-gnu-emerg 2>/dev/null)" == "" ]; then
+	echo 'No Cross-emerge found. exit'
+	exit 0
+fi
+
 TARGET_DIR="$PROJ_DIR"/out/release_stage3
 STAGE_CONFIGROOT="$PROJ_DIR"/stage3-build/portage_configroot
 

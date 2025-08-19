@@ -8,6 +8,11 @@ KERNEL_VERSION=4.9.140.512-l4t-gentoo-dist
 TARGET_DIR="$PROJ_DIR"/live-initramfs-build/root
 STAGE_CONFIGROOT="$PROJ_DIR"/live-initramfs-build/portage_configroot
 
+if [ "$(which aarch64-unknown-linux-gnu-emerg 2>/dev/null)" == "" ]; then
+	echo 'No Cross-emerge found. exit'
+	exit 0
+fi
+
 # Build / Update live source environment using the "root" environment
 if [ ! -d "$TARGET_DIR" ] || [ "$1" == "rebuild" ] ; then
 	echo "Create fresh skeleton"
