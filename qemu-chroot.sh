@@ -15,7 +15,9 @@ else
 fi
 
 /etc/init.d/qemu-binfmt start
-/etc/init.d/distccd start
+
+/etc/init.d/docker start
+docker compose -f distcc-server/docker-compose.yml up -d
 
 chroot-mount.sh "$TARGET_DIR"
 

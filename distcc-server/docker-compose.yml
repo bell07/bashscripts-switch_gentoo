@@ -1,0 +1,9 @@
+services:
+  distcc:
+    image: nsw-cross-distcc
+    ports:
+      - "3632:3632"
+      - "3633:3633"
+    tmpfs:
+      - /sys/fs/cgroup
+    restart: no

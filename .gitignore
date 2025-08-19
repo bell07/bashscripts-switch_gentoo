@@ -1,3 +1,4 @@
 root/
 packages/
 out/
+distcc-server/build/
