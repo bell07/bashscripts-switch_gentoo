@@ -2,13 +2,10 @@
 CFG_DIR="$(realpath "$(dirname $0)")"
 PROJ_DIR="$(dirname "$CFG_DIR")"
 
-if [ "$(which aarch64-unknown-linux-gnu-emerg 2>/dev/null)" == "" ]; then
-	echo 'No Cross-emerge found. exit'
-	exit 0
-fi
-
 TARGET_DIR="$PROJ_DIR"/out/release_stage3
 STAGE_CONFIGROOT="$PROJ_DIR"/stage3-build/portage_configroot
+JOBS=20
+
 
 function setup_bell07_overlay() {
 	mkdir "$TARGET_DIR"/var/db/repos/bell07
@@ -24,6 +21,19 @@ function remove_bell07_overlay() {
  rmdir "$TARGET_DIR"/var/db/repos/bell07
 }
 
+function cross_emerge() {
+	echo ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
+		"$PROJ_DIR"/nsw-cross-distcc-docker/cross-emerge.sh --verbose \
+		--binpkg-changed-deps n --with-bdeps=n --jobs=$JOBS --buildpkg n $@
+
+	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
+		"$PROJ_DIR"/nsw-cross-distcc-docker/cross-emerge.sh --verbose \
+		--binpkg-changed-deps n --with-bdeps=n --jobs=$JOBS --buildpkg n $@
+}
+
+NATIVE_EMERGE='FEATURES="-distcc" emerge --with-bdeps=y --changed-deps=y --jobs='$JOBS' --keep-going'
+
+
 ## Setup fresh build
 if ! [ -d "$TARGET_DIR" ]; then
 	echo '#####################################################'
@@ -32,18 +42,21 @@ if ! [ -d "$TARGET_DIR" ]; then
 
 	"$CFG_DIR"/do_skeleton.sh "$TARGET_DIR" portage
 
-	mount -o bind /var/cache/distfiles "$TARGET_DIR"/var/cache/distfiles
-	mount -o bind /var/db/repos/gentoo "$TARGET_DIR"/var/db/repos/gentoo
-	mount -o bind "$PROJ_DIR"/packages "$TARGET_DIR"/var/cache/binpkgs
-	mount -o bind "$PROJ_DIR"/overlays/switch_overlay "$TARGET_DIR"/var/db/repos/switch_overlay
-
 	# Build essential toolchain packages
-	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
-			aarch64-unknown-linux-gnu-emerge -uv1 --jobs=5 --buildpkg n --binpkg-changed-deps n sys-devel/gcc glibc binutils linux-headers
+	echo "# install baselayout"
+	cross_emerge -1 sys-apps/baselayout
 
-	# Build @system
-	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
-			aarch64-unknown-linux-gnu-emerge -uv1 --jobs=5 --buildpkg n --binpkg-changed-deps n --with-bdeps y @system
+	echo "# install toolchain"
+	cross_emerge -1 sys-devel/gcc \
+		sys-libs/glibc
+		sys-devel/binutils
+		sys-kernel/linux-headers
+
+	echo "# install system with some build deps"
+	cross_emerge -1 @system \
+		app-admin/eselect \
+		sys-apps/locale-gen \
+		dev-build/autoconf
 
 	cat > "$TARGET_DIR"/etc/portage/repos.conf/switch_overlay.conf << EOF
 [switch]
@@ -55,19 +68,20 @@ EOF
 
 	# Do initial setup
 	setup_bell07_overlay
+
 	"$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
-/usr/sbin/env-update
+eselect profile set bell07:my_switch_stage
+
+/usr/bin/env-update
 . /etc/profile
 # Remove old versions
 sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 locale-gen
 
-# Full rebuild system
-eselect profile set bell07:my_switch_stage
-FEATURES="$FEATURES -distcc" emerge --with-bdeps=n --changed-deps=y --jobs=5 --keep-going -evDN system
-FEATURES="$FEATURES -distcc" emerge --with-bdeps=n --changed-deps=y --jobs=5 --keep-going -uvDN dev-vcs/git
-FEATURES="$FEATURES -distcc" emerge --with-bdeps=n --changed-deps=y --binpkg-changed-deps y --jobs=5 --keep-going -uvDN world
-FEATURES="$FEATURES -distcc" emerge --depclean --with-bdeps=n
+# Full rebuild world
+$NATIVE_EMERGE --binpkg-changed-deps y -evDN @world dev-vcs/git
+$NATIVE_EMERGE --depclean
+
 eselect profile set switch:nintendo_switch/17.0
 EOF
 else
@@ -78,9 +92,11 @@ else
 	setup_bell07_overlay
 	"$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
 eselect profile set bell07:my_switch_stage
-FEATURES="$FEATURES -distcc" emerge --with-bdeps=n --changed-deps=y --jobs=5 --keep-going -uvDN world
-FEATURES="$FEATURES -distcc" emerge --with-bdeps=n --changed-deps=y --binpkg-changed-deps y --jobs=5 --keep-going -uvDN world
-FEATURES="$FEATURES -distcc" emerge --depclean --with-bdeps=n
+
+$NATIVE_EMERGE -uvDN @world
+$NATIVE_EMERGE --binpkg-changed-deps y -uvDN @changed-deps @changed-subslot @world
+$NATIVE_EMERGE --depclean
+
 eselect profile set switch:nintendo_switch/17.0
 EOF
 fi
