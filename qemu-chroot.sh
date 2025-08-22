@@ -30,7 +30,7 @@ trap cleanup TERM
 /etc/init.d/qemu-binfmt start
 
 /etc/init.d/docker start
-docker compose -f distcc-server/docker-compose.yml up -d
+docker compose -f nsw-cross-distcc-docker/docker-compose.yml up -d
 
 chroot-mount.sh "$TARGET_DIR"
 
