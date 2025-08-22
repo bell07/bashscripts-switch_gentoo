@@ -14,6 +14,19 @@ else
 	CMD="/bin/bash --login"
 fi
 
+function cleanup() {
+	echo "clearup: Umount paths"
+	chroot-umount.sh "$TARGET_DIR"
+	# Umount remaining mounts
+	mount | grep "$TARGET_DIR" | while read x on DIR rest; do echo $DIR; done | sort -r | while read MOUNT; do
+	        umount -v "$MOUNT"
+	done
+}
+trap cleanup EXIT
+trap cleanup INT
+trap cleanup TERM
+#trap cleanup ERR
+
 /etc/init.d/qemu-binfmt start
 
 /etc/init.d/docker start
@@ -58,10 +71,3 @@ echo chroot "$TARGET_DIR" $CMD
 chroot "$TARGET_DIR" $CMD
 rm "$TARGET_DIR"/usr/bin/qemu-aarch64
 echo "Left chroot"
-
-chroot-umount.sh "$TARGET_DIR"
-
-# Umount remaining mounts
-mount | grep "$TARGET_DIR" | while read x on DIR rest; do echo $DIR; done | sort -r | while read MOUNT; do
-	umount -v "$MOUNT"
-done
