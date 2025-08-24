@@ -3,15 +3,11 @@
 CFG_DIR="$(realpath "$(dirname $0)")"
 PROJ_DIR="$(dirname "$CFG_DIR")"
 KERNEL_VERSION=4.9.140.512-l4t-gentoo-dist
+JOBS=20
 
 # build up live target envirinment
-TARGET_DIR="$PROJ_DIR"/live-initramfs-build/root
+TARGET_DIR="$PROJ_DIR"/out/release_LIVE_root
 STAGE_CONFIGROOT="$PROJ_DIR"/live-initramfs-build/portage_configroot
-
-if [ "$(which aarch64-unknown-linux-gnu-emerg 2>/dev/null)" == "" ]; then
-	echo 'No Cross-emerge found. exit'
-	exit 0
-fi
 
 # Build / Update live source environment using the "root" environment
 if [ ! -d "$TARGET_DIR" ] || [ "$1" == "rebuild" ] ; then
@@ -19,31 +15,36 @@ if [ ! -d "$TARGET_DIR" ] || [ "$1" == "rebuild" ] ; then
 	"$CFG_DIR"/do_skeleton.sh "$TARGET_DIR" portage
 fi
 
+function cross_emerge() {
+	echo ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
+		"$PROJ_DIR"/nsw-cross-distcc-docker/cross-emerge.sh --verbose \
+		--binpkg-changed-deps n --with-bdeps=n --jobs=$JOBS --buildpkg n $@
+
+	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
+		"$PROJ_DIR"/nsw-cross-distcc-docker/cross-emerge.sh --verbose \
+		--binpkg-changed-deps n --with-bdeps=n --jobs=$JOBS --buildpkg n $@
+}
+
 if ! [ "$1" == "noupdate" ]; then
 	# Update system
-	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
-		aarch64-unknown-linux-gnu-emerge -uvDN --jobs=5 \
-		--buildpkg n --binpkg-changed-deps n \
-			@system net-misc/dhcp
+	cross_emerge -uDN @system net-misc/dhcp
 
 	# Update world
-	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
-		aarch64-unknown-linux-gnu-emerge -uvDN --jobs=5 \
-		--buildpkg n --binpkg-changed-deps n \
-			sys-kernel/nintendo-switch-l4t-kernel \
-			sys-firmware/jetson-tx1-firmware \
-			sys-apps/nintendo-switch-meta \
-			sys-libs/gentoo-config-files \
-			app-misc/my-world-meta
+	cross_emerge -uDN sys-kernel/nintendo-switch-l4t-kernel \
+		sys-firmware/jetson-tx1-firmware \
+		sys-apps/nintendo-switch-meta \
+		sys-libs/gentoo-config-files \
+		app-misc/my-world-meta \
+		sys-apps/locale-gen
 
 	# Cleanup
-	ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" \
-		aarch64-unknown-linux-gnu-emerge --depclean --with-bdeps=n
+	cross_emerge --depclean --with-bdeps=n
 fi
 
 # Print installed output
 echo "Installed packages:"
-ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" CROSS_CMD="eix" aarch64-unknown-linux-gnu-ebuild -cI
+ROOT="$TARGET_DIR" PORTAGE_CONFIGROOT="$STAGE_CONFIGROOT" ARCH="arm64" \
+	EIX_LIMIT_COMPACT=0 eix -cI
 
 # Adjust settings, collect and copy all required libraries
  "$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR" << EOF
