@@ -60,6 +60,7 @@ RUN <<-EOF
 
     rm -Rf /tmp/* /var/cache/* /var/tmp* /var/log* /var/db/repos/gentoo/*
     rm /portage.tar.zst
+    rm /fix-clang-distcc.sh
 EOF
 
 # Prepare toolchain to be used with cross-emerge.sh wrapper
@@ -70,12 +71,8 @@ RUN <<-EOF
     rm /usr/aarch64-unknown-linux-gnu/etc/portage/make.profile
     ln -s /var/db/repos/gentoo/profiles/default/linux/arm64/23.0/split-usr \
        /usr/aarch64-unknown-linux-gnu/etc/portage/make.profile
-
-    sed -i 's:ACCEPT_KEYWORDS=.*:ACCEPT_KEYWORDS="${ARCH}":g' /usr/aarch64-unknown-linux-gnu/etc/portage/make.conf
-
-    ## Allow override crossdev files by emerge corresponding packages
-    #echo 'COLLISION_IGNORE="/usr/include"' \
-    #   >> /usr/aarch64-unknown-linux-gnu/etc/portage/make.conf
+    cp -av /buildhost-configroot/* /usr/aarch64-unknown-linux-gnu/
+    rm -Rf /buildhost-configroot
 EOF
 
 EXPOSE 3632 3633
