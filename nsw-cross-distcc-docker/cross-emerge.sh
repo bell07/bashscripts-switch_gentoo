@@ -12,12 +12,15 @@ MY_ROOT="$(realpath "$ROOT")"
 MY_PORTAGE_CONFIGROOT="$(realpath "$PORTAGE_CONFIGROOT")"
 unset ROOT PORTAGE_CONFIGROOT
 
-ENTRYPOINT=/usr/bin/bash
-LAUNCH="/usr/bin/aarch64-unknown-linux-gnu-emerge $@"
-#LAUNCH=/usr/bin/bash
+CONTAINER_NAME="cross-$(basename "${MY_ROOT,,}")"
 
-docker run -it --rm --tmpfs /sys/fs/cgroup --name cross-emerge \
-       --entrypoint="$ENTRYPOINT" \
+LAUNCH="/usr/bin/aarch64-unknown-linux-gnu-emerge $@"
+
+if [ -z "$(docker ps -a --format '{{.Names}}' | grep "^${CONTAINER_NAME}$")" ]; then
+echo "$CONTAINER_NAME"
+   docker run -itd --rm --name "$CONTAINER_NAME" \
+       --tmpfs /sys/fs/cgroup \
+       --entrypoint=/usr/bin/bash \
        --env ROOT=/cross_root \
        --env PORTAGE_CONFIGROOT=/cross_configroot \
        --env FEATURES="-ipc-sandbox -network-sandbox -pid-sandbox" \
@@ -27,5 +30,7 @@ docker run -it --rm --tmpfs /sys/fs/cgroup --name cross-emerge \
        --volume /var/db/repos/bell07:/var/db/repos/bell07 \
        --volume "$PROJ_DIR"/overlays/switch_overlay:/var/db/repos/switch_overlay \
        --volume "$PROJ_DIR"/packages:/packages \
-        nsw-cross-distcc \
-        -c "$LAUNCH"
+        nsw-cross-distcc
+fi
+
+docker exec -it "$CONTAINER_NAME" $LAUNCH

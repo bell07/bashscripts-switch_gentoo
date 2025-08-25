@@ -79,7 +79,7 @@ sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 locale-gen
 
 # Full rebuild world
-$NATIVE_EMERGE --binpkg-changed-deps y -evDN @world dev-vcs/git
+$NATIVE_EMERGE -evDN @world dev-vcs/git
 $NATIVE_EMERGE --depclean
 
 eselect profile set switch:nintendo_switch/17.0
@@ -93,7 +93,7 @@ else
 	"$PROJ_DIR"/qemu-chroot.sh "$TARGET_DIR"  << EOF
 eselect profile set bell07:my_switch_stage
 
-$NATIVE_EMERGE -uvDN @world
+$NATIVE_EMERGE -uvDN --rebuilt-binaries=y @world
 $NATIVE_EMERGE --binpkg-changed-deps y -uvDN @changed-deps @changed-subslot @world
 $NATIVE_EMERGE --depclean
 

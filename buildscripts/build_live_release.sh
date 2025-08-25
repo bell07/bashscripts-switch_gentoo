@@ -30,7 +30,8 @@ if ! [ "$1" == "noupdate" ]; then
 	cross_emerge -uDN @system net-misc/dhcp
 
 	# Update world
-	cross_emerge -uDN sys-kernel/nintendo-switch-l4t-kernel \
+	cross_emerge -uDN \
+		sys-kernel/nintendo-switch-l4t-kernel \
 		sys-firmware/jetson-tx1-firmware \
 		sys-apps/nintendo-switch-meta \
 		sys-libs/gentoo-config-files \

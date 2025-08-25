@@ -9,7 +9,7 @@ ADD . /tmp/context
 RUN <<-EOF
     set -e
 
-    emerge-webrsync
+    emerge --sync
 
     echo "Update Ebuilds with NSW versions"
     rm -Rf /var/db/repos/gentoo/sys-kernel/linux-headers/
