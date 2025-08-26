@@ -1,0 +1,34 @@
+--- sys-kernel/installkernel/installkernel-62.ebuild
++++ sys-kernel/installkernel/installkernel-62.ebuild
+@@ -17,7 +17,10 @@
+ LICENSE="GPL-2+"
+ SLOT="0"
+ KEYWORDS="~arm64"
+-IUSE="dracut efistub grub refind systemd systemd-boot ugrd uki ukify"
++IUSE="dracut efistub grub +nsw refind systemd systemd-boot ugrd uki ukify"
++
++PATCHES=( "${FILESDIR}"/add-nsw-install-60.patch )
++
+ REQUIRED_USE="
+ 	systemd-boot? ( systemd )
+ 	ukify? ( uki )
+@@ -36,8 +36,10 @@
+ 
+ RDEPEND="
+ 	!<=sys-kernel/installkernel-systemd-3
++	nsw? ( >=sys-libs/gentoo-config-files-20240127-r1[installkernel] )
+ 	dracut? (
+ 		>=sys-kernel/dracut-108-r3
++		sys-libs/gentoo-config-files[initramfs]
+ 		uki? (
+ 			|| (
+ 				sys-apps/systemd[boot(-)]
+@@ -137,6 +142,8 @@
+ 		echo "layout=grub" >> "${T}/install.conf" || die
+ 	elif use systemd-boot; then
+ 		echo "layout=bls" >> "${T}/install.conf" || die
++	elif use nsw; then
++		echo "layout=nsw" >> "${T}/install.conf" || die
+ 	else
+ 		echo "layout=compat" >> "${T}/install.conf" || die
+ 	fi
