@@ -5,16 +5,16 @@
  		fi
  		updatever "${img_dest}" "${uki}" "${suffix}"
 +	# The NSW/switchroot way
-+	elif [ -f "${base_dir}/nx-plat.dtimg" ] && [ "${INSTALLKERNEL_LAYOUT}" = nsw ]; then
++	elif [ -f "${INSTALLKERNEL_STAGING_AREA}/nx-plat.dtimg" ] && [ "${INSTALLKERNEL_LAYOUT}" = nsw ]; then
 +		echo "Installing nx-plat.dtimg for ${ver}..."
-+		updatever nx-plat "${base_dir}/nx-plat.dtimg" .dtimg
++		updatever nx-plat "${INSTALLKERNEL_STAGING_AREA}/nx-plat.dtimg" .dtimg
 +
 +		echo "Installing uImage for ${ver}..."
-+		updatever uImage "${base_dir}/uImage"
-+		initramfs="${base_dir}/initramfs"
-+		if [ -f "${initramfs}" ]; then
++		updatever uImage "${INSTALLKERNEL_STAGING_AREA}/uImage"
++
++		if [ -f "${INSTALLKERNEL_STAGING_AREA}/initramfs" ]; then
 +			echo "Installing initramfs image for ${ver}..."
-+			updatever initramfs "${initramfs}"
++			updatever initramfs "${INSTALLKERNEL_STAGING_AREA}/initramfs"
 +		fi
 +
 +		config=$(dirname "${map}")
