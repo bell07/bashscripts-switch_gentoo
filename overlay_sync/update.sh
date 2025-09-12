@@ -128,6 +128,7 @@ do_move dev-qt/qtcore
 do_move sys-apps/shadow
 do_move sys-kernel/installkernel
 do_move sys-libs/glibc
+do_move x11-libs/libdrm
 
 ## Use onboard from bell07 overlay
 SRC=/var/db/repos/bell07

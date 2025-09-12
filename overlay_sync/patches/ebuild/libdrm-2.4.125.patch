@@ -1,0 +1,14 @@
+--- x11-libs/libdrm/libdrm-2.4.125.ebuild
++++ x11-libs/libdrm/libdrm-2.4.125.ebuild
+@@ -63,3 +65,10 @@
+ 	)
+ 	meson_src_configure
+ }
++
++multilib_src_install() {
++	meson_src_install
++	if use video_cards_tegra; then
++		rm ${D}/usr/lib64/libdrm.so.2
++	fi
++}
+
