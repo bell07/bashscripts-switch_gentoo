@@ -1,0 +1,23 @@
+--- a/widget/gtk/DMABufSurface.cpp
++++ b/widget/gtk/DMABufSurface.cpp
+@@ -1605,11 +1605,6 @@
+       unpackFormat = LOCAL_GL_RED;
+       sizeFormat = LOCAL_GL_UNSIGNED_SHORT;
+       break;
+-    case GBM_FORMAT_GR1616:
+-      internalFormat = LOCAL_GL_RG16;
+-      unpackFormat = LOCAL_GL_RG;
+-      sizeFormat = LOCAL_GL_UNSIGNED_SHORT;
+-      break;
+     default:
+       gfxCriticalError()
+           << "DMABufSurfaceYUV::CreateYUVPlaneExport(): Unsupported format";
+@@ -1760,7 +1755,7 @@
+     case gfx::SurfaceFormat::P010:
+       mFOURCCFormat = VA_FOURCC_P010;
+       mDrmFormats[0] = GBM_FORMAT_R16;
+-      mDrmFormats[1] = GBM_FORMAT_GR1616;
++      mDrmFormats[1] = GBM_FORMAT_GR88;
+       break;
+     case gfx::SurfaceFormat::NV12:
+       mFOURCCFormat = VA_FOURCC_NV12;

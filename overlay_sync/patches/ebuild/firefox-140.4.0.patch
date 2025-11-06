@@ -1,0 +1,11 @@
+--- firefox-140.4.0.ebuild
++++ firefox-140.4.0.ebuild
+@@ -594,6 +594,8 @@
+ 	eapply "${WORKDIR}/firefox-patches"
+ 	use loong && eapply "${WORKDIR}/firefox-loong-patches"
+ 
++	eapply "${FILESDIR}/140.4-old-mesa.patch"
++
+ 	# Allow user to apply any additional patches without modifing ebuild
+ 	eapply_user
+ 
