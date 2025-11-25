@@ -128,7 +128,6 @@ do_move dev-qt/qtcore
 do_move sys-apps/shadow
 do_move sys-kernel/installkernel
 do_move sys-libs/glibc
-do_move www-client/firefox
 do_move x11-libs/libdrm
 
 ## Use onboard from bell07 overlay
