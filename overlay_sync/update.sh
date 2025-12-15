@@ -134,9 +134,9 @@ do_move x11-libs/libdrm
 SRC=/var/db/repos/bell07
 do_move app-accessibility/onboard
 
-# Use x11-misc/touchegg from waffle-builds overlay
-SRC="$PROJ"/waffle-builds/
-do_move sys-apps/touchegg x11-misc/touchegg
+# Use x11-misc/touchegg from djs_overlay overlay
+SRC="$PROJ"/djs_overlay/
+do_move x11-misc/touchegg x11-misc/touchegg
 
 # Libretro / Retroarch from menelkir
 SRC="$PROJ"/menelkir

@@ -1,12 +1,12 @@
 [submodule "overlays/switch_overlay"]
 	path = overlays/switch_overlay
 	url = https://gitlab.com/bell07/gentoo-switch_overlay/
-[submodule "overlay_sync/waffle-builds"]
-	path = overlay_sync/waffle-builds
-	url = https://github.com/FlyingWaffleDev/waffle-builds
 [submodule "overlay_sync/menelkir"]
 	path = overlay_sync/menelkir
 	url = https://gitlab.com/menelkir/gentoo-overlay.git
 [submodule "gentoo-config-files"]
 	path = gentoo-config-files
 	url = https://gitlab.com/bell07/gentoo-config-files
+[submodule "overlay_sync/djs_overlay"]
+	path = overlay_sync/djs_overlay
+	url = https://github.com/DJManas/dj
