@@ -77,5 +77,4 @@ EOF
 
 EXPOSE 3632 3633
 
-ENTRYPOINT ["/usr/bin/distccd", "--daemon", "--no-detach", "-N", "15", \
-   "--log-stderr", "--stats", "--allow-private" ]
+ENTRYPOINT ["sh", "-c", "source /etc/profile && exec /usr/bin/distccd --daemon --no-detach -N 15 --log-stderr --stats --allow-private"]
