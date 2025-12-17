@@ -75,7 +75,7 @@ eselect profile set bell07:my_switch_stage
 /usr/bin/env-update
 . /etc/profile
 # Remove old versions
-sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
+sed -i 's/# *en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 locale-gen
 
 # Full rebuild world
@@ -96,6 +96,10 @@ eselect profile set bell07:my_switch_stage
 $NATIVE_EMERGE -uvDN --rebuilt-binaries=y @world
 $NATIVE_EMERGE --binpkg-changed-deps y -uvDN @changed-deps @changed-subslot @world
 $NATIVE_EMERGE --depclean
+
+etc-update --automode -5
+sed -i 's/# *en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
+
 
 eselect profile set switch:nintendo_switch/17.0
 EOF
